@@ -490,7 +490,7 @@ function addToCart(id, e) {
       return;
     }
     const variant = product.variants[parseInt(select.value)];
-    cartItem = { id: product.id, name: product.name, icon: product.icon, category: product.category, description: product.description, price: variant.price, size: variant.size };
+    cartItem = { id: product.id, name: product.name, icon: product.icon, image: product.image, category: product.category, description: product.description, price: variant.price, size: variant.size };
   } else {
     cartItem = product;
   }
