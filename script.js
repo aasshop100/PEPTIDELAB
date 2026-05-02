@@ -664,6 +664,14 @@ document.querySelectorAll(".nav-links a").forEach(link => {
   });
 });
 
+// ========== BACK TO TOP ==========
+const backToTopBtn = document.getElementById("back-to-top");
+if (backToTopBtn) {
+  window.addEventListener("scroll", () => {
+    backToTopBtn.classList.toggle("visible", window.scrollY > 400);
+  });
+}
+
 // ========== SCROLL ANIMATION ==========
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
