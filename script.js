@@ -421,9 +421,18 @@ function addToCart(id, e) {
   const cart = JSON.parse(localStorage.getItem("peptidelab_cart") || "[]");
   cart.push(product);
   localStorage.setItem("peptidelab_cart", JSON.stringify(cart));
-  // Update badge
+  // Update nav badge
   const badge = document.getElementById("cart-badge");
   if (badge) { badge.textContent = cart.length; badge.style.display = "flex"; }
+  // Update floating cart
+  updateFloatingCart(cart.length);
+  // Pulse animation
+  const floatingCart = document.getElementById("floating-cart");
+  if (floatingCart) {
+    floatingCart.classList.remove("pulse");
+    void floatingCart.offsetWidth; // force reflow
+    floatingCart.classList.add("pulse");
+  }
   showToast(`${product.name} added to cart 🧪`);
 }
 
@@ -500,10 +509,26 @@ document.querySelectorAll(".info-card, .faq-item").forEach(el => {
   observer.observe(el);
 });
 
+// ========== FLOATING CART ==========
+function updateFloatingCart(count) {
+  const btn = document.getElementById("floating-cart");
+  const badge = document.getElementById("floating-badge");
+  if (!btn) return;
+  if (count > 0) {
+    btn.classList.add("visible");
+    badge.textContent = count;
+    badge.classList.add("show");
+  } else {
+    btn.classList.remove("visible");
+    badge.classList.remove("show");
+  }
+}
+
 // ========== INIT ==========
 renderProducts();
 
-// Show cart badge if items exist
+// Show cart badge and floating cart if items exist
 const _cartOnLoad = JSON.parse(localStorage.getItem("peptidelab_cart") || "[]");
 const _badge = document.getElementById("cart-badge");
 if (_badge && _cartOnLoad.length > 0) { _badge.textContent = _cartOnLoad.length; _badge.style.display = "flex"; }
+updateFloatingCart(_cartOnLoad.length);
