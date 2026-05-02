@@ -456,12 +456,107 @@ function renderProducts(filter = "all") {
   }).join("");
 }
 
+// ========== SEARCH ==========
+let currentFilter = "all";
+
+function searchProducts() {
+  const query = document.getElementById("product-search").value.trim().toLowerCase();
+  const clearBtn = document.getElementById("search-clear");
+  const countEl = document.getElementById("search-count");
+  const grid = document.getElementById("product-grid");
+
+  // Show/hide clear button
+  if (clearBtn) clearBtn.style.display = query ? "flex" : "none";
+
+  // Reset filter tabs to All when searching
+  if (query) {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelector(".tab[data-filter='all']").classList.add("active");
+    currentFilter = "all";
+  }
+
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(query) ||
+    p.description.toLowerCase().includes(query) ||
+    p.category.toLowerCase().includes(query)
+  );
+
+  if (countEl) {
+    countEl.textContent = query
+      ? `${filtered.length} result${filtered.length !== 1 ? "s" : ""} for "${query}"`
+      : "";
+  }
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:4rem 0;">
+        <p style="font-size:2rem;margin-bottom:0.75rem">🔬</p>
+        <p style="color:var(--text-muted);font-size:0.95rem;">No peptides found for "<strong style="color:var(--text)">${query}</strong>"</p>
+        <button onclick="clearSearch()" style="margin-top:1rem;background:none;border:1px solid var(--border);color:var(--accent);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 1.2rem;border-radius:50px;cursor:pointer;">Clear Search</button>
+      </div>`;
+    return;
+  }
+
+  renderFilteredProducts(filtered);
+}
+
+function clearSearch() {
+  const input = document.getElementById("product-search");
+  const clearBtn = document.getElementById("search-clear");
+  const countEl = document.getElementById("search-count");
+  if (input) input.value = "";
+  if (clearBtn) clearBtn.style.display = "none";
+  if (countEl) countEl.textContent = "";
+  renderProducts(currentFilter);
+}
+
+function renderFilteredProducts(filtered) {
+  const grid = document.getElementById("product-grid");
+  grid.innerHTML = filtered.map((p, i) => {
+    const hasVariants = p.variants && p.variants.length > 0;
+    const priceDisplay = hasVariants
+      ? `<span class="price-range">$${p.variants[0].price} <span class="price-dash">—</span> $${p.variants[p.variants.length-1].price}</span>`
+      : `$${p.price} <small>/ ${p.size}</small>`;
+    const variantDropdown = hasVariants ? `
+      <select class="variant-select" id="variant-${p.id}" onchange="updateVariantPrice(${p.id})">
+        <option value="" disabled selected>Select dose</option>
+        ${p.variants.map((v, idx) => `<option value="${idx}">${v.size} — $${v.price}</option>`).join("")}
+      </select>` : "";
+    return `
+      <div class="product-card" style="animation-delay:${i * 0.07}s;position:relative" data-id="${p.id}">
+        ${p.popular ? `<div style="position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;background:rgba(0,200,255,0.15);color:var(--accent);padding:0.2rem 0.7rem;border-radius:50px;letter-spacing:1px;text-transform:uppercase;">Popular</div>` : ''}
+        <span class="product-badge badge-${p.category}">${p.category}</span>
+        <div class="product-img-wrap">
+          ${p.image
+            ? `<img src="${p.image}" alt="${p.name}" class="product-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" /><div class="product-icon" style="display:none">${p.icon}</div>`
+            : `<div class="product-icon">${p.icon}</div>`
+          }
+        </div>
+        <h3>${p.name}</h3>
+        <p>${p.description}</p>
+        ${variantDropdown}
+        <div class="product-footer" style="margin-top:1rem">
+          <div class="product-price" id="price-${p.id}">${priceDisplay}</div>
+          <button class="add-btn" onclick="addToCart(${p.id}, event)" title="Add to cart">+</button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 // ========== FILTER TABS ==========
 document.querySelectorAll(".tab").forEach(tab => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
-    renderProducts(tab.dataset.filter);
+    currentFilter = tab.dataset.filter;
+    // Clear search when switching tabs
+    const input = document.getElementById("product-search");
+    const clearBtn = document.getElementById("search-clear");
+    const countEl = document.getElementById("search-count");
+    if (input) input.value = "";
+    if (clearBtn) clearBtn.style.display = "none";
+    if (countEl) countEl.textContent = "";
+    renderProducts(currentFilter);
   });
 });
 
