@@ -395,10 +395,7 @@ function renderProducts(filter = "all") {
         <span class="product-badge badge-${p.category}">${p.category}</span>
         <div class="product-icon">${p.icon}</div>
         <h3>${p.name}</h3>
-        <div class="product-seq">${p.seq.substring(0, 30)}...</div>
         <p>${p.description}</p>
-        <div class="purity-bar"><div class="purity-fill" style="width:${p.purity}%"></div></div>
-        <div class="purity-label">Purity: ${p.purity}%</div>
         <div class="product-footer" style="margin-top:1rem">
           <div class="product-price">$${p.price} <small>/ ${p.size}</small></div>
           <button class="add-btn" onclick="addToCart(${p.id}, event)" title="Add to cart">+</button>
@@ -418,12 +415,15 @@ document.querySelectorAll(".tab").forEach(tab => {
 });
 
 // ========== CART ==========
-let cart = [];
-
 function addToCart(id, e) {
   e.stopPropagation();
   const product = products.find(p => p.id === id);
+  const cart = JSON.parse(localStorage.getItem("peptidelab_cart") || "[]");
   cart.push(product);
+  localStorage.setItem("peptidelab_cart", JSON.stringify(cart));
+  // Update badge
+  const badge = document.getElementById("cart-badge");
+  if (badge) { badge.textContent = cart.length; badge.style.display = "flex"; }
   showToast(`${product.name} added to cart 🧪`);
 }
 
@@ -476,6 +476,13 @@ document.getElementById("hamburger").addEventListener("click", () => {
   document.querySelector(".nav-links").classList.toggle("open");
 });
 
+// Close mobile menu when any nav link is clicked
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    document.querySelector(".nav-links").classList.remove("open");
+  });
+});
+
 // ========== SCROLL ANIMATION ==========
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -495,3 +502,8 @@ document.querySelectorAll(".info-card, .faq-item").forEach(el => {
 
 // ========== INIT ==========
 renderProducts();
+
+// Show cart badge if items exist
+const _cartOnLoad = JSON.parse(localStorage.getItem("peptidelab_cart") || "[]");
+const _badge = document.getElementById("cart-badge");
+if (_badge && _cartOnLoad.length > 0) { _badge.textContent = _cartOnLoad.length; _badge.style.display = "flex"; }
