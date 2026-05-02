@@ -17,7 +17,8 @@
       <li><a href="#about">Science</a></li>
       <li><a href="#shipping">Shipping</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="mailto:peptidelabusa@proton.me" class="nav-cta">Wholesale</a></li>
+      <li><a href="cart.html" style="position:relative;color:var(--text-muted);font-size:0.9rem;transition:color 0.3s ease" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">🛒 Cart <span id="cart-badge" style="display:none;position:absolute;top:-8px;right:-10px;background:var(--accent);color:var(--bg);font-size:0.65rem;font-weight:600;width:18px;height:18px;border-radius:50%;align-items:center;justify-content:center;"></span></a></li>
+      <li><a href="#wholesale" class="nav-cta">Wholesale</a></li>
     </ul>
     <button class="hamburger" id="hamburger">&#9776;</button>
   </nav>
@@ -156,7 +157,7 @@
         <h3>Payment Methods</h3>
         <p>We accept <strong>Crypto (USDT — TRON TRC20)</strong> and <strong>Bank Transfer</strong>. Payment instructions will be sent to you by email after ordering.</p>
       </div>
-      <div class="shipping-card highlight-card">
+      <div class="shipping-card highlight-card" id="wholesale">
         <div class="card-icon">📦</div>
         <h3>Wholesale Inquiries</h3>
         <p>Interested in bulk or wholesale orders? Reach out to us directly and we'll get back to you with pricing and availability.</p>
