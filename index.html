@@ -364,6 +364,58 @@
 
   <script src="script.js"></script>
 
+  <!-- EmailJS for Newsletter -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // ========== NEWSLETTER EMAILJS CONFIG ==========
+    const NEWSLETTER_PUBLIC_KEY    = "zvGFaKGtGXxt_93vm";
+    const NEWSLETTER_SERVICE       = "service_8gdi4me";
+    const NEWSLETTER_TEMPLATE_ADMIN    = "template_f4hpv6d";  // email to YOU
+    const NEWSLETTER_TEMPLATE_CUSTOMER = "template_29zwf2q";  // email to SUBSCRIBER
+
+    emailjs.init(NEWSLETTER_PUBLIC_KEY);
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const input = e.target.querySelector("input[type='email']");
+      const btn   = e.target.querySelector("button");
+      const msg   = document.getElementById("form-msg");
+      const email = input.value.trim();
+
+      if (!email) return;
+
+      btn.textContent = "Subscribing...";
+      btn.disabled = true;
+      msg.textContent = "";
+      msg.style.color = "var(--accent2)";
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+
+      const params = {
+        subscriber_email: email,
+        date: dateStr,
+      };
+
+      try {
+        // Send to YOU (admin)
+        await emailjs.send(NEWSLETTER_SERVICE, NEWSLETTER_TEMPLATE_ADMIN, params);
+        // Send to SUBSCRIBER
+        await emailjs.send(NEWSLETTER_SERVICE, NEWSLETTER_TEMPLATE_CUSTOMER, params);
+
+        msg.textContent = "✓ You're subscribed! Check your inbox.";
+        input.value = "";
+      } catch (err) {
+        console.error("Newsletter error:", err);
+        msg.style.color = "#ff5555";
+        msg.textContent = "Something went wrong. Please try again.";
+      } finally {
+        btn.textContent = "Subscribe";
+        btn.disabled = false;
+      }
+    }
+  </script>
+
   <!-- FLOATING CART BUTTON -->
   <a href="cart.html" class="floating-cart" id="floating-cart">
     🛒
