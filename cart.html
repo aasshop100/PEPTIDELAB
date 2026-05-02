@@ -268,7 +268,12 @@
 
       document.getElementById("cart-items").innerHTML = groupCart(cart).map(item => `
         <div class="cart-item">
-          <div class="cart-item-icon">${item.icon}</div>
+          <div class="cart-item-icon">
+            ${item.image
+              ? `<img src="${item.image}" alt="${item.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;" />`
+              : item.icon
+            }
+          </div>
           <div class="cart-item-info">
             <h4>${item.name}</h4>
             <p>${item.size}</p>
