@@ -89,6 +89,16 @@
       <p class="section-sub">Every batch undergoes rigorous third-party HPLC testing before it reaches you.</p>
     </div>
 
+    <!-- SEARCH BAR -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="product-search" placeholder="Search peptides e.g. BPC-157, Semaglutide..." oninput="searchProducts()" autocomplete="off" />
+        <button class="search-clear" id="search-clear" onclick="clearSearch()" style="display:none;">✕</button>
+      </div>
+      <p class="search-results-count" id="search-count"></p>
+    </div>
+
     <!-- FILTER TABS -->
     <div class="filter-tabs">
       <button class="tab active" data-filter="all">All</button>
