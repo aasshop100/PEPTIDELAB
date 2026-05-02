@@ -201,7 +201,10 @@
 
     function groupCart(cart) {
       const g = {};
-      cart.forEach(item => { g[item.id] ? g[item.id].qty++ : g[item.id] = {...item, qty:1}; });
+      cart.forEach(item => {
+        const key = item.id + '-' + item.size;
+        g[key] ? g[key].qty++ : g[key] = {...item, qty:1};
+      });
       return Object.values(g);
     }
 
@@ -268,34 +271,39 @@
           <div class="cart-item-icon">${item.icon}</div>
           <div class="cart-item-info">
             <h4>${item.name}</h4>
-            <p>${item.size} · Purity: ${item.purity}%</p>
+            <p>${item.size}</p>
           </div>
           <div class="cart-item-controls">
-            <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+            <button class="qty-btn" onclick="changeQty(${item.id},'${item.size}',-1)">−</button>
             <span class="qty-num">${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+            <button class="qty-btn" onclick="changeQty(${item.id},'${item.size}',1)">+</button>
           </div>
           <div class="cart-item-price">$${(item.price*item.qty).toFixed(2)}</div>
-          <button class="remove-btn" onclick="removeItem(${item.id})">✕</button>
+          <button class="remove-btn" onclick="removeItem(${item.id},'${item.size}')">✕</button>
         </div>
       `).join("");
 
       document.getElementById("summary-items").innerHTML = groupCart(cart).map(i =>
-        `<div class="summary-item"><span>${i.name} × ${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`
+        `<div class="summary-item"><span>${i.name} (${i.size}) × ${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`
       ).join("");
 
       const subtotal = cart.reduce((s,i) => s+i.price, 0);
       updateTotals(subtotal);
     }
 
-    function changeQty(id, delta) {
+    function changeQty(id, size, delta) {
       let cart = getCart();
-      if (delta === 1) { const p = products.find(p => p.id===id); if(p) cart.push(p); }
-      else { const i = cart.findIndex(i => i.id===id); if(i>-1) cart.splice(i,1); }
+      if (delta === 1) {
+        const existing = cart.find(i => i.id===id && i.size===size);
+        if (existing) cart.push({...existing});
+      } else {
+        const i = cart.findIndex(i => i.id===id && i.size===size);
+        if (i > -1) cart.splice(i, 1);
+      }
       saveCart(cart); renderCartPage();
     }
 
-    function removeItem(id) { saveCart(getCart().filter(i => i.id!==id)); renderCartPage(); }
+    function removeItem(id, size) { saveCart(getCart().filter(i => !(i.id===id && i.size===size))); renderCartPage(); }
 
     document.getElementById("clear-cart").addEventListener("click", () => { saveCart([]); renderCartPage(); });
 
