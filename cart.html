@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart — PEPTIDE LAB</title>
+  <link rel="icon" type="image/svg+xml" href="image/favicon.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">PEPTIDE<span>LAB</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#about">Science</a></li>
+      <li><a href="index.html#shipping">Shipping</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="calculator.html">Calculator</a></li>
+      <li><a href="cart.html" style="color:var(--accent)">🛒 Cart <span id="cart-badge" style="display:none;background:var(--accent);color:var(--bg);font-size:0.65rem;font-weight:600;padding:0.1rem 0.4rem;border-radius:50px;"></span></a></li>
+      <li><a href="mailto:peptidelabusa@proton.me" class="nav-cta">Wholesale</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger">&#9776;</button>
+  </nav>
+
+  <main class="cart-page">
+
+    <!-- EMPTY STATE -->
+    <div class="empty-cart" id="empty-cart">
+      <div class="empty-icon">🧪</div>
+      <h2>Your cart is empty</h2>
+      <p>Go back and add some peptides to your order.</p>
+      <a href="index.html#products" class="btn-primary">Browse Products</a>
+    </div>
+
+    <!-- CART CONTENT -->
+    <div class="cart-content" id="cart-content">
+
+      <div class="cart-left">
+        <div class="cart-header">
+          <h1>Your Cart</h1>
+          <button class="clear-btn" id="clear-cart">Clear all</button>
+        </div>
+
+        <div class="cart-items" id="cart-items"></div>
+
+        <!-- ORDER FORM -->
+        <div class="order-form-wrap">
+          <h2>Your Details</h2>
+          <p class="form-intro">Fill in your details and we'll email you payment instructions within 24 hours.</p>
+
+          <form id="order-form">
+            <input type="hidden" id="order-summary-field" />
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" id="first_name" name="first_name" placeholder="John" required />
+              </div>
+              <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Doe" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="cust_email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900" />
+            </div>
+            <div class="form-group">
+              <label>Shipping Address *</label>
+              <input type="text" id="address" name="address" placeholder="Street address" required />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>City *</label>
+                <input type="text" id="city" name="city" placeholder="New York" required />
+              </div>
+              <div class="form-group">
+                <label>State *</label>
+                <input type="text" id="state" name="state" placeholder="NY" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ZIP Code *</label>
+                <input type="text" id="zip" name="zip" placeholder="10001" required />
+              </div>
+              <div class="form-group">
+                <label>Country *</label>
+                <input type="text" id="country" name="country" value="United States" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Preferred Payment Method *</label>
+              <select id="payment_method" name="payment_method" required>
+                <option value="" disabled selected>Select payment method</option>
+                <option value="Crypto (USDT - TRON TRC20)">Crypto — USDT (TRON TRC20)</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notes / Special Instructions</label>
+              <textarea id="notes" name="notes" placeholder="Any special instructions or questions..." rows="3"></textarea>
+            </div>
+            <div class="disclaimer-box">
+              <label class="checkbox-label">
+                <input type="checkbox" required />
+                <span>I confirm these peptides are for <strong>research purposes only</strong> and I comply with all local laws.</span>
+              </label>
+            </div>
+            <button type="submit" class="btn-primary submit-btn" id="submit-btn">Place Order →</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="cart-right">
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-items" id="summary-items"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping (FedEx)</span>
+            <span id="summary-shipping">$50.00</span>
+          </div>
+          <div class="summary-row" id="discount-row" style="display:none;">
+            <span style="color:var(--accent2);">Discount</span>
+            <span id="discount-amount" style="color:var(--accent2);">-$0.00</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <span id="summary-total">$0.00</span>
+          </div>
+
+          <!-- DISCOUNT CODE -->
+          <div class="discount-wrap">
+            <label style="font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Discount Code</label>
+            <div class="discount-input-row">
+              <input type="text" id="discount-input" placeholder="Enter code" />
+              <button onclick="applyDiscount()" class="discount-btn">Apply</button>
+            </div>
+            <p id="discount-msg" style="font-size:0.8rem;margin-top:0.4rem;min-height:1rem;"></p>
+          </div>
+
+          <div class="payment-info-box">
+            <p class="info-box-title">💳 Payment</p>
+            <p>You'll receive an email within <strong>24 hours</strong> with payment instructions.</p>
+            <div class="pay-badges">
+              <span class="pay-badge">USDT TRC20</span>
+              <span class="pay-badge">Bank Transfer</span>
+            </div>
+          </div>
+          <div class="payment-info-box">
+            <p class="info-box-title">✈️ Shipping</p>
+            <p>FedEx · China → USA · <strong>25–35 business days</strong></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // ========== EMAILJS CONFIG ==========
+    emailjs.init("5xiTfxz_92gwpa2VJ");
+    const EMAILJS_SERVICE    = "service_ju3widv";
+    const TEMPLATE_ADMIN     = "template_gdh1w1b";   // email to YOU
+    const TEMPLATE_CUSTOMER  = "template_moknerc";   // email to CUSTOMER
+
+    // ========================================
+    // DISCOUNT CODES — ADD YOUR OWN CODES HERE
+    // Format: "CODE": discountAmountInDollars
+    // ========================================
+    const DISCOUNT_CODES = {
+      "FREESHIP": 50,    // Free shipping — removes the $50 shipping fee
+      // "SAVE20": 20,   // $20 off — uncomment to activate
+      // "WELCOME10": 10 // $10 off — uncomment to activate
+    };
+    // ========================================
+
+    const SHIPPING_FEE = 50;
+    let appliedDiscount = 0;
+    let appliedCode = "";
+
+    function getCart() { return JSON.parse(localStorage.getItem("peptidelab_cart") || "[]"); }
+    function saveCart(c) { localStorage.setItem("peptidelab_cart", JSON.stringify(c)); }
+
+    function groupCart(cart) {
+      const g = {};
+      cart.forEach(item => {
+        const key = item.id + '-' + item.size;
+        g[key] ? g[key].qty++ : g[key] = {...item, qty:1};
+      });
+      return Object.values(g);
+    }
+
+    function updateBadge(n) {
+      const b = document.getElementById("cart-badge");
+      if (b) { b.textContent = n; b.style.display = n > 0 ? "inline" : "none"; }
+    }
+
+    function updateTotals(subtotal) {
+      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount);
+      document.getElementById("summary-subtotal").textContent = "$" + subtotal.toFixed(2);
+      document.getElementById("summary-shipping").textContent = "$" + SHIPPING_FEE.toFixed(2);
+      document.getElementById("summary-total").textContent = "$" + total.toFixed(2);
+      const discountRow = document.getElementById("discount-row");
+      if (appliedDiscount > 0) {
+        discountRow.style.display = "flex";
+        document.getElementById("discount-amount").textContent = "-$" + appliedDiscount.toFixed(2);
+      } else {
+        discountRow.style.display = "none";
+      }
+      return total;
+    }
+
+    function buildOrderSummary(cart) {
+      const subtotal = cart.reduce((s,i) => s+i.price, 0);
+      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount);
+      const lines = groupCart(cart).map(i => `${i.name} x${i.qty} (${i.size}) — $${(i.price*i.qty).toFixed(2)}`);
+      return { lines, subtotal, total };
+    }
+
+    function applyDiscount() {
+      const code = document.getElementById("discount-input").value.trim().toUpperCase();
+      const msg = document.getElementById("discount-msg");
+      const subtotal = getCart().reduce((s,i) => s+i.price, 0);
+      if (DISCOUNT_CODES[code] !== undefined) {
+        appliedDiscount = DISCOUNT_CODES[code];
+        appliedCode = code;
+        msg.style.color = "var(--accent2)";
+        msg.textContent = `✓ Code applied! -$${appliedDiscount} discount`;
+      } else {
+        appliedDiscount = 0;
+        appliedCode = "";
+        msg.style.color = "#ff5555";
+        msg.textContent = "✗ Invalid code. Please try again.";
+      }
+      updateTotals(subtotal);
+    }
+
+    document.getElementById("discount-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); applyDiscount(); }
+    });
+
+    function renderCartPage() {
+      const cart = getCart();
+      const empty = document.getElementById("empty-cart");
+      const content = document.getElementById("cart-content");
+      if (cart.length === 0) { empty.style.display="flex"; content.style.display="none"; return; }
+      empty.style.display = "none";
+      content.style.display = "grid";
+      updateBadge(cart.length);
+
+      document.getElementById("cart-items").innerHTML = groupCart(cart).map(item => `
+        <div class="cart-item">
+          <div class="cart-item-icon">
+            ${item.image
+              ? `<img src="${item.image}" alt="${item.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;" />`
+              : item.icon
+            }
+          </div>
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>${item.size}</p>
+          </div>
+          <div class="cart-item-controls">
+            <button class="qty-btn" onclick="changeQty(${item.id},'${item.size}',-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id},'${item.size}',1)">+</button>
+          </div>
+          <div class="cart-item-price">$${(item.price*item.qty).toFixed(2)}</div>
+          <button class="remove-btn" onclick="removeItem(${item.id},'${item.size}')">✕</button>
+        </div>
+      `).join("");
+
+      document.getElementById("summary-items").innerHTML = groupCart(cart).map(i =>
+        `<div class="summary-item"><span>${i.name} (${i.size}) × ${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`
+      ).join("");
+
+      const subtotal = cart.reduce((s,i) => s+i.price, 0);
+      updateTotals(subtotal);
+    }
+
+    function changeQty(id, size, delta) {
+      let cart = getCart();
+      if (delta === 1) {
+        const existing = cart.find(i => i.id===id && i.size===size);
+        if (existing) cart.push({...existing});
+      } else {
+        const i = cart.findIndex(i => i.id===id && i.size===size);
+        if (i > -1) cart.splice(i, 1);
+      }
+      saveCart(cart); renderCartPage();
+    }
+
+    function removeItem(id, size) { saveCart(getCart().filter(i => !(i.id===id && i.size===size))); renderCartPage(); }
+
+    document.getElementById("clear-cart").addEventListener("click", () => { saveCart([]); renderCartPage(); });
+
+    // ========== FORM SUBMIT VIA EMAILJS ==========
+    document.getElementById("order-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("submit-btn");
+      btn.textContent = "Sending...";
+      btn.disabled = true;
+
+      const cart = getCart();
+      const { lines, subtotal, total } = buildOrderSummary(cart);
+
+      const first_name   = document.getElementById("first_name").value;
+      const last_name    = document.getElementById("last_name").value;
+      const email        = document.getElementById("cust_email").value;
+      const phone        = document.getElementById("phone").value;
+      const address      = document.getElementById("address").value;
+      const city         = document.getElementById("city").value;
+      const state        = document.getElementById("state").value;
+      const zip          = document.getElementById("zip").value;
+      const country      = document.getElementById("country").value;
+      const payment      = document.getElementById("payment_method").value;
+      const notes        = document.getElementById("notes").value;
+
+      const templateParams = {
+        customer_name:    `${first_name} ${last_name}`,
+        customer_email:   email,
+        customer_phone:   phone || "Not provided",
+        customer_address: address,
+        customer_city:    city,
+        customer_state:   state,
+        customer_zip:     zip,
+        customer_country: country,
+        payment_method:   payment,
+        order_summary:    lines.join("\n"),
+        subtotal:         "$" + subtotal.toFixed(2),
+        shipping:         appliedDiscount >= SHIPPING_FEE ? "$0.00 (Free - code: " + appliedCode + ")" : "$" + SHIPPING_FEE.toFixed(2),
+        discount:         appliedDiscount > 0 ? "-$" + appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "None",
+        total:            "$" + total.toFixed(2),
+        notes:            notes || "None",
+      };
+
+      try {
+        // Send to YOU (admin)
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
+        // Send to CUSTOMER
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
+        // Clear cart and redirect
+        localStorage.removeItem("peptidelab_cart");
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        btn.textContent = "Failed. Please try again.";
+        btn.disabled = false;
+        btn.style.background = "#ff5555";
+      }
+    });
+
+    document.getElementById("hamburger").addEventListener("click", () => {
+      document.querySelector(".nav-links").classList.toggle("open");
+    });
+
+    renderCartPage();
+  </script>
+</body>
+</html>
