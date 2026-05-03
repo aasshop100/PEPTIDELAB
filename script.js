@@ -18,7 +18,7 @@ const products = [
     name: "Semaglutide",
     category: "longevity",
     icon: "💉",
-    image: "image/semaglutide.png",
+    image: "image/semaglutide.jpg",
     description: "GLP-1 receptor agonist. Clinically validated for metabolic health, blood sugar regulation, and sustained weight management with significant cardiovascular benefits.",
     popular: true,
     variants: [
@@ -414,6 +414,340 @@ const products = [
     price: 150,
     size: "10mg × 10 vials"
   },
+  {
+    id: 35,
+    name: "Melatonin",
+    category: "cognitive",
+    icon: "🌙",
+    description: "Pineal gland hormone regulating circadian rhythm and sleep-wake cycles. Potent antioxidant with neuroprotective, anti-inflammatory, and immune-modulating properties studied in aging research.",
+    image: "image/melatonin.png",
+    price: 169,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 36,
+    name: "MT-2 (Melanotan 2)",
+    category: "longevity",
+    icon: "☀️",
+    description: "Synthetic melanocortin analogue. Studied for melanogenesis stimulation, photoprotection, libido enhancement via MC1R/MC4R activation, and appetite suppression in metabolic research.",
+    image: "image/mt2.jpg",
+    price: 169,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 37,
+    name: "Lemon Bottle",
+    category: "longevity",
+    icon: "🍋",
+    description: "Advanced lipolytic injection solution combining riboflavin, bromelain, and L-carnitine. Research focuses on targeted adipocyte metabolism disruption and localized fat reduction protocols.",
+    image: "image/lemon bottle.png",
+    price: 221,
+    size: "10ml × 10 vials"
+  },
+  {
+    id: 38,
+    name: "VIP (Vasoactive Intestinal Peptide)",
+    category: "recovery",
+    icon: "🫁",
+    description: "Endogenous neuropeptide with potent anti-inflammatory, immunomodulatory, and bronchodilatory properties. Studied extensively for pulmonary fibrosis, autoimmune conditions, and gut integrity.",
+    image: "image/vip.jpg",
+    variants: [
+      { size: "5mg × 10 vials",  price: 180 },
+      { size: "10mg × 10 vials", price: 250 },
+    ]
+  },
+  {
+    id: 39,
+    name: "BPC-157 + GHK-Cu + TB-500",
+    category: "recovery",
+    icon: "🩹",
+    description: "Triple recovery stack combining BPC-157 tissue repair, GHK-Cu collagen synthesis, and TB-500 cell migration. Comprehensive regenerative protocol for accelerated healing and anti-aging research.",
+    image: "image/bpc10mgghkcu50mgtb50010mg.png",
+    price: 380,
+    size: "70mg × 10 vials"
+  },
+  {
+    id: 40,
+    name: "GHK-Cu + TB-500 + BPC-157 + KPV",
+    category: "recovery",
+    icon: "🩹",
+    description: "Advanced quad recovery blend targeting tissue repair, inflammation, collagen synthesis, and gut healing simultaneously. Ideal for comprehensive regenerative and anti-inflammatory research protocols.",
+    image: "image/cu50tb10bc10kpv10.png",
+    price: 400,
+    size: "80mg × 10 vials"
+  },
+  {
+    id: 41,
+    name: "Cagrilintide 2.5mg + Semaglutide 2.5mg",
+    category: "longevity",
+    icon: "💉",
+    description: "Synergistic amylin/GLP-1 dual agonist combination. Research demonstrates superior weight reduction and metabolic improvement compared to either agent alone, with complementary satiety mechanisms.",
+    image: "image/cagrilintide5mgsemaglutide5mg.png",
+    price: 380,
+    size: "5mg × 10 vials"
+  },
+  {
+    id: 42,
+    name: "Cagrilintide 5mg + Semaglutide 5mg",
+    category: "longevity",
+    icon: "💉",
+    description: "Higher-dose amylin/GLP-1 combination stack. Maximizes dual receptor engagement for enhanced metabolic optimization, sustained satiety signaling, and comprehensive cardiometabolic research.",
+    image: "image/cagrilintide5mgsemaglutide5mg.png",
+    price: 410,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 43,
+    name: "LC120",
+    category: "longevity",
+    icon: "💧",
+    description: "Phosphatidylcholine-based lipolytic solution. Studied for non-surgical fat dissolution, adipocyte membrane disruption, and localized body contouring research applications.",
+    image: "image/lc120.png",
+    price: 165,
+    size: "10ml × 10 vials"
+  },
+  {
+    id: 44,
+    name: "LC216 (with B12)",
+    category: "longevity",
+    icon: "💧",
+    description: "Enhanced phosphatidylcholine lipolytic complex fortified with Vitamin B12. Combines targeted fat metabolism with neurological support for comprehensive lipolysis and energy research.",
+    image: "image/lc216.png",
+    price: 165,
+    size: "10ml × 10 vials"
+  },
+  {
+    id: 45,
+    name: "Ara-290",
+    category: "recovery",
+    icon: "🧬",
+    description: "Non-erythropoietic EPO analogue targeting innate repair receptors. Studied for neuropathic pain relief, tissue protection, anti-inflammatory signaling, and metabolic repair without hematopoietic effects.",
+    image: "image/ara290.png",
+    price: 165,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 46,
+    name: "Cerebrolysin",
+    category: "cognitive",
+    icon: "🧠",
+    description: "Porcine brain-derived neurotrophic peptide mixture. Mimics endogenous neurotrophic factors to support neuronal survival, synaptic plasticity, and cognitive function in neuroprotection research.",
+    image: "image/cerebrolysin.png",
+    price: 130,
+    size: "60mg × 10 vials"
+  },
+  {
+    id: 47,
+    name: "Thymalin / Thymulin",
+    category: "recovery",
+    icon: "🛡️",
+    description: "Thymic peptide complex with immunomodulatory and anti-aging properties. Studied for T-cell regulation, neuroendocrine-immune axis restoration, and age-related immune decline reversal.",
+    image: "image/thymalinthymulin.png",
+    price: 165,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 48,
+    name: "LL-37",
+    category: "recovery",
+    icon: "🧬",
+    description: "Human cathelicidin antimicrobial peptide. Exhibits broad-spectrum antimicrobial activity, wound healing promotion, immune modulation, and anti-biofilm properties in infection and regeneration research.",
+    image: "image/ll37.png",
+    price: 195,
+    size: "5mg × 10 vials"
+  },
+  {
+    id: 49,
+    name: "Survodutide",
+    category: "longevity",
+    icon: "💉",
+    description: "Dual GLP-1/Glucagon receptor agonist under active clinical investigation. Demonstrates significant hepatic fat reduction, weight loss, and NASH/MAFLD improvement in metabolic disease research.",
+    image: "image/survodutide.png",
+    price: 290,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 50,
+    name: "Pinealon",
+    category: "cognitive",
+    icon: "🧠",
+    description: "Tripeptide of pineal gland origin. Studied for neuroprotection, circadian regulation support, retinal cell preservation, and cognitive function enhancement in aging research.",
+    image: "image/pinealon.png",
+    variants: [
+      { size: "5mg × 10 vials",  price: 145 },
+      { size: "10mg × 10 vials", price: 165 },
+      { size: "20mg × 10 vials", price: 200 },
+    ]
+  },
+  {
+    id: 51,
+    name: "PNC-27",
+    category: "longevity",
+    icon: "🔬",
+    description: "p53-derived anticancer peptide targeting HDM-2 on tumor cell membranes. Induces selective cancer cell necrosis without affecting normal cells — studied in oncology and targeted therapy research.",
+    image: "image/pnc27.png",
+    variants: [
+      { size: "5mg × 10 vials",  price: 190 },
+      { size: "10mg × 10 vials", price: 270 },
+    ]
+  },
+  {
+    id: 52,
+    name: "Oxytocin Acetate",
+    category: "cognitive",
+    icon: "❤️",
+    description: "Hypothalamic nonapeptide modulating social bonding, stress response, and autonomic function. Research spans anxiety reduction, gut motility, wound healing, and neuroendocrine regulation.",
+    image: "image/oxytocinacetate.png",
+    variants: [
+      { size: "2mg × 10 vials",  price: 135 },
+      { size: "5mg × 10 vials",  price: 170 },
+      { size: "10mg × 10 vials", price: 230 },
+    ]
+  },
+  {
+    id: 53,
+    name: "HMG",
+    category: "growth",
+    icon: "⚡",
+    description: "Human Menopausal Gonadotropin containing FSH and LH activity. Stimulates follicular development and testosterone production — studied in fertility, hormonal restoration, and reproductive research.",
+    image: "image/hmg75iu.png",
+    price: 199,
+    size: "75IU × 10 vials"
+  },
+  {
+    id: 54,
+    name: "TB-500 (Thymosin B4)",
+    category: "recovery",
+    icon: "⚕️",
+    description: "Thymosin Beta-4 acetate salt for enhanced stability. Promotes actin binding, cell migration, and tissue regeneration. Studied for muscle, tendon, ligament, and cardiac repair protocols.",
+    image: "image/tb500.png",
+    variants: [
+      { size: "5mg × 10 vials",  price: 190 },
+      { size: "10mg × 10 vials", price: 330 },
+    ]
+  },
+  {
+    id: 55,
+    name: "NAD+",
+    category: "longevity",
+    icon: "🔋",
+    description: "Nicotinamide Adenine Dinucleotide coenzyme. Essential for cellular energy metabolism, DNA repair via PARP activation, sirtuin regulation, and mitochondrial biogenesis. Declines significantly with age.",
+    image: "image/nad.png",
+    variants: [
+      { size: "100mg × 10 vials",  price: 200 },
+      { size: "500mg × 10 vials",  price: 250 },
+      { size: "1000mg × 10 vials", price: 310 },
+    ]
+  },
+  {
+    id: 56,
+    name: "BPC-157 + TB-500 (10mg each)",
+    category: "recovery",
+    icon: "🩹",
+    description: "High-dose synergistic recovery blend combining BPC-157 gut and tissue repair with TB-500 cell migration and regeneration. Powerful protocol for accelerated healing and systemic recovery research.",
+    image: "image/bpc10mgtb10mg.png",
+    price: 420,
+    size: "20mg × 10 vials"
+  },
+  {
+    id: 57,
+    name: "BPC-157 + TB-500 (5mg each)",
+    category: "recovery",
+    icon: "🩹",
+    description: "Entry-dose synergistic recovery combination of BPC-157 and TB-500. Complementary mechanisms of tissue protection, angiogenesis promotion, and cellular repair for comprehensive recovery research.",
+    image: "image/bpc5mgtb5mg.png",
+    price: 300,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 58,
+    name: "AICAR",
+    category: "longevity",
+    icon: "⚡",
+    description: "AMPK-activating nucleotide analogue. Mimics exercise-induced metabolic adaptations — enhancing mitochondrial biogenesis, fatty acid oxidation, glucose uptake, and endurance capacity in metabolic research.",
+    image: "image/aicar.png",
+    price: 651,
+    size: "50mg × 10 vials"
+  },
+  {
+    id: 59,
+    name: "FOXO4-DRI",
+    category: "longevity",
+    icon: "🧬",
+    description: "D-retro-inverso FOXO4 peptide designed to selectively eliminate senescent cells. Disrupts FOXO4-p53 interaction triggering apoptosis in senescent cells — studied for rejuvenation and healthspan extension.",
+    image: "image/fox04.png",
+    price: 500,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 60,
+    name: "Adipotide",
+    category: "longevity",
+    icon: "🔥",
+    description: "Proapoptotic peptide targeting vasculature of white adipose tissue. Induces selective destruction of fat tissue blood supply — studied for targeted obesity treatment and body composition research.",
+    image: "image/adipotide.png",
+    variants: [
+      { size: "2mg × 10 vials", price: 185 },
+      { size: "5mg × 10 vials", price: 320 },
+    ]
+  },
+  {
+    id: 61,
+    name: "Kisspeptin-10",
+    category: "longevity",
+    icon: "🔬",
+    description: "Hypothalamic neuropeptide activating GnRH neurons. Potent stimulator of LH and FSH release, testosterone production, and reproductive axis restoration — studied in fertility and hormonal health research.",
+    image: "image/kispeptin10.png",
+    variants: [
+      { size: "5mg × 10 vials",  price: 150 },
+      { size: "10mg × 10 vials", price: 199 },
+    ]
+  },
+  {
+    id: 62,
+    name: "AOD-9604",
+    category: "longevity",
+    icon: "🔥",
+    description: "C-terminal fragment of HGH (176-191) regulating fat metabolism without IGF-1 elevation. Stimulates lipolysis and inhibits lipogenesis — studied for obesity, cartilage repair, and metabolic research.",
+    image: "image/aod9604.png",
+    variants: [
+      { size: "5mg × 10 vials",  price: 220 },
+      { size: "10mg × 10 vials", price: 350 },
+    ]
+  },
+  {
+    id: 63,
+    name: "5-Amino-1MQ",
+    category: "longevity",
+    icon: "⚡",
+    description: "NNMT inhibitor small molecule promoting metabolic reprogramming. Studied for fat cell reduction, mitochondrial activation, NAD+ elevation, and reversal of metabolic dysfunction in obesity research.",
+    image: "image/5amino1mq.jpg",
+    variants: [
+      { size: "5mg × 10 vials",  price: 280 },
+      { size: "10mg × 10 vials", price: 355 },
+      { size: "50mg × 10 vials", price: 490 },
+    ]
+  },
+  {
+    id: 64,
+    name: "CJC-1295 (No DAC) + Ipamorelin",
+    category: "growth",
+    icon: "💪",
+    description: "Classic GHRH/GHRP synergistic stack. CJC-1295 primes the somatotropic axis while Ipamorelin triggers selective GH pulse — the gold standard combination for natural GH optimization research.",
+    image: "image/cjc1295withoutdac5mgipa5mg.png",
+    price: 205,
+    size: "10mg × 10 vials"
+  },
+  {
+    id: 65,
+    name: "Vitamin B12",
+    category: "recovery",
+    icon: "💊",
+    description: "Injectable methylcobalamin formulation. Essential for neurological function, DNA synthesis, red blood cell formation, and homocysteine metabolism. Studied for energy support and neuroprotection.",
+    image: "image/b12.png",
+    price: 185,
+    size: "10ml × 10 vials"
+  },
 ];
 
 // ========== RENDER PRODUCTS ==========
@@ -663,6 +997,22 @@ document.querySelectorAll(".nav-links a").forEach(link => {
     document.querySelector(".nav-links").classList.remove("open");
   });
 });
+
+// ========== COOKIE CONSENT ==========
+function acceptCookies() {
+  localStorage.setItem("peptidelab_cookies", "accepted");
+  document.getElementById("cookie-banner").classList.add("hidden");
+}
+function declineCookies() {
+  localStorage.setItem("peptidelab_cookies", "declined");
+  document.getElementById("cookie-banner").classList.add("hidden");
+}
+// Check if already answered
+const cookieChoice = localStorage.getItem("peptidelab_cookies");
+if (cookieChoice) {
+  const banner = document.getElementById("cookie-banner");
+  if (banner) banner.classList.add("hidden");
+}
 
 // ========== BACK TO TOP ==========
 const backToTopBtn = document.getElementById("back-to-top");
