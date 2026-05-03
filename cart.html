@@ -183,12 +183,13 @@
 
     // ========================================
     // DISCOUNT CODES — ADD YOUR OWN CODES HERE
-    // Format: "CODE": discountAmountInDollars
+    // For fixed amount:  { type: "fixed",   value: 50 }
+    // For percentage:    { type: "percent", value: 10 }
     // ========================================
     const DISCOUNT_CODES = {
-      "FREESHIP": 50,    // Free shipping — removes the $50 shipping fee
-      // "SAVE20": 20,   // $20 off — uncomment to activate
-      // "WELCOME10": 10 // $10 off — uncomment to activate
+      "FREESHIP": { type: "fixed",   value: 50 },  // Free shipping — $50 off
+      "LAUNCH10": { type: "percent", value: 10 },  // 10% off subtotal (excl. shipping)
+      // "SAVE20": { type: "fixed",  value: 20 },  // $20 off — uncomment to activate
     };
     // ========================================
 
@@ -211,6 +212,13 @@
     function updateBadge(n) {
       const b = document.getElementById("cart-badge");
       if (b) { b.textContent = n; b.style.display = n > 0 ? "inline" : "none"; }
+    }
+
+    function calcDiscount(code, subtotal) {
+      const d = DISCOUNT_CODES[code];
+      if (!d) return 0;
+      if (d.type === "percent") return parseFloat((subtotal * d.value / 100).toFixed(2));
+      return d.value;
     }
 
     function updateTotals(subtotal) {
@@ -240,10 +248,14 @@
       const msg = document.getElementById("discount-msg");
       const subtotal = getCart().reduce((s,i) => s+i.price, 0);
       if (DISCOUNT_CODES[code] !== undefined) {
-        appliedDiscount = DISCOUNT_CODES[code];
+        appliedDiscount = calcDiscount(code, subtotal);
         appliedCode = code;
+        const d = DISCOUNT_CODES[code];
+        const label = d.type === "percent"
+          ? `✓ Code applied! ${d.value}% off — saving $${appliedDiscount.toFixed(2)}`
+          : `✓ Code applied! -$${appliedDiscount.toFixed(2)} discount`;
         msg.style.color = "var(--accent2)";
-        msg.textContent = `✓ Code applied! -$${appliedDiscount} discount`;
+        msg.textContent = label;
       } else {
         appliedDiscount = 0;
         appliedCode = "";
