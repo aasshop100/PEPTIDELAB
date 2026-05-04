@@ -1184,10 +1184,13 @@ function renderProducts(filter = "all") {
   const filtered = filter === "all" ? products : products.filter(p => p.category === filter);
 
   grid.innerHTML = filtered.map((p, i) => {
-    const hasVariants = p.variants && p.variants.length > 0;
+    const hasVariants = p.variants && p.variants.length > 1;
+    const singleVariant = p.variants && p.variants.length === 1;
     const priceDisplay = hasVariants
       ? `<span class="price-range">$${p.variants[0].price} <span class="price-dash">—</span> $${p.variants[p.variants.length-1].price}</span>`
-      : `$${p.price} <small>/ ${p.size}</small>`;
+      : singleVariant
+        ? `$${p.variants[0].price} <small>/ ${p.variants[0].size}</small>`
+        : `$${p.price} <small>/ ${p.size}</small>`;
 
     const variantDropdown = hasVariants ? `
       <select class="variant-select" id="variant-${p.id}" onchange="updateVariantPrice(${p.id})">
@@ -1275,10 +1278,13 @@ function clearSearch() {
 function renderFilteredProducts(filtered) {
   const grid = document.getElementById("product-grid");
   grid.innerHTML = filtered.map((p, i) => {
-    const hasVariants = p.variants && p.variants.length > 0;
+    const hasVariants = p.variants && p.variants.length > 1;
+    const singleVariant = p.variants && p.variants.length === 1;
     const priceDisplay = hasVariants
       ? `<span class="price-range">$${p.variants[0].price} <span class="price-dash">—</span> $${p.variants[p.variants.length-1].price}</span>`
-      : `$${p.price} <small>/ ${p.size}</small>`;
+      : singleVariant
+        ? `$${p.variants[0].price} <small>/ ${p.variants[0].size}</small>`
+        : `$${p.price} <small>/ ${p.size}</small>`;
     const variantDropdown = hasVariants ? `
       <select class="variant-select" id="variant-${p.id}" onchange="updateVariantPrice(${p.id})">
         <option value="" disabled selected>Select dose</option>
@@ -1340,14 +1346,20 @@ function addToCart(id, e) {
 
   let cartItem;
   if (product.variants) {
-    const select = document.getElementById(`variant-${id}`);
-    if (!select || select.value === "") {
-      showToast("Please select a size first! 👆");
-      if (select) { select.style.borderColor = "#ff5555"; setTimeout(() => select.style.borderColor = "", 2000); }
-      return;
+    if (product.variants.length === 1) {
+      // Single variant — add directly, no dropdown needed
+      const variant = product.variants[0];
+      cartItem = { id: product.id, name: product.name, icon: product.icon, image: product.image, category: product.category, description: product.description, price: variant.price, size: variant.size };
+    } else {
+      const select = document.getElementById(`variant-${id}`);
+      if (!select || select.value === "") {
+        showToast("Please select a size first! 👆");
+        if (select) { select.style.borderColor = "#ff5555"; setTimeout(() => select.style.borderColor = "", 2000); }
+        return;
+      }
+      const variant = product.variants[parseInt(select.value)];
+      cartItem = { id: product.id, name: product.name, icon: product.icon, image: product.image, category: product.category, description: product.description, price: variant.price, size: variant.size };
     }
-    const variant = product.variants[parseInt(select.value)];
-    cartItem = { id: product.id, name: product.name, icon: product.icon, image: product.image, category: product.category, description: product.description, price: variant.price, size: variant.size };
   } else {
     cartItem = product;
   }
