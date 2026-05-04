@@ -335,16 +335,6 @@ const products = [
     ]
   },
   {
-    id: 27,
-    name: "IGF-1 DES",
-    category: "growth",
-    icon: "💪",
-    image: "image/igfdes.png",
-    description: "Truncated IGF-1 analogue with N-terminal deletion. Potent local tissue growth with reduced binding protein interference and enhanced receptor activation.",
-    price: 165,
-    size: "2mg × 10 vials"
-  },
-  {
     id: 28,
     name: "SS-31 (Elamipretide)",
     category: "longevity",
@@ -428,16 +418,6 @@ const products = [
     ]
   },
   {
-    id: 35,
-    name: "Melatonin",
-    category: "cognitive",
-    icon: "🌙",
-    description: "Pineal gland hormone regulating circadian rhythm and sleep-wake cycles. Potent antioxidant with neuroprotective, anti-inflammatory, and immune-modulating properties studied in aging research.",
-    image: "image/melatonin.png",
-    price: 169,
-    size: "10mg × 10 vials"
-  },
-  {
     id: 36,
     name: "MT-2 (Melanotan 2)",
     category: "longevity",
@@ -504,16 +484,6 @@ const products = [
     ]
   },
   {
-    id: 42,
-    name: "Cagrilintide 5mg + Semaglutide 5mg",
-    category: "longevity",
-    icon: "💉",
-    description: "Higher-dose amylin/GLP-1 combination stack. Maximizes dual receptor engagement for enhanced metabolic optimization, sustained satiety signaling, and comprehensive cardiometabolic research.",
-    image: "image/cagrilintide5mgsemaglutide5mg.png",
-    price: 410,
-    size: "10mg × 10 vials"
-  },
-  {
     id: 43,
     name: "LC120",
     category: "longevity",
@@ -523,16 +493,6 @@ const products = [
     variants: [
       { size: "10ml × 10 vials", price: 100 },
     ]
-  },
-  {
-    id: 44,
-    name: "LC216 (with B12)",
-    category: "longevity",
-    icon: "💧",
-    description: "Enhanced phosphatidylcholine lipolytic complex fortified with Vitamin B12. Combines targeted fat metabolism with neurological support for comprehensive lipolysis and energy research.",
-    image: "image/lc216.png",
-    price: 165,
-    size: "10ml × 10 vials"
   },
   {
     id: 45,
@@ -545,16 +505,6 @@ const products = [
       { size: "10mg × 10 vials", price: 95 },
       { size: "16mg × 10 vials", price: 140 },
     ]
-  },
-  {
-    id: 46,
-    name: "Cerebrolysin",
-    category: "cognitive",
-    icon: "🧠",
-    description: "Porcine brain-derived neurotrophic peptide mixture. Mimics endogenous neurotrophic factors to support neuronal survival, synaptic plasticity, and cognitive function in neuroprotection research.",
-    image: "image/cerebrolysin.png",
-    price: 130,
-    size: "60mg × 10 vials"
   },
   {
     id: 47,
