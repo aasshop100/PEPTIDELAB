@@ -651,7 +651,7 @@ const products = [
     name: "FOXO4-DRI",
     category: "longevity",
     icon: "🧬",
-    image: "image/fox04.png",
+    image: "image/fox04dri.jpg",
     description: "D-retro-inverso FOXO4 peptide designed to selectively eliminate senescent cells. Disrupts FOXO4-p53 interaction triggering apoptosis in senescent cells — studied for rejuvenation and healthspan extension.",
     variants: [
       { size: "10mg × 10 vials", price: 420 },
@@ -728,6 +728,452 @@ const products = [
     description: "Injectable methylcobalamin formulation. Essential for neurological function, DNA synthesis, red blood cell formation, and homocysteine metabolism. Studied for energy support and neuroprotection.",
     variants: [
       { size: "10mg × 10 vials", price: 65 },
+    ]
+  },
+  {
+    id: 66,
+    name: "AHK-Cu",
+    category: "longevity",
+    icon: "✨",
+    image: "image/ahkcu.jpg",
+    description: "Copper tripeptide fragment of alpha-1 antitrypsin. Stimulates collagen and glycosaminoglycan synthesis, promotes wound healing, and exhibits potent anti-inflammatory and tissue remodeling properties.",
+    variants: [
+      { size: "50mg × 10 vials", price: 75 },
+    ]
+  },
+  {
+    id: 67,
+    name: "BPC-157 + TB-500 (15mg each)",
+    category: "recovery",
+    icon: "🩹",
+    image: "image/bpc15mgtb15mg.jpg",
+    description: "High-dose synergistic recovery stack of BPC-157 and TB-500. Enhanced tissue protection, angiogenesis, and cellular repair for comprehensive systemic recovery research protocols.",
+    variants: [
+      { size: "30mg × 10 vials", price: 250 },
+    ]
+  },
+  {
+    id: 68,
+    name: "HGH Fragment 176-191",
+    category: "longevity",
+    icon: "🔥",
+    image: "image/hghfragment176191.jpg",
+    description: "C-terminal fragment of HGH specifically isolated for lipolytic activity. Stimulates fat breakdown and inhibits lipogenesis without affecting IGF-1 or blood sugar levels.",
+    variants: [
+      { size: "1mg × 10 vials",  price: 65 },
+      { size: "2mg × 10 vials",  price: 80 },
+      { size: "5mg × 10 vials",  price: 120 },
+      { size: "10mg × 10 vials", price: 180 },
+      { size: "12mg × 10 vials", price: 200 },
+      { size: "15mg × 10 vials", price: 230 },
+    ]
+  },
+  {
+    id: 69,
+    name: "Tesamorelin + Ipamorelin",
+    category: "growth",
+    icon: "💪",
+    image: "image/tesamoprelin10mgipamorelin5mg.jpg",
+    description: "Synergistic GHRH/GHRP combination stack. Tesamorelin stimulates sustained GH release while Ipamorelin amplifies the pulse — together delivering superior IGF-1 elevation and visceral fat reduction.",
+    variants: [
+      { size: "15mg × 10 vials", price: 270 },
+    ]
+  },
+  {
+    id: 70,
+    name: "Triptorelin Acetate",
+    category: "growth",
+    icon: "⚡",
+    image: "image/triptorelinacetate.jpg",
+    description: "GnRH superagonist with potent LH/FSH stimulation. Used in research for HPG axis restart, testosterone recovery, and hormonal restoration protocols.",
+    variants: [
+      { size: "2mg × 10 vials", price: 80 },
+    ]
+  },
+  {
+    id: 71,
+    name: "GDF-8 (Myostatin)",
+    category: "growth",
+    icon: "💪",
+    image: "image/gdf8.jpg",
+    description: "Growth Differentiation Factor-8 inhibitor research compound. Studied for its role in muscle mass regulation, satellite cell activation, and skeletal muscle hypertrophy pathways.",
+    variants: [
+      { size: "1mg × 10 vials", price: 200 },
+      { size: "5mg × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 72,
+    name: "MGF (Mechano Growth Factor)",
+    category: "growth",
+    icon: "💪",
+    image: "image/mgf.jpg",
+    description: "Splice variant of IGF-1 released in response to mechanical stress. Activates muscle satellite cells and stimulates local tissue repair — studied for muscle hypertrophy and injury recovery.",
+    variants: [
+      { size: "2mg × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 73,
+    name: "PEG-MGF",
+    category: "growth",
+    icon: "💪",
+    image: "image/pegmgf.jpg",
+    description: "PEGylated Mechano Growth Factor with extended half-life. Systemic muscle repair and anabolic signaling via satellite cell activation — superior bioavailability compared to standard MGF.",
+    variants: [
+      { size: "2mg × 10 vials", price: 90 },
+    ]
+  },
+  {
+    id: 74,
+    name: "L-Carnitine",
+    category: "longevity",
+    icon: "🔋",
+    image: "image/lcarnitine.jpg",
+    description: "Essential cofactor for mitochondrial fatty acid transport. Enhances beta-oxidation, reduces fatigue, supports cardiac function, and improves exercise performance in metabolic research.",
+    variants: [
+      { size: "400mg × 10 vials",  price: 80 },
+      { size: "600mg × 10 vials",  price: 100 },
+      { size: "1200mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 75,
+    name: "Retatrutide + Tirzepatide",
+    category: "longevity",
+    icon: "💉",
+    image: "image/retatrutide20mgtirzepatide40mg.jpg",
+    description: "Triple/Dual agonist combination stack. Retatrutide's GIP/GLP-1/Glucagon triple action combined with Tirzepatide's GIP/GLP-1 dual agonism for maximum metabolic optimization research.",
+    variants: [
+      { size: "60mg × 10 vials", price: 300 },
+    ]
+  },
+  {
+    id: 76,
+    name: "Dulaglutide",
+    category: "longevity",
+    icon: "💉",
+    image: "image/dulaglutide.jpg",
+    description: "Long-acting GLP-1 receptor agonist with Fc fusion for extended half-life. Weekly dosing protocol studied for type 2 diabetes management, weight reduction, and cardiovascular risk reduction.",
+    variants: [
+      { size: "5mg × 10 vials",  price: 150 },
+      { size: "10mg × 10 vials", price: 250 },
+    ]
+  },
+  {
+    id: 77,
+    name: "EPO (Erythropoietin)",
+    category: "recovery",
+    icon: "🩸",
+    image: "image/epo.jpg",
+    description: "Endogenous glycoprotein hormone regulating red blood cell production. Studied for erythropoiesis stimulation, tissue oxygenation enhancement, and neuroprotective applications in research settings.",
+    variants: [
+      { size: "3000IU × 10 vials", price: 100 },
+    ]
+  },
+  {
+    id: 78,
+    name: "Frag 17-23",
+    category: "longevity",
+    icon: "🔬",
+    image: "image/frag1723.jpg",
+    description: "N-terminal fragment of GH with selective receptor binding. Studied for anabolic signaling, tissue repair promotion, and growth hormone pathway modulation without full GH side effects.",
+    variants: [
+      { size: "10mg × 10 vials", price: 100 },
+    ]
+  },
+  {
+    id: 79,
+    name: "GHRP-2",
+    category: "growth",
+    icon: "💪",
+    image: "image/ghrp2.jpg",
+    description: "Second-generation growth hormone releasing peptide. Potent ghrelin receptor agonist with strong GH pulse stimulation, appetite enhancement, and IGF-1 elevation for growth research.",
+    variants: [
+      { size: "5mg × 10 vials",  price: 60 },
+      { size: "10mg × 10 vials", price: 75 },
+      { size: "15mg × 10 vials", price: 95 },
+    ]
+  },
+  {
+    id: 80,
+    name: "Gonadorelin Acetate",
+    category: "growth",
+    icon: "⚡",
+    image: "image/gonadorelinacetate.jpg",
+    description: "Synthetic GnRH decapeptide stimulating pituitary LH and FSH release. Studied for HPG axis support, testicular function maintenance, and fertility preservation in hormonal research.",
+    variants: [
+      { size: "2mg × 10 vials", price: 65 },
+      { size: "5mg × 10 vials", price: 85 },
+    ]
+  },
+  {
+    id: 81,
+    name: "Humanin",
+    category: "longevity",
+    icon: "🧬",
+    image: "image/humanin.jpg",
+    description: "Mitochondria-derived cytoprotective peptide. Inhibits neuronal apoptosis, protects against amyloid-beta toxicity, enhances insulin sensitivity, and extends lifespan in multiple research models.",
+    variants: [
+      { size: "10mg × 10 vials", price: 240 },
+    ]
+  },
+  {
+    id: 82,
+    name: "Adamax",
+    category: "cognitive",
+    icon: "🧠",
+    image: "image/adamax.jpg",
+    description: "Novel neuropeptide analogue with enhanced cognitive and neuroprotective properties. Studied for memory consolidation, neuronal resilience, and cognitive performance under stress conditions.",
+    variants: [
+      { size: "5mg × 10 vials",  price: 95 },
+      { size: "10mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 83,
+    name: "ACE-031",
+    category: "growth",
+    icon: "💪",
+    image: "image/ace031.jpg",
+    description: "Activin receptor type IIB fusion protein blocking myostatin and related ligands. Studied for profound muscle mass increases, bone density improvement, and neuromuscular disease research.",
+    variants: [
+      { size: "1mg × 10 vials", price: 68 },
+    ]
+  },
+  {
+    id: 84,
+    name: "ACTH 1-39",
+    category: "cognitive",
+    icon: "🧠",
+    image: "image/acth139.jpg",
+    description: "Full-length adrenocorticotropic hormone. Stimulates cortisol synthesis, modulates neuroinflammation, and supports adrenal function — studied for stress response and neuroprotection research.",
+    variants: [
+      { size: "5mg × 10 vials",  price: 100 },
+      { size: "10mg × 10 vials", price: 210 },
+    ]
+  },
+  {
+    id: 85,
+    name: "B7-33",
+    category: "recovery",
+    icon: "❤️",
+    image: "image/b733.jpg",
+    description: "Single-chain relaxin-2 mimetic targeting RXFP1 receptors. Studied for anti-fibrotic effects in cardiac, pulmonary, and renal tissue — without the systemic vasodilation of full relaxin.",
+    variants: [
+      { size: "2mg × 10 vials", price: 80 },
+    ]
+  },
+  {
+    id: 86,
+    name: "Bronchogen",
+    category: "recovery",
+    icon: "🫁",
+    image: "image/bronchogen.jpg",
+    description: "Tetrapeptide bioregulator for bronchial and lung tissue. Studied for respiratory epithelial cell regulation, pulmonary function support, and bronchial tissue regeneration.",
+    variants: [
+      { size: "20mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 87,
+    name: "Cardiogen",
+    category: "recovery",
+    icon: "❤️",
+    image: "image/cardiogen.jpg",
+    description: "Tetrapeptide bioregulator for cardiac tissue. Studied for myocardial cell regulation, heart muscle function support, and cardiovascular tissue regeneration in aging research.",
+    variants: [
+      { size: "20mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 88,
+    name: "Cartalax",
+    category: "recovery",
+    icon: "🦴",
+    image: "image/cartalax.jpg",
+    description: "Tetrapeptide bioregulator for cartilage and connective tissue. Studied for chondrocyte regulation, joint tissue repair, and cartilage regeneration in musculoskeletal research.",
+    variants: [
+      { size: "20mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 89,
+    name: "Cortagen",
+    category: "cognitive",
+    icon: "🧠",
+    image: "image/cortagen.jpg",
+    description: "Tetrapeptide bioregulator for nervous system tissue. Studied for neuronal cell regulation, cortical function support, and neuroprotection in age-related cognitive decline research.",
+    variants: [
+      { size: "20mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 90,
+    name: "Crystagen",
+    category: "recovery",
+    icon: "👁️",
+    image: "image/crystagen.jpg",
+    description: "Tetrapeptide bioregulator for ocular tissue. Studied for retinal cell regulation, lens crystallin support, and ocular tissue regeneration in age-related vision research.",
+    variants: [
+      { size: "20mg × 10 vials", price: 110 },
+    ]
+  },
+  {
+    id: 91,
+    name: "Liraglutide",
+    category: "longevity",
+    icon: "💉",
+    image: "image/liraglutide.jpg",
+    description: "First-generation GLP-1 receptor agonist with fatty acid modification for extended half-life. Studied for glycemic control, cardiovascular risk reduction, weight management, and neuroprotection.",
+    variants: [
+      { size: "5mg × 10 vials",  price: 115 },
+      { size: "10mg × 10 vials", price: 180 },
+      { size: "30mg × 10 vials", price: 370 },
+    ]
+  },
+  {
+    id: 92,
+    name: "FTPP Adipotide",
+    category: "longevity",
+    icon: "🔥",
+    image: "image/ftppadipotide.jpg",
+    description: "Fat tissue-targeted proapoptotic peptide. Selectively disrupts vasculature of white adipose tissue — studied for targeted fat reduction and obesity research applications.",
+    variants: [
+      { size: "5mg × 10 vials", price: 145 },
+    ]
+  },
+  {
+    id: 93,
+    name: "Matrixyl",
+    category: "longevity",
+    icon: "✨",
+    image: "image/matrixyl.jpg",
+    description: "Palmitoyl pentapeptide-4 collagen-stimulating cosmetic peptide. Studied for dermal matrix regeneration, wrinkle reduction, and skin elasticity improvement through TGF-β pathway activation.",
+    variants: [
+      { size: "10mg × 10 vials", price: 80 },
+    ]
+  },
+  {
+    id: 94,
+    name: "Orexin B",
+    category: "cognitive",
+    icon: "⚡",
+    image: "image/orexinb.jpg",
+    description: "Hypothalamic neuropeptide regulating arousal, wakefulness, and appetite. Studied for narcolepsy, sleep disorders, metabolic regulation, and reward pathway modulation research.",
+    variants: [
+      { size: "10mg × 10 vials", price: 260 },
+    ]
+  },
+  {
+    id: 95,
+    name: "Orexin A",
+    category: "cognitive",
+    icon: "⚡",
+    image: "image/orexina.jpg",
+    description: "Primary hypothalamic arousal neuropeptide with higher OX1R/OX2R affinity than Orexin B. Studied for wakefulness promotion, cognitive enhancement, and energy homeostasis regulation.",
+    variants: [
+      { size: "10mg × 10 vials", price: 470 },
+    ]
+  },
+  {
+    id: 96,
+    name: "P21",
+    category: "cognitive",
+    icon: "🧠",
+    image: "image/p21p021.jpg",
+    description: "CNTF-derived peptide with potent neurotrophic activity. Studied for neurogenesis promotion, synaptic plasticity enhancement, and cognitive improvement in neurodegeneration research models.",
+    variants: [
+      { size: "5mg × 10 vials", price: 305 },
+    ]
+  },
+  {
+    id: 97,
+    name: "PE-22-28",
+    category: "cognitive",
+    icon: "🧠",
+    image: "image/pe2228.jpg",
+    description: "Spadin analogue targeting TREK-1 potassium channels. Studied for rapid antidepressant effects, neurogenesis, and cognitive enhancement via BDNF pathway activation.",
+    variants: [
+      { size: "10mg × 10 vials", price: 120 },
+    ]
+  },
+  {
+    id: 98,
+    name: "Acetic Acid Water",
+    category: "recovery",
+    icon: "💧",
+    image: "image/aceticacidwater.jpg",
+    description: "Dilute acetic acid solution used as reconstitution solvent for peptides resistant to BAC water. Essential for IGF-1, GDF-8, and other acid-stable research peptides.",
+    variants: [
+      { size: "3ml × 10 vials", price: 35 },
+    ]
+  },
+  {
+    id: 99,
+    name: "LC526 (Lipo C Plus)",
+    category: "longevity",
+    icon: "💧",
+    image: "image/lc526.jpg",
+    description: "Advanced fat-burning blend combining L-Carnitine, Methionine, Inositol, Choline, B6, B12, and NADH. Comprehensive lipolytic and energy metabolism support for body composition research.",
+    variants: [
+      { size: "10ml × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 100,
+    name: "SHB (Super Human Blend)",
+    category: "recovery",
+    icon: "💪",
+    image: "image/shb.jpg",
+    description: "Comprehensive amino acid complex combining L-Arginine, L-Ornithine, L-Citrulline, L-Lysine, L-Glutamine, L-Proline, L-Taurine, L-Carnitine, and NAC for complete performance support.",
+    variants: [
+      { size: "10ml × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 101,
+    name: "RP226 (Relaxation PM)",
+    category: "cognitive",
+    icon: "🌙",
+    image: "image/rp226.jpg",
+    description: "Relaxation and sleep support blend containing GABA, Methionine, Arginine, and Glutamine. Studied for anxiolytic effects, sleep quality improvement, and nighttime recovery optimization.",
+    variants: [
+      { size: "10ml × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 102,
+    name: "HHB (Hair Skin Nails Blend)",
+    category: "longevity",
+    icon: "✨",
+    image: "image/hhb.jpg",
+    description: "Comprehensive beauty blend with Niacinamide, Thiamine HCL, Pantothenic Acid, Choline, Inositol, Niacin, Biotin, and Folic Acid for hair, skin, and nail health research.",
+    variants: [
+      { size: "10ml × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 103,
+    name: "Lipo C with B12 Plus",
+    category: "longevity",
+    icon: "💧",
+    image: "image/lipowithb12plus.jpg",
+    description: "Enhanced lipolytic complex with L-Carnitine, L-Arginine, Methionine, Inositol, Choline, B6, B5, and B12. Complete fat metabolism and energy support blend for body composition research.",
+    variants: [
+      { size: "10ml × 10 vials", price: 105 },
+    ]
+  },
+  {
+    id: 104,
+    name: "FOXO4",
+    category: "longevity",
+    icon: "🧬",
+    image: "image/fox04.jpg",
+    description: "FOXO4 transcription factor peptide fragment. Studied for senescent cell regulation, longevity pathway modulation, and cellular stress response in aging and rejuvenation research.",
+    variants: [
+      { size: "2mg × 10 vials",  price: 110 },
+      { size: "10mg × 10 vials", price: 320 },
     ]
   },
 ];
