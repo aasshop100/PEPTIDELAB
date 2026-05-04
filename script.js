@@ -1353,7 +1353,7 @@ function addToCart(id, e) {
     } else {
       const select = document.getElementById(`variant-${id}`);
       if (!select || select.value === "") {
-        showToast("Please select a size first! 👆");
+        showToast("Please select a dose first! 👆");
         if (select) { select.style.borderColor = "#ff5555"; setTimeout(() => select.style.borderColor = "", 2000); }
         return;
       }
