@@ -355,22 +355,37 @@
       const payment      = document.getElementById("payment_method").value;
       const notes        = document.getElementById("notes").value;
 
+      const shippingValue = appliedDiscount >= SHIPPING_FEE ? 0 : SHIPPING_FEE;
+
+      // Build HTML table rows for items
+      const grouped = groupCart(cart);
+      const itemsTableHtml = grouped.map(item => `
+        <tr>
+          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;border-bottom:1px solid rgba(0,200,255,0.08);">${item.name} (${item.size})</td>
+          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;text-align:center;border-bottom:1px solid rgba(0,200,255,0.08);">${item.qty}</td>
+          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;text-align:right;border-bottom:1px solid rgba(0,200,255,0.08);">$${item.price.toFixed(2)}</td>
+          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;text-align:right;border-bottom:1px solid rgba(0,200,255,0.08);">$${(item.price * item.qty).toFixed(2)}</td>
+        </tr>
+      `).join("");
+
       const templateParams = {
-        customer_name:    `${first_name} ${last_name}`,
-        customer_email:   email,
-        customer_phone:   phone || "Not provided",
-        customer_address: address,
-        customer_city:    city,
-        customer_state:   state,
-        customer_zip:     zip,
-        customer_country: country,
-        payment_method:   payment,
-        order_summary:    lines.join("\n"),
-        subtotal:         "$" + subtotal.toFixed(2),
-        shipping:         appliedDiscount >= SHIPPING_FEE ? "$0.00 (Free - code: " + appliedCode + ")" : "$" + SHIPPING_FEE.toFixed(2),
-        discount:         appliedDiscount > 0 ? "-$" + appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "None",
-        total:            "$" + total.toFixed(2),
-        notes:            notes || "None",
+        customer_name:      `${first_name} ${last_name}`,
+        customer_email:     email,
+        customer_phone:     phone || "Not provided",
+        customer_address:   address,
+        customer_city:      city,
+        customer_state:     state,
+        customer_zip:       zip,
+        customer_country:   country,
+        full_address:       `${address}, ${city}, ${state} ${zip}, ${country}`,
+        payment_method:     payment,
+        order_summary:      lines.join("\n"),
+        items_table_html:   itemsTableHtml,
+        subtotal:           subtotal.toFixed(2),
+        shipping:           shippingValue === 0 ? "0.00 (Free - code: " + appliedCode + ")" : SHIPPING_FEE.toFixed(2),
+        discount:           appliedDiscount > 0 ? appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "0.00",
+        total:              total.toFixed(2),
+        notes:              notes || "None",
       };
 
       try {
