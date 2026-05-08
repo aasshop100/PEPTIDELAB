@@ -107,10 +107,11 @@
             </div>
             <div class="form-group">
               <label>Preferred Payment Method *</label>
-              <select id="payment_method" name="payment_method" required>
+              <select id="payment_method" name="payment_method" required onchange="handlePaymentChange()">
                 <option value="" disabled selected>Select payment method</option>
                 <option value="Crypto (USDT - TRON TRC20)">Crypto — USDT (TRON TRC20)</option>
-                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                <option value="Bank Transfer">Bank Transfer (+5% fee)</option>
               </select>
             </div>
             <div class="form-group">
@@ -139,8 +140,12 @@
             <span id="summary-subtotal">$0.00</span>
           </div>
           <div class="summary-row">
-            <span>Shipping (FedEx)</span>
+            <span>Shipping</span>
             <span id="summary-shipping">$50.00</span>
+          </div>
+          <div class="summary-row" id="bank-fee-row" style="display:none;">
+            <span style="color:#ffc850;">Bank Transfer Fee (5%)</span>
+            <span id="bank-fee-amount" style="color:#ffc850;">$0.00</span>
           </div>
           <div class="summary-row" id="discount-row" style="display:none;">
             <span style="color:var(--accent2);">Discount</span>
@@ -167,12 +172,13 @@
             <p>You'll receive an email within <strong>24 hours</strong> with payment instructions.</p>
             <div class="pay-badges">
               <span class="pay-badge">USDT TRC20</span>
+              <span class="pay-badge">Bitcoin (BTC)</span>
               <span class="pay-badge">Bank Transfer</span>
             </div>
           </div>
           <div class="payment-info-box">
             <p class="info-box-title">✈️ Shipping</p>
-            <p>FedEx · China → USA · <strong>15–20 business days</strong></p>
+            <p>Shipping Info · <strong>15–20 business days</strong></p>
           </div>
         </div>
       </div>
@@ -205,6 +211,15 @@
     const SHIPPING_FEE = 50;
     let appliedDiscount = 0;
     let appliedCode = "";
+    let bankFee = 0;
+
+    function handlePaymentChange() {
+      const method = document.getElementById("payment_method").value;
+      const cart = getCart();
+      const subtotal = cart.reduce((s,i) => s+i.price, 0);
+      bankFee = method === "Bank Transfer" ? parseFloat((subtotal * 0.05).toFixed(2)) : 0;
+      updateTotals(subtotal);
+    }
 
     function getCart() { return JSON.parse(localStorage.getItem("peptidelab_cart") || "[]"); }
     function saveCart(c) { localStorage.setItem("peptidelab_cart", JSON.stringify(c)); }
@@ -231,10 +246,21 @@
     }
 
     function updateTotals(subtotal) {
-      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount);
+      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount + bankFee);
       document.getElementById("summary-subtotal").textContent = "$" + subtotal.toFixed(2);
       document.getElementById("summary-shipping").textContent = "$" + SHIPPING_FEE.toFixed(2);
       document.getElementById("summary-total").textContent = "$" + total.toFixed(2);
+
+      // Bank fee row
+      const bankFeeRow = document.getElementById("bank-fee-row");
+      const bankFeeAmount = document.getElementById("bank-fee-amount");
+      if (bankFee > 0) {
+        bankFeeRow.style.display = "flex";
+        bankFeeAmount.textContent = "+$" + bankFee.toFixed(2);
+      } else {
+        bankFeeRow.style.display = "none";
+      }
+
       const discountRow = document.getElementById("discount-row");
       if (appliedDiscount > 0) {
         discountRow.style.display = "flex";
@@ -247,7 +273,7 @@
 
     function buildOrderSummary(cart) {
       const subtotal = cart.reduce((s,i) => s+i.price, 0);
-      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount);
+      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount + bankFee);
       const lines = groupCart(cart).map(i => `${i.name} x${i.qty} (${i.size}) — $${(i.price*i.qty).toFixed(2)}`);
       return { lines, subtotal, total };
     }
@@ -384,6 +410,7 @@
         subtotal:           subtotal.toFixed(2),
         shipping:           shippingValue === 0 ? "0.00 (Free - code: " + appliedCode + ")" : SHIPPING_FEE.toFixed(2),
         discount:           appliedDiscount > 0 ? appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "0.00",
+        bank_fee:           bankFee > 0 ? "+$" + bankFee.toFixed(2) + " (5% Bank Transfer fee)" : "None",
         total:              total.toFixed(2),
         notes:              notes || "None",
       };
