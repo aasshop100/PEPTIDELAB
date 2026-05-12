@@ -1701,16 +1701,16 @@ img { max-width: 100%; }
     align-items: center;
     text-align: center;
     padding: 1rem 5% 0.5rem;
-    gap: 0.4rem;
+    gap: 0.02rem;
   }
   .hero-below .hero-actions {
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.02rem;
     width: 100%;
   }
   .hero-below .btn-primary { width: auto; text-align: center; }
-  .hero-below .hero-stats { gap: 1.5rem; justify-content: center; margin-top: 0.2rem; }
+  .hero-below .hero-stats { gap: 1.5rem; justify-content: center; margin-top: -4rem; }
   .hero-below .stat { text-align: center; }
   .hero-below .stat span { font-size: 1.5rem; }
 }
