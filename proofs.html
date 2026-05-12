@@ -256,7 +256,7 @@
       <div class="proof-card" style="animation-delay:${i * 0.1}s" onclick="openLightbox(${i})">
         <img src="${p.file}" alt="Proof of delivery ${i+1}" loading="lazy" />
         <div class="proof-card-footer">
-          <span class="proof-badge">✓ Delivered</span>
+          <span class="proof-badge">${p.label}</span>
         </div>
       </div>
     `).join("");
