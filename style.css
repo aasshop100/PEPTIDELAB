@@ -1714,3 +1714,164 @@ img { max-width: 100%; }
   .hero-below .stat { text-align: center; }
   .hero-below .stat span { font-size: 1.5rem; }
 }
+
+/* ========== FLOATING TELEGRAM BUTTON ========== */
+.tg-float {
+  position: fixed;
+  bottom: 10rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #0088cc, #00c8ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 136, 204, 0.4);
+  z-index: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: visible;
+}
+.tg-float svg {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.tg-float-label {
+  position: absolute;
+  right: calc(100% + 10px);
+  background: var(--surface);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.tg-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 36px rgba(0, 136, 204, 0.6);
+}
+.tg-float:hover .tg-float-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ========== TELEGRAM POPUP ========== */
+.tg-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.tg-popup-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.tg-popup {
+  background: var(--surface);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 200, 255, 0.08);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.4s ease;
+}
+.tg-popup-overlay.active .tg-popup {
+  transform: translateY(0) scale(1);
+}
+.tg-popup-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+.tg-popup-close:hover {
+  color: var(--text);
+  background: var(--surface2);
+}
+.tg-popup-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #0088cc, #00c8ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+  box-shadow: 0 8px 24px rgba(0, 200, 255, 0.3);
+}
+.tg-popup-icon svg {
+  width: 34px;
+  height: 34px;
+  color: #fff;
+}
+.tg-popup-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.tg-popup-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 0.9rem;
+  line-height: 1.1;
+}
+.tg-popup-body {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.tg-popup-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+}
+.tg-popup-note {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  opacity: 0.65;
+}
+@media (max-width: 480px) {
+  .tg-popup { padding: 2rem 1.5rem; }
+  .tg-popup-title { font-size: 1.6rem; }
+  .tg-float { bottom: 10rem; right: 1.2rem; width: 50px; height: 50px; }
+}
