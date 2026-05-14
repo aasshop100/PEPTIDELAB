@@ -1720,22 +1720,23 @@ img { max-width: 100%; }
   position: fixed;
   bottom: 10rem;
   right: 2rem;
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg, #0088cc, #00c8ff);
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--accent);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(0, 136, 204, 0.4);
   z-index: 500;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   overflow: visible;
 }
 .tg-float svg {
-  width: 26px;
-  height: 26px;
-  color: #fff;
+  width: 22px;
+  height: 22px;
+  color: currentColor;
   flex-shrink: 0;
 }
 .tg-float-label {
@@ -1755,8 +1756,10 @@ img { max-width: 100%; }
   pointer-events: none;
 }
 .tg-float:hover {
-  transform: scale(1.1);
-  box-shadow: 0 12px 36px rgba(0, 136, 204, 0.6);
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  transform: translateY(-3px);
 }
 .tg-float:hover .tg-float-label {
   opacity: 1;
@@ -1873,5 +1876,5 @@ img { max-width: 100%; }
 @media (max-width: 480px) {
   .tg-popup { padding: 2rem 1.5rem; }
   .tg-popup-title { font-size: 1.6rem; }
-  .tg-float { bottom: 10rem; right: 1.2rem; width: 50px; height: 50px; }
+  .tg-float { bottom: 10rem; right: 1.2rem; }
 }
