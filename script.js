@@ -5,7 +5,7 @@ const products = [
     name: "BPC-157",
     category: "recovery",
     icon: "🩹",
-    image: "image/bpc157.png",
+    image: "image/bpc157.jpg",
     description: "Body Protection Compound. Widely researched for its exceptional tissue repair and gut healing properties.",
     popular: true,
     variants: [
@@ -36,7 +36,7 @@ const products = [
     name: "Tirzepatide",
     category: "longevity",
     icon: "💉",
-    image: "image/tirzepatide.png",
+    image: "image/tirzepatide.jpg",
     description: "Dual GIP/GLP-1 receptor agonist. Superior metabolic optimization with enhanced glycemic control, substantial weight reduction, and emerging cardiovascular and neuroprotective benefits.",
     popular: true,
     variants: [
@@ -56,7 +56,7 @@ const products = [
     name: "Retatrutide",
     category: "longevity",
     icon: "💉",
-    image: "image/retatrutide.png",
+    image: "image/retatrutide.jpg",
     description: "Triple GIP/GLP-1/Glucagon receptor agonist. Next-generation metabolic optimizer delivering unprecedented weight reduction, enhanced energy expenditure, and comprehensive cardiometabolic protection.",
     popular: true,
     variants: [
@@ -93,7 +93,7 @@ const products = [
     name: "GHK-Cu",
     category: "longevity",
     icon: "✨",
-    image: "image/ghkcu.png",
+    image: "image/ghkcu.jpg",
     description: "Copper peptide tripeptide complex. Promotes collagen synthesis, wound healing, and anti-aging skin regeneration.",
     variants: [
       { size: "50mg × 10 vials",  price: 55 },
@@ -105,7 +105,7 @@ const products = [
     name: "Glutathione",
     category: "longevity",
     icon: "🛡️",
-    image: "image/glutathione.png",
+    image: "image/glutathione.jpg",
     description: "Master antioxidant tripeptide. Central to cellular detoxification, immune function, and redox balance. Declines with age; supplementation supports systemic resilience.",
     variants: [
       { size: "400mg × 10 vials", price: 68 },
@@ -117,7 +117,7 @@ const products = [
     name: "Cagrilintide",
     category: "longevity",
     icon: "💉",
-    image: "image/cagrilintide.png",
+    image: "image/cagrilintide.jpg",
     description: "Long-acting amylin analogue with C16 fatty acyl modification. Enhances satiety signaling, slows gastric emptying, and complements GLP-1 therapy for superior weight management.",
     variants: [
       { size: "5mg × 10 vials",  price: 140 },
@@ -129,7 +129,7 @@ const products = [
     name: "Snap-8",
     category: "longevity",
     icon: "✨",
-    image: "image/snap8.png",
+    image: "image/snap8.jpg",
     description: "Botulinum toxin-like octapeptide. Reduces neuronal exocytosis of acetylcholine, softening expression lines and wrinkles without paralysis. Topical and injectable cosmetic longevity.",
     variants: [
       { size: "10mg × 10 vials",  price: 70 },
@@ -141,7 +141,7 @@ const products = [
     name: "Semax",
     category: "cognitive",
     icon: "⚡",
-    image: "image/semax.png",
+    image: "image/semax.jpg",
     description: "ACTH(4-7) analogue with potent nootropic effects. Enhances BDNF and cognitive performance under research conditions.",
     popular: true,
     variants: [
@@ -154,7 +154,7 @@ const products = [
     name: "Selank",
     category: "cognitive",
     icon: "🧠",
-    image: "image/selank.png",
+    image: "image/selank.jpg",
     description: "Anxiolytic nootropic peptide derived from tuftsin. Research shows improved memory, focus, and stress modulation.",
     variants: [
       { size: "5mg × 10 vials",  price: 70 },
@@ -166,7 +166,7 @@ const products = [
     name: "KPV",
     category: "recovery",
     icon: "🩹",
-    image: "image/kpv.png",
+    image: "image/kpv.jpg",
     description: "α-MSH-derived anti-inflammatory tripeptide. Potent modulator of immune response, gut barrier integrity, and wound healing without melanotropic side effects.",
     variants: [
       { size: "5mg × 10 vials",  price: 70 },
@@ -189,7 +189,7 @@ const products = [
     name: "Tesamorelin",
     category: "growth",
     icon: "💪",
-    image: "image/tesamorelin.png",
+    image: "image/tesamorelin.jpg",
     description: "GHRH analogue with trans-3-hexenoic acid modification. Selectively stimulates endogenous GH secretion with proven efficacy in visceral adipose reduction and IGF-1 elevation.",
     variants: [
       { size: "2mg × 10 vials",  price: 70 },
@@ -203,7 +203,7 @@ const products = [
     name: "Ipamorelin",
     category: "growth",
     icon: "💪",
-    image: "image/ipamorelin.png",
+    image: "image/ipamorelin.jpg",
     description: "Selective growth hormone secretagogue. Stimulates GH release with minimal cortisol or prolactin elevation.",
     variants: [
       { size: "2mg × 10 vials",  price: 50 },
@@ -230,7 +230,7 @@ const products = [
     name: "SLU-PP-332",
     category: "longevity",
     icon: "⚡",
-    image: "image/slupp322.png",
+    image: "image/slupp322.jpg",
     description: "Pan-ERR agonist small molecule. Amplifies oxidative metabolism, mitochondrial biogenesis, and exercise capacity by activating estrogen-related receptor pathways.",
     variants: [
       { size: "5mg × 10 vials", price: 90 },
@@ -241,7 +241,7 @@ const products = [
     name: "Epithalon",
     category: "longevity",
     icon: "⏳",
-    image: "image/epithalon.png",
+    image: "image/epithalon.jpg",
     description: "Telomerase-activating tetrapeptide. Studied for its role in extending telomere length and promoting cellular longevity.",
     variants: [
       { size: "50mg × 10 vials", price: 170 },
@@ -327,7 +327,7 @@ const products = [
     name: "GHRP-6 Acetate",
     category: "growth",
     icon: "🍽️",
-    image: "image/ghrp6acetate.png",
+    image: "image/ghrp6acetate.jpg",
     description: "Ghrelin receptor agonist hexapeptide. Potent GH secretagogue with pronounced appetite stimulation, supporting bulking phases and growth hormone pulsatility.",
     variants: [
       { size: "5mg × 10 vials",  price: 60 },
@@ -339,7 +339,7 @@ const products = [
     name: "SS-31 (Elamipretide)",
     category: "longevity",
     icon: "🔋",
-    image: "image/ss31.png",
+    image: "image/ss31.jpg",
     description: "Mitochondria-targeted tetrapeptide. Binds cardiolipin to preserve cristae structure, enhance ATP production, and protect against oxidative damage in aging tissues.",
     variants: [
       { size: "10mg × 10 vials", price: 95 },
@@ -433,7 +433,7 @@ const products = [
     name: "Lemon Bottle",
     category: "longevity",
     icon: "🍋",
-    image: "image/lemon bottle.png",
+    image: "image/lemonbottle.jpg",
     description: "Advanced lipolytic injection solution combining riboflavin, bromelain, and L-carnitine. Research focuses on targeted adipocyte metabolism disruption and localized fat reduction protocols.",
     variants: [
       { size: "10ml × 10 vials", price: 100 },
@@ -488,7 +488,7 @@ const products = [
     name: "LC120",
     category: "longevity",
     icon: "💧",
-    image: "image/lc120.png",
+    image: "image/lc120.jpg",
     description: "Phosphatidylcholine-based lipolytic solution. Studied for non-surgical fat dissolution, adipocyte membrane disruption, and localized body contouring research applications.",
     variants: [
       { size: "10ml × 10 vials", price: 100 },
@@ -591,7 +591,7 @@ const products = [
     category: "recovery",
     icon: "⚕️",
     description: "Thymosin Beta-4 acetate salt for enhanced stability. Promotes actin binding, cell migration, and tissue regeneration. Studied for muscle, tendon, ligament, and cardiac repair protocols.",
-    image: "image/tb500.png",
+    image: "image/tb500.jpg",
     variants: [
       { size: "2mg × 10 vials",  price: 65 },
       { size: "5mg × 10 vials",  price: 100 },
@@ -604,7 +604,7 @@ const products = [
     category: "longevity",
     icon: "🔋",
     description: "Nicotinamide Adenine Dinucleotide coenzyme. Essential for cellular energy metabolism, DNA repair via PARP activation, sirtuin regulation, and mitochondrial biogenesis. Declines significantly with age.",
-    image: "image/nad.png",
+    image: "image/nad.jpg",
     variants: [
       { size: "100mg × 10 vials",  price: 60 },
       { size: "500mg × 10 vials",  price: 90 },
@@ -676,7 +676,7 @@ const products = [
     category: "longevity",
     icon: "🔬",
     description: "Hypothalamic neuropeptide activating GnRH neurons. Potent stimulator of LH and FSH release, testosterone production, and reproductive axis restoration — studied in fertility and hormonal health research.",
-    image: "image/kispeptin10.png",
+    image: "image/kispeptin10.jpg",
     variants: [
       { size: "5mg × 10 vials",  price: 90 },
       { size: "10mg × 10 vials", price: 110 },
@@ -688,7 +688,7 @@ const products = [
     category: "longevity",
     icon: "🔥",
     description: "C-terminal fragment of HGH (176-191) regulating fat metabolism without IGF-1 elevation. Stimulates lipolysis and inhibits lipogenesis — studied for obesity, cartilage repair, and metabolic research.",
-    image: "image/aod9604.png",
+    image: "image/aod9604.jpg",
     variants: [
       { size: "2mg × 10 vials",  price: 70 },
       { size: "5mg × 10 vials",  price: 120 },
@@ -724,7 +724,7 @@ const products = [
     name: "Vitamin B12",
     category: "recovery",
     icon: "💊",
-    image: "image/b12.png",
+    image: "image/b12.jpg",
     description: "Injectable methylcobalamin formulation. Essential for neurological function, DNA synthesis, red blood cell formation, and homocysteine metabolism. Studied for energy support and neuroprotection.",
     variants: [
       { size: "10mg × 10 vials", price: 65 },
