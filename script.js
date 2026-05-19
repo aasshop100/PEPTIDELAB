@@ -75,7 +75,7 @@ const products = [
     name: "HGH",
     category: "growth",
     icon: "💪",
-    image: "image/hgh.png",
+    image: "image/hgh.jpg",
     description: "Human Growth Hormone. Directly stimulates IGF-1 production, driving muscle hypertrophy, bone density, lipolysis, and systemic cellular regeneration.",
     popular: true,
     variants: [
@@ -178,7 +178,7 @@ const products = [
     name: "IGF-1 LR3",
     category: "growth",
     icon: "💪",
-    image: "image/igf1lr3.png",
+    image: "image/igf1lr3.jpg",
     description: "Long-acting IGF-1 analogue with extended half-life and reduced IGFBP binding. Drives potent anabolism, hyperplasia, and nutrient partitioning for maximal tissue growth.",
     variants: [
       { size: "1mg × 10 vials", price: 280 },
@@ -276,7 +276,7 @@ const products = [
     name: "Dermorphin",
     category: "recovery",
     icon: "🩹",
-    image: "image/dermophin.png",
+    image: "image/dermophin.jpg",
     description: "μ-Opioid receptor superagonist from amphibian origin. Exceptional analgesic potency with high selectivity, studied for pain management and tissue stress reduction.",
     variants: [
       { size: "10mg × 10 vials", price: 110 },
@@ -312,7 +312,7 @@ const products = [
     name: "HCG",
     category: "growth",
     icon: "⚡",
-    image: "image/hcg.png",
+    image: "image/hcg.jpg",
     description: "Human Chorionic Gonadotropin. Mimics LH activity to stimulate testicular testosterone production and maintain fertility during anabolic suppression.",
     variants: [
       { size: "1000IU × 10 vials",  price: 60 },
@@ -350,7 +350,7 @@ const products = [
     name: "Mazdutide",
     category: "longevity",
     icon: "💉",
-    image: "image/mazdutide.png",
+    image: "image/mazdutide.jpg",
     description: "Dual GLP-1/GCGR agonist. Balanced metabolic optimization with substantial weight reduction, improved lipid profiles, and enhanced energy expenditure via glucagon receptor co-activation.",
     variants: [
       { size: "10mg × 10 vials", price: 240 },
@@ -386,7 +386,7 @@ const products = [
     name: "Hexarelin",
     category: "growth",
     icon: "❤️",
-    image: "image/hexarelin.png",
+    image: "image/hexarelin.jpg",
     description: "Potent GHRP receptor superagonist with cardioprotective properties. Strongest GH release among GHRPs with CD36-mediated cardiac benefits and significant appetite stimulation.",
     variants: [
       { size: "2mg × 10 vials", price: 75 },
@@ -410,7 +410,7 @@ const products = [
     name: "MT1 (Melanotan I)",
     category: "longevity",
     icon: "☀️",
-    image: "image/mt1.png",
+    image: "image/mt1.jpg",
     description: "α-MSH analogue for melanin stimulation. Provides systemic photoprotection, reduces UV damage, and supports skin resilience against photoaging.",
     variants: [
       { size: "10mg × 10 vials", price: 80 },
@@ -578,7 +578,7 @@ const products = [
     name: "HMG",
     category: "growth",
     icon: "⚡",
-    image: "image/hmg75iu.png",
+    image: "image/hmg.jpg",
     description: "Human Menopausal Gonadotropin containing FSH and LH activity. Stimulates follicular development and testosterone production — studied in fertility, hormonal restoration, and reproductive research.",
     variants: [
       { size: "75IU × 10 vials", price: 70 },
@@ -613,24 +613,15 @@ const products = [
   },
   {
     id: 56,
-    name: "Wolverin Blend — BPC-157 + TB-500 (10mg each)",
+    name: "Wolverine Blend — BPC-157 + TB-500",
     category: "recovery",
     icon: "🩹",
     image: "image/wolverinblend.jpg",
-    description: "High-dose synergistic recovery blend combining BPC-157 gut and tissue repair with TB-500 cell migration and regeneration. Powerful protocol for accelerated healing and systemic recovery research.",
+    description: "Synergistic recovery blend combining BPC-157 gut and tissue repair with TB-500 cell migration and regeneration. Available in three doses for comprehensive healing and systemic recovery research.",
     variants: [
-      { size: "20mg × 10 vials", price: 180 },
-    ]
-  },
-  {
-    id: 57,
-    name: "BPC-157 + TB-500 (5mg each)",
-    category: "recovery",
-    icon: "🩹",
-    image: "image/bpc5mgtb5mg.png",
-    description: "Entry-dose synergistic recovery combination of BPC-157 and TB-500. Complementary mechanisms of tissue protection, angiogenesis promotion, and cellular repair for comprehensive recovery research.",
-    variants: [
-      { size: "10mg × 10 vials", price: 120 },
+      { size: "5mg each × 10 vials",  price: 120 },
+      { size: "10mg each × 10 vials", price: 180 },
+      { size: "15mg each × 10 vials", price: 250 },
     ]
   },
   {
@@ -738,17 +729,6 @@ const products = [
     description: "Copper tripeptide fragment of alpha-1 antitrypsin. Stimulates collagen and glycosaminoglycan synthesis, promotes wound healing, and exhibits potent anti-inflammatory and tissue remodeling properties.",
     variants: [
       { size: "50mg × 10 vials", price: 75 },
-    ]
-  },
-  {
-    id: 67,
-    name: "BPC-157 + TB-500 (15mg each)",
-    category: "recovery",
-    icon: "🩹",
-    image: "image/bpc15mgtb15mg.jpg",
-    description: "High-dose synergistic recovery stack of BPC-157 and TB-500. Enhanced tissue protection, angiogenesis, and cellular repair for comprehensive systemic recovery research protocols.",
-    variants: [
-      { size: "30mg × 10 vials", price: 250 },
     ]
   },
   {
