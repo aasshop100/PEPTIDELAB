@@ -263,7 +263,7 @@ const products = [
     name: "DSIP",
     category: "cognitive",
     icon: "🌙",
-    image: "image/dsip.png",
+    image: "image/dsip.jpg",
     description: "Delta Sleep-Inducing Peptide. Non-sedative sleep modulator that enhances REM and slow-wave sleep while reducing stress-induced cortisol and adrenaline.",
     variants: [
       { size: "2mg × 10 vials",  price: 60 },
@@ -476,7 +476,7 @@ const products = [
     name: "Cagrilintide 2.5mg + Semaglutide 2.5mg",
     category: "longevity",
     icon: "💉",
-    image: "image/cagrilintide5mgsemaglutide5mg.png",
+    image: "image/cagrilintide5mgsemaglutide5mg.jpg",
     description: "Synergistic amylin/GLP-1 dual agonist combination. Research demonstrates superior weight reduction and metabolic improvement compared to either agent alone, with complementary satiety mechanisms.",
     variants: [
       { size: "5mg × 10 vials", price: 120 },
@@ -498,7 +498,7 @@ const products = [
     name: "Ara-290",
     category: "recovery",
     icon: "🧬",
-    image: "image/ara290.png",
+    image: "image/ara290.jpg",
     description: "Non-erythropoietic EPO analogue targeting innate repair receptors. Studied for neuropathic pain relief, tissue protection, anti-inflammatory signaling, and metabolic repair without hematopoietic effects.",
     variants: [
       { size: "10mg × 10 vials", price: 95 },
@@ -638,7 +638,7 @@ const products = [
     name: "AICAR",
     category: "longevity",
     icon: "⚡",
-    image: "image/aicar.png",
+    image: "image/aicar.jpg",
     description: "AMPK-activating nucleotide analogue. Mimics exercise-induced metabolic adaptations — enhancing mitochondrial biogenesis, fatty acid oxidation, glucose uptake, and endurance capacity in metabolic research.",
     variants: [
       { size: "50mg × 10 vials",  price: 80 },
@@ -662,7 +662,7 @@ const products = [
     category: "longevity",
     icon: "🔥",
     description: "Proapoptotic peptide targeting vasculature of white adipose tissue. Induces selective destruction of fat tissue blood supply — studied for targeted obesity treatment and body composition research.",
-    image: "image/adipotide.png",
+    image: "image/adipotide.jpg",
     variants: [
       { size: "2mg × 10 vials",  price: 95 },
       { size: "5mg × 10 vials",  price: 155 },
