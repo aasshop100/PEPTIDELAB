@@ -279,8 +279,7 @@ const products = [
     image: "image/dermophin.png",
     description: "μ-Opioid receptor superagonist from amphibian origin. Exceptional analgesic potency with high selectivity, studied for pain management and tissue stress reduction.",
     variants: [
-      { size: "2mg × 10 vials",  price: 70 },
-      { size: "10mg × 10 vials", price: 75 },
+      { size: "10mg × 10 vials", price: 110 },
     ]
   },
   {
@@ -452,7 +451,7 @@ const products = [
   },
   {
     id: 39,
-    name: "BPC-157 + GHK-Cu + TB-500",
+    name: "GLOW — BPC-157 + GHK-Cu + TB-500",
     category: "recovery",
     icon: "🩹",
     image: "image/bpc10mgghkcu50mgtb50010mg.png",
@@ -614,7 +613,7 @@ const products = [
   },
   {
     id: 56,
-    name: "BPC-157 + TB-500 (10mg each)",
+    name: "Wolverin Blend — BPC-157 + TB-500 (10mg each)",
     category: "recovery",
     icon: "🩹",
     image: "image/bpc10mgtb10mg.png",
