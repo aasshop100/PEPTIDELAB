@@ -454,7 +454,7 @@ const products = [
     name: "GLOW — BPC-157 + GHK-Cu + TB-500",
     category: "recovery",
     icon: "🩹",
-    image: "image/bpc10mgghkcu50mgtb50010mg.png",
+    image: "image/glow.jpg",
     description: "GLOW Triple recovery stack combining BPC-157 tissue repair, GHK-Cu collagen synthesis, and TB-500 cell migration. Comprehensive regenerative protocol for accelerated healing and anti-aging research.",
     variants: [
       { size: "70mg × 10 vials", price: 200 },
@@ -616,7 +616,7 @@ const products = [
     name: "Wolverin Blend — BPC-157 + TB-500 (10mg each)",
     category: "recovery",
     icon: "🩹",
-    image: "image/bpc10mgtb10mg.png",
+    image: "image/wolverinblend.jpg",
     description: "High-dose synergistic recovery blend combining BPC-157 gut and tissue repair with TB-500 cell migration and regeneration. Powerful protocol for accelerated healing and systemic recovery research.",
     variants: [
       { size: "20mg × 10 vials", price: 180 },
