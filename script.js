@@ -252,7 +252,7 @@ const products = [
     name: "PT-141",
     category: "longevity",
     icon: "🔥",
-    image: "image/pt141.png",
+    image: "image/pt141.jpg",
     description: "Melanocortin receptor agonist. FDA-approved for sexual arousal dysfunction via central nervous system activation, independent of vascular mechanism.",
     variants: [
       { size: "10mg × 10 vials", price: 85 },
@@ -287,7 +287,7 @@ const products = [
     name: "Thymosin Alpha-1",
     category: "recovery",
     icon: "🛡️",
-    image: "image/thymosinalpha1.png",
+    image: "image/thymosinalpha1.jpg",
     description: "Immunomodulatory peptide fragment of prothymosin alpha. Enhances T-cell differentiation, dendritic cell maturation, and innate immune response for systemic defense and recovery.",
     variants: [
       { size: "5mg × 10 vials",  price: 120 },
@@ -299,7 +299,7 @@ const products = [
     name: "Sermorelin Acetate",
     category: "growth",
     icon: "💪",
-    image: "image/sermorelinacetate.png",
+    image: "image/sermorelinacetate.jpg",
     description: "GHRH 1-29 analogue with acetate stabilization. Stimulates pulsatile endogenous GH release, supporting IGF-1 elevation with natural feedback preservation.",
     variants: [
       { size: "2mg × 10 vials",  price: 70 },
@@ -361,7 +361,7 @@ const products = [
     name: "CJC-1295 (No DAC)",
     category: "growth",
     icon: "📈",
-    image: "image/cjc1259withoutdac.png",
+    image: "image/cjc1259withoutdac.jpg",
     description: "Short-acting GHRH analogue without DAC modification. Produces natural GH pulsatility with rapid clearance, ideal for multiple daily injections mimicking endogenous hypothalamic rhythm.",
     variants: [
       { size: "2mg × 10 vials",  price: 50 },
@@ -374,7 +374,7 @@ const products = [
     name: "CJC-1295 (With DAC)",
     category: "growth",
     icon: "📈",
-    image: "image/cjc1295withdac.png",
+    image: "image/cjc1295withdac.jpg",
     description: "Long-acting GHRH analogue with Drug Affinity Complex. Sustained GH release over 6-8 days per dose, ideal for convenience protocols with elevated baseline IGF-1.",
     variants: [
       { size: "2mg × 10 vials", price: 80 },
@@ -510,7 +510,7 @@ const products = [
     name: "Thymalin / Thymulin",
     category: "recovery",
     icon: "🛡️",
-    image: "image/thymalinthymulin.png",
+    image: "image/thymalinthymulin.jpg",
     description: "Thymic peptide complex with immunomodulatory and anti-aging properties. Studied for T-cell regulation, neuroendocrine-immune axis restoration, and age-related immune decline reversal.",
     variants: [
       { size: "10mg × 10 vials", price: 100 },
@@ -521,7 +521,7 @@ const products = [
     name: "LL-37",
     category: "recovery",
     icon: "🧬",
-    image: "image/ll37.png",
+    image: "image/ll37.jpg",
     description: "Human cathelicidin antimicrobial peptide. Exhibits broad-spectrum antimicrobial activity, wound healing promotion, immune modulation, and anti-biofilm properties in infection and regeneration research.",
     variants: [
       { size: "5mg × 10 vials", price: 110 },
@@ -544,7 +544,7 @@ const products = [
     category: "cognitive",
     icon: "🧠",
     description: "Tripeptide of pineal gland origin. Studied for neuroprotection, circadian regulation support, retinal cell preservation, and cognitive function enhancement in aging research.",
-    image: "image/pinealon.png",
+    image: "image/pinealon.jpg",
     variants: [
       { size: "10mg × 10 vials", price: 115 },
     ]
@@ -555,7 +555,7 @@ const products = [
     category: "longevity",
     icon: "🔬",
     description: "p53-derived anticancer peptide targeting HDM-2 on tumor cell membranes. Induces selective cancer cell necrosis without affecting normal cells — studied in oncology and targeted therapy research.",
-    image: "image/pnc27.png",
+    image: "image/pnc27.jpg",
     variants: [
       { size: "5mg × 10 vials", price: 105 },
     ]
@@ -703,7 +703,7 @@ const products = [
     name: "CJC-1295 (No DAC) + Ipamorelin",
     category: "growth",
     icon: "💪",
-    image: "image/cjc1295withoutdac5mgipa5mg.png",
+    image: "image/cjc1295withoutdac5mgipa5mg.jpg",
     description: "Classic GHRH/GHRP synergistic stack. CJC-1295 primes the somatotropic axis while Ipamorelin triggers selective GH pulse — the gold standard combination for natural GH optimization research.",
     variants: [
       { size: "10mg × 10 vials", price: 113 },
