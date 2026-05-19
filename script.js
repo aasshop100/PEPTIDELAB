@@ -216,7 +216,7 @@ const products = [
     name: "MOTS-c",
     category: "longevity",
     icon: "🔋",
-    image: "image/motsc.png",
+    image: "image/motsc.jpg",
     description: "Mitochondrial-derived peptide regulating metabolic homeostasis. Enhances insulin sensitivity, promotes AMPK activation, and supports cellular energy resilience.",
     variants: [
       { size: "10mg × 10 vials", price: 80 },
@@ -566,7 +566,7 @@ const products = [
     category: "cognitive",
     icon: "❤️",
     description: "Hypothalamic nonapeptide modulating social bonding, stress response, and autonomic function. Research spans anxiety reduction, gut motility, wound healing, and neuroendocrine regulation.",
-    image: "image/oxytocinacetate.png",
+    image: "image/oxytocinacetate.jpg",
     variants: [
       { size: "2mg × 10 vials",  price: 60 },
       { size: "5mg × 10 vials",  price: 80 },
@@ -1060,7 +1060,7 @@ const products = [
     name: "P21",
     category: "cognitive",
     icon: "🧠",
-    image: "image/p21p021.jpg",
+    image: "image/p21.jpg",
     description: "CNTF-derived peptide with potent neurotrophic activity. Studied for neurogenesis promotion, synaptic plasticity enhancement, and cognitive improvement in neurodegeneration research models.",
     variants: [
       { size: "5mg × 10 vials", price: 305 },
