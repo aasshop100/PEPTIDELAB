@@ -462,10 +462,10 @@ const products = [
   },
   {
     id: 40,
-    name: "GHK-Cu + TB-500 + BPC-157 + KPV",
+    name: "KLOW — GHK-Cu + TB-500 + BPC-157 + KPV",
     category: "recovery",
     icon: "🩹",
-    image: "image/cu50tb10bc10kpv10.png",
+    image: "image/bpc10mgghkcu50mgtb50010mg.jpg",
     description: "KLOW Advanced quad recovery blend targeting tissue repair, inflammation, collagen synthesis, and gut healing simultaneously. Ideal for comprehensive regenerative and anti-inflammatory research protocols.",
     variants: [
       { size: "80mg × 10 vials", price: 235 },
@@ -532,7 +532,7 @@ const products = [
     name: "Survodutide",
     category: "longevity",
     icon: "💉",
-    image: "image/survodutide.png",
+    image: "image/survodutide.jpg",
     description: "Dual GLP-1/Glucagon receptor agonist under active clinical investigation. Demonstrates significant hepatic fat reduction, weight loss, and NASH/MAFLD improvement in metabolic disease research.",
     variants: [
       { size: "10mg × 10 vials", price: 220 },
