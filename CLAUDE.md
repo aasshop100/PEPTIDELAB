@@ -106,11 +106,74 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 ---
 
 ## Pending / Future Plans
+
+### 🔴 Next Session (Priority)
+- [ ] **NOWPayments integration** — full crypto payment flow on cart.html (see Crypto Payment Plan below)
+- [ ] Update **Shipping & Payment section** on index.html — add bank transfer note: "For bank transfer, contact us on Telegram. Note: 10% additional fee applies."
 - [ ] Update **admin EmailJS template** (`template_gdh1w1b`) to match new theme (user to send current code)
+
+### 🟡 Soon
 - [ ] Add real product photos to replace `samplepic.jpg` placeholders across all products
 - [ ] Consider adding discount code section visibility improvements
 - [ ] Cookie banner on mobile is large — may want to slim it down
+
+### 🟢 Cleanup
 - [ ] Deleted image files (`bpc10mgghkcu50mgtb50010mg.png`, `ll37.png`, `survodutide.png`, `thymalinthymulin.png`) are still showing as deleted in git — can be cleaned up with `git rm`
+
+---
+
+## Crypto Payment Plan (NOWPayments)
+
+### Decisions Made (2026-05-29)
+- **Provider:** NOWPayments (nowpayments.io)
+- **Mode:** Custodial (NOWPayments receives payment, auto-forwards to merchant wallet)
+- **Accepted coins:** Bitcoin (BTC) only for now — USDT TRC20 to be added later
+- **Fee:** 1% per BTC transaction (conversion to USDT) — added on top of order total, customer pays it
+- **Sign up:** Free, no monthly fees, no setup fees
+- **Bank transfer:** Removed from checkout flow. Instead, add a note on the site:
+  > *"For bank transfer, contact us on our Telegram group. Note: 10% additional fee applies."*
+  > Link to: https://t.me/peptidelabworld
+
+### How It Works (Customer Flow)
+1. Customer fills cart + order form as normal
+2. Clicks "Place Order"
+3. Page shows NOWPayments hosted checkout — Bitcoin amount + QR code + wallet address + 20min timer
+4. Customer pays from their Bitcoin wallet
+5. NOWPayments detects payment on blockchain in real-time
+6. Screen auto-updates: "Payment confirmed!"
+7. Customer redirected to thank you page
+8. NOWPayments auto-forwards funds (converted to USDT) to merchant wallet
+9. Webhook triggers order confirmation email (needs Make.com or Netlify Function)
+
+### Integration Steps (To Do Next Session)
+1. Lester signs up at nowpayments.io
+2. Connects USDT TRC20 payout wallet
+3. Enables Bitcoin as accepted coin
+4. Gets API key from dashboard
+5. Shares API key — Claude integrates into cart.html
+6. Set up webhook handler (Make.com free tier recommended)
+7. Test with small real transaction
+8. Go live
+
+### Key NOWPayments Facts (Verified)
+- Signup: Free ✅
+- Monthly fees: None ✅
+- USDT TRC20 supported: Yes ✅
+- BTC supported: Yes ✅
+- Fee: 0.5% same-currency, 1% with conversion ✅
+
+---
+
+### 2026-05-29 — Crypto Payment Brainstorm Session
+- Discussed live crypto payment options for static GitHub Pages site
+- Evaluated: NOWPayments (Option A), Coinbase Commerce (Option B), Netlify migration (Option C)
+- Explained custodial vs non-custodial modes — user chose **custodial** (simpler)
+- Decided on **Bitcoin only** to start, USDT TRC20 later
+- Bank transfer removed from checkout — replaced with Telegram contact note + 10% fee warning
+- Customer template rebuilt with new theme + Telegram button (pending paste into EmailJS)
+- Admin template still pending (user to send code next session)
+
+---
 
 ## Notes & Conventions
 - **No build step** — edit files directly, commit, push to deploy via GitHub Pages
