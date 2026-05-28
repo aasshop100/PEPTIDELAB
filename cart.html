@@ -392,10 +392,10 @@
       const grouped = groupCart(cart);
       const itemsTableHtml = grouped.map(item => `
         <tr>
-          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;border-bottom:1px solid rgba(0,200,255,0.08);">${item.name} (${item.size})</td>
-          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;text-align:center;border-bottom:1px solid rgba(0,200,255,0.08);">${item.qty}</td>
-          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;text-align:right;border-bottom:1px solid rgba(0,200,255,0.08);">$${item.price.toFixed(2)}</td>
-          <td style="padding:10px 14px;font-size:13px;color:#e8f4f8;text-align:right;border-bottom:1px solid rgba(0,200,255,0.08);">$${(item.price * item.qty).toFixed(2)}</td>
+          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">${item.name} (${item.size})</td>
+          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;text-align:center;border-bottom:1px solid #e0e0e0;">${item.qty}</td>
+          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;text-align:right;border-bottom:1px solid #e0e0e0;">$${item.price.toFixed(2)}</td>
+          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;text-align:right;border-bottom:1px solid #e0e0e0;">$${(item.price * item.qty).toFixed(2)}</td>
         </tr>
       `).join("");
 
