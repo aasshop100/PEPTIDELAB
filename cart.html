@@ -205,7 +205,7 @@
       <img id="pay-qr" src="" alt="Bitcoin QR Code" style="width:180px;height:180px;border-radius:8px;border:1px solid #e0e0e0;margin:0 auto 1.25rem;display:block;" />
 
       <div style="margin-bottom:1.25rem;">
-        <div style="color:#777;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Bitcoin Address</div>
+        <div id="pay-address-label" style="color:#777;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Wallet Address</div>
         <div style="display:flex;align-items:center;gap:0.5rem;background:#f7f7f7;border-radius:8px;padding:0.65rem 0.875rem;">
           <code id="pay-address" style="font-size:0.72rem;color:#111;word-break:break-all;flex:1;text-align:left;line-height:1.4;"></code>
           <button id="copy-addr-btn" onclick="copyBTCAddress()" style="background:#111;color:#fff;border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0;">Copy</button>
@@ -226,7 +226,7 @@
       <button onclick="cancelPayment()" style="background:transparent;border:1px solid #e0e0e0;color:#777;border-radius:8px;padding:0.6rem 1.5rem;cursor:pointer;font-size:0.85rem;">Cancel</button>
 
       <div style="background:#fff8e1;border:1px solid #ffc850;border-radius:8px;padding:0.75rem 1rem;margin-top:1rem;text-align:left;">
-        <p style="margin:0;font-size:0.82rem;color:#7a5c00;line-height:1.5;">⚠️ <strong>Keep this tab open</strong> until you see "Payment confirmed!" — closing it before confirmation means your order won't be processed automatically. Bitcoin confirmations typically take <strong>10–30 minutes</strong>.</p>
+        <p id="pay-warning-text" style="margin:0;font-size:0.82rem;color:#7a5c00;line-height:1.5;">⚠️ <strong>Keep this tab open</strong> until you see "Payment confirmed!" — closing it before confirmation means your order won't be processed automatically.</p>
       </div>
       <p style="color:#bbb;font-size:0.72rem;margin:1rem 0 0;">Powered by NOWPayments &middot; Order confirmed automatically once payment is detected</p>
     </div>
@@ -436,6 +436,9 @@
       const isUSDT = currency === "usdttrc20";
 
       document.getElementById("pay-title").textContent = isUSDT ? "Pay with USDT TRC20" : "Pay with Bitcoin";
+      document.getElementById("pay-warning-text").innerHTML = isUSDT
+        ? "⚠️ <strong>Keep this tab open</strong> until you see \"Payment confirmed!\" — USDT TRC20 confirmations typically take <strong>1–3 minutes</strong>."
+        : "⚠️ <strong>Keep this tab open</strong> until you see \"Payment confirmed!\" — Bitcoin confirmations typically take <strong>10–30 minutes</strong>.";
       document.getElementById("pay-usd-amount").textContent = "$" + parseFloat(templateParams.total).toFixed(2) + " USD";
       document.getElementById("pay-crypto-amount").textContent = isUSDT
         ? parseFloat(pay_amount).toFixed(2) + " USDT"
