@@ -110,9 +110,8 @@
               <label>Preferred Payment Method *</label>
               <select id="payment_method" name="payment_method" required onchange="handlePaymentChange()">
                 <option value="" disabled selected>Select payment method</option>
+                <option value="Bitcoin (BTC)">Bitcoin (BTC) — Pay instantly via crypto</option>
                 <option value="Crypto (USDT - TRON TRC20)">Crypto — USDT (TRON TRC20)</option>
-                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
-                <option value="Bank Transfer">Bank Transfer (+5% fee)</option>
               </select>
             </div>
             <div class="form-group">
@@ -145,7 +144,7 @@
             <span id="summary-shipping">$50.00</span>
           </div>
           <div class="summary-row" id="bank-fee-row" style="display:none;">
-            <span style="color:#ffc850;">Bank Transfer Fee (5%)</span>
+            <span id="fee-label" style="color:#ffc850;">Crypto Processing Fee (0.5%)</span>
             <span id="bank-fee-amount" style="color:#ffc850;">$0.00</span>
           </div>
           <div class="summary-row" id="discount-row" style="display:none;">
@@ -170,11 +169,10 @@
 
           <div class="payment-info-box">
             <p class="info-box-title">💳 Payment</p>
-            <p>You'll receive an email within <strong>24 hours</strong> with payment instructions.</p>
+            <p><strong>Bitcoin:</strong> Pay instantly — QR code generated at checkout.<br><strong>USDT TRC20:</strong> Payment instructions sent within 24h.</p>
             <div class="pay-badges">
-              <span class="pay-badge">USDT TRC20</span>
               <span class="pay-badge">Bitcoin (BTC)</span>
-              <span class="pay-badge">Bank Transfer</span>
+              <span class="pay-badge">USDT TRC20</span>
             </div>
           </div>
           <div class="payment-info-box">
@@ -187,15 +185,62 @@
     </div>
   </main>
 
+  <!-- BITCOIN PAYMENT OVERLAY -->
+  <div id="payment-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:#fff;border-radius:12px;padding:2rem;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);max-height:90vh;overflow-y:auto;">
+      <h2 style="color:#111;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;margin:0 0 0.25rem;letter-spacing:1px;">Pay with Bitcoin</h2>
+      <p style="color:#777;font-size:0.85rem;margin:0 0 1.5rem;">Send the exact amount to complete your order</p>
+
+      <div style="background:#f7f7f7;border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <span style="color:#777;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Order Total</span>
+          <span id="pay-usd-amount" style="color:#111;font-size:1rem;font-weight:600;">$0.00 USD</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#777;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Send Exactly</span>
+          <span id="pay-btc-amount" style="color:#111;font-size:1.2rem;font-weight:700;font-family:monospace;">0.00000000 BTC</span>
+        </div>
+      </div>
+
+      <img id="pay-qr" src="" alt="Bitcoin QR Code" style="width:180px;height:180px;border-radius:8px;border:1px solid #e0e0e0;margin:0 auto 1.25rem;display:block;" />
+
+      <div style="margin-bottom:1.25rem;">
+        <div style="color:#777;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Bitcoin Address</div>
+        <div style="display:flex;align-items:center;gap:0.5rem;background:#f7f7f7;border-radius:8px;padding:0.65rem 0.875rem;">
+          <code id="pay-address" style="font-size:0.72rem;color:#111;word-break:break-all;flex:1;text-align:left;line-height:1.4;"></code>
+          <button id="copy-addr-btn" onclick="copyBTCAddress()" style="background:#111;color:#fff;border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0;">Copy</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.75rem;">
+        <span style="color:#777;font-size:0.85rem;">Time remaining:</span>
+        <span id="pay-timer" style="font-family:monospace;font-size:1.1rem;font-weight:700;color:#111;">20:00</span>
+      </div>
+
+      <div id="pay-status" style="font-size:0.9rem;color:#777;margin-bottom:1.25rem;min-height:1.25rem;">Waiting for payment...</div>
+
+      <div id="pay-expired-msg" style="display:none;margin-bottom:1rem;">
+        <p style="color:#ff5555;font-size:0.85rem;margin:0;">Payment window expired. Please close and place your order again.</p>
+      </div>
+
+      <button onclick="cancelPayment()" style="background:transparent;border:1px solid #e0e0e0;color:#777;border-radius:8px;padding:0.6rem 1.5rem;cursor:pointer;font-size:0.85rem;">Cancel</button>
+
+      <p style="color:#bbb;font-size:0.72rem;margin:1rem 0 0;">Powered by NOWPayments &middot; Order confirmed automatically once payment is detected</p>
+    </div>
+  </div>
+
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
   <script>
     // ========== EMAILJS CONFIG ==========
     emailjs.init("5xiTfxz_92gwpa2VJ");
-    const EMAILJS_SERVICE    = "service_ju3widv";
-    const TEMPLATE_ADMIN     = "template_gdh1w1b";   // email to YOU
-    const TEMPLATE_CUSTOMER  = "template_moknerc";   // email to CUSTOMER
+    const EMAILJS_SERVICE   = "service_ju3widv";
+    const TEMPLATE_ADMIN    = "template_gdh1w1b";
+    const TEMPLATE_CUSTOMER = "template_moknerc";
+
+    // ========== NOWPAYMENTS CONFIG ==========
+    const NOWPAYMENTS_API_KEY = "AMR6DQS-1W3487G-Q05A056-KQHZAQH";
 
     // ========================================
     // DISCOUNT CODES — ADD YOUR OWN CODES HERE
@@ -203,26 +248,25 @@
     // For percentage:    { type: "percent", value: 10 }
     // ========================================
     const DISCOUNT_CODES = {
-      // ========================================
-      // PROMO CODES — CURRENTLY DISABLED
-      // To activate a code, remove the // at the start of the line
-      // ========================================
-      // "FREESHIP": { type: "fixed",   value: 50 },  // Free shipping — $50 off
-      // "LAUNCH10": { type: "percent", value: 10 },  // 10% off subtotal (excl. shipping)
-      // "SAVE20":   { type: "fixed",   value: 20 },  // $20 off
+      // "FREESHIP": { type: "fixed",   value: 50 },
+      // "LAUNCH10": { type: "percent", value: 10 },
+      // "SAVE20":   { type: "fixed",   value: 20 },
     };
-    // ========================================
 
     const SHIPPING_FEE = 50;
     let appliedDiscount = 0;
     let appliedCode = "";
     let bankFee = 0;
 
+    let paymentPollInterval = null;
+    let paymentTimerInterval = null;
+
     function handlePaymentChange() {
       const method = document.getElementById("payment_method").value;
       const cart = getCart();
       const subtotal = cart.reduce((s,i) => s+i.price, 0);
-      bankFee = method === "Bank Transfer" ? parseFloat((subtotal * 0.05).toFixed(2)) : 0;
+      // 0.5% NOWPayments fee passed to customer when paying with BTC
+      bankFee = method === "Bitcoin (BTC)" ? parseFloat((subtotal * 0.005).toFixed(2)) : 0;
       updateTotals(subtotal);
     }
 
@@ -256,7 +300,6 @@
       document.getElementById("summary-shipping").textContent = "$" + SHIPPING_FEE.toFixed(2);
       document.getElementById("summary-total").textContent = "$" + total.toFixed(2);
 
-      // Bank fee row
       const bankFeeRow = document.getElementById("bank-fee-row");
       const bankFeeAmount = document.getElementById("bank-fee-amount");
       if (bankFee > 0) {
@@ -364,31 +407,156 @@
 
     document.getElementById("clear-cart").addEventListener("click", () => { saveCart([]); renderCartPage(); });
 
-    // ========== FORM SUBMIT VIA EMAILJS ==========
+    // ========== NOWPAYMENTS FUNCTIONS ==========
+
+    async function createNOWPayment(amountUSD, orderId) {
+      const res = await fetch("https://api.nowpayments.io/v1/payment", {
+        method: "POST",
+        headers: {
+          "x-api-key": NOWPAYMENTS_API_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          pay_currency: "btc",
+          price_amount: amountUSD,
+          price_currency: "usd",
+          order_id: orderId,
+          order_description: "PeptideLab Order"
+        })
+      });
+      return res.json();
+    }
+
+    function showPaymentOverlay(paymentData, templateParams) {
+      const { payment_id, pay_address, pay_amount, expiration_estimate_date } = paymentData;
+
+      document.getElementById("pay-usd-amount").textContent = "$" + parseFloat(templateParams.total).toFixed(2) + " USD";
+      document.getElementById("pay-btc-amount").textContent = parseFloat(pay_amount).toFixed(8) + " BTC";
+      document.getElementById("pay-address").textContent = pay_address;
+
+      const qrData = "bitcoin:" + pay_address + "?amount=" + pay_amount;
+      document.getElementById("pay-qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(qrData);
+
+      document.getElementById("pay-status").textContent = "Waiting for payment...";
+      document.getElementById("pay-status").style.color = "#777";
+      document.getElementById("pay-expired-msg").style.display = "none";
+      document.getElementById("copy-addr-btn").textContent = "Copy";
+      document.getElementById("pay-timer").textContent = "20:00";
+      document.getElementById("payment-overlay").style.display = "flex";
+
+      const expiry = expiration_estimate_date
+        ? new Date(expiration_estimate_date)
+        : new Date(Date.now() + 20 * 60 * 1000);
+      startPaymentTimer(expiry);
+      startPaymentPolling(payment_id, templateParams);
+    }
+
+    function startPaymentTimer(expiryDate) {
+      paymentTimerInterval = setInterval(() => {
+        const remaining = expiryDate - Date.now();
+        if (remaining <= 0) {
+          clearInterval(paymentTimerInterval);
+          document.getElementById("pay-timer").textContent = "00:00";
+          document.getElementById("pay-status").textContent = "Payment window expired.";
+          document.getElementById("pay-status").style.color = "#ff5555";
+          stopPaymentPolling();
+          document.getElementById("pay-expired-msg").style.display = "block";
+        } else {
+          const mins = Math.floor(remaining / 60000);
+          const secs = Math.floor((remaining % 60000) / 1000);
+          document.getElementById("pay-timer").textContent =
+            String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+        }
+      }, 1000);
+    }
+
+    function startPaymentPolling(paymentId, templateParams) {
+      paymentPollInterval = setInterval(async () => {
+        try {
+          const res = await fetch("https://api.nowpayments.io/v1/payment/" + paymentId, {
+            headers: { "x-api-key": NOWPAYMENTS_API_KEY }
+          });
+          const data = await res.json();
+          const statusEl = document.getElementById("pay-status");
+
+          if (data.payment_status === "confirming" || data.payment_status === "sending") {
+            statusEl.textContent = "Payment detected! Confirming on blockchain...";
+            statusEl.style.color = "#f59e0b";
+          } else if (
+            data.payment_status === "confirmed" ||
+            data.payment_status === "finished" ||
+            data.payment_status === "partially_paid"
+          ) {
+            stopPaymentPolling();
+            clearInterval(paymentTimerInterval);
+            statusEl.textContent = "Payment confirmed! Redirecting...";
+            statusEl.style.color = "#22c55e";
+
+            try {
+              await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
+              await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
+            } catch (emailErr) {
+              console.error("EmailJS error:", emailErr);
+            }
+
+            localStorage.removeItem("peptidelab_cart");
+            setTimeout(() => { window.location.href = "thankyou.html"; }, 2000);
+          } else if (data.payment_status === "failed") {
+            stopPaymentPolling();
+            statusEl.textContent = "Payment failed. Please cancel and try again.";
+            statusEl.style.color = "#ff5555";
+          }
+        } catch (err) {
+          console.error("Polling error:", err);
+        }
+      }, 15000);
+    }
+
+    function stopPaymentPolling() {
+      if (paymentPollInterval) { clearInterval(paymentPollInterval); paymentPollInterval = null; }
+    }
+
+    function copyBTCAddress() {
+      const addr = document.getElementById("pay-address").textContent;
+      navigator.clipboard.writeText(addr).then(() => {
+        const btn = document.getElementById("copy-addr-btn");
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+      });
+    }
+
+    function cancelPayment() {
+      stopPaymentPolling();
+      if (paymentTimerInterval) { clearInterval(paymentTimerInterval); paymentTimerInterval = null; }
+      document.getElementById("payment-overlay").style.display = "none";
+      const btn = document.getElementById("submit-btn");
+      btn.textContent = "Place Order →";
+      btn.disabled = false;
+    }
+
+    // ========== FORM SUBMIT ==========
     document.getElementById("order-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("submit-btn");
-      btn.textContent = "Sending...";
       btn.disabled = true;
 
       const cart = getCart();
       const { lines, subtotal, total } = buildOrderSummary(cart);
 
-      const first_name   = document.getElementById("first_name").value;
-      const last_name    = document.getElementById("last_name").value;
-      const email        = document.getElementById("cust_email").value;
-      const phone        = document.getElementById("phone").value;
-      const address      = document.getElementById("address").value;
-      const city         = document.getElementById("city").value;
-      const state        = document.getElementById("state").value;
-      const zip          = document.getElementById("zip").value;
-      const country      = document.getElementById("country").value;
-      const payment      = document.getElementById("payment_method").value;
-      const notes        = document.getElementById("notes").value;
+      const first_name  = document.getElementById("first_name").value;
+      const last_name   = document.getElementById("last_name").value;
+      const email       = document.getElementById("cust_email").value;
+      const phone       = document.getElementById("phone").value;
+      const address     = document.getElementById("address").value;
+      const city        = document.getElementById("city").value;
+      const state       = document.getElementById("state").value;
+      const zip         = document.getElementById("zip").value;
+      const country     = document.getElementById("country").value;
+      const payment     = document.getElementById("payment_method").value;
+      const notes       = document.getElementById("notes").value;
 
       const shippingValue = appliedDiscount >= SHIPPING_FEE ? 0 : SHIPPING_FEE;
 
-      // Build HTML table rows for items
       const grouped = groupCart(cart);
       const itemsTableHtml = grouped.map(item => `
         <tr>
@@ -400,39 +568,58 @@
       `).join("");
 
       const templateParams = {
-        customer_name:      `${first_name} ${last_name}`,
-        customer_email:     email,
-        customer_phone:     phone || "Not provided",
-        customer_address:   address,
-        customer_city:      city,
-        customer_state:     state,
-        customer_zip:       zip,
-        customer_country:   country,
-        full_address:       `${address}, ${city}, ${state} ${zip}, ${country}`,
-        payment_method:     payment,
-        order_summary:      lines.join("\n"),
-        items_table_html:   itemsTableHtml,
-        subtotal:           subtotal.toFixed(2),
-        shipping:           shippingValue === 0 ? "0.00 (Free - code: " + appliedCode + ")" : SHIPPING_FEE.toFixed(2),
-        discount:           appliedDiscount > 0 ? appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "0.00",
-        bank_fee:           bankFee > 0 ? "+$" + bankFee.toFixed(2) + " (5% Bank Transfer fee)" : "None",
-        total:              total.toFixed(2),
-        notes:              notes || "None",
+        customer_name:    `${first_name} ${last_name}`,
+        customer_email:   email,
+        customer_phone:   phone || "Not provided",
+        customer_address: address,
+        customer_city:    city,
+        customer_state:   state,
+        customer_zip:     zip,
+        customer_country: country,
+        full_address:     `${address}, ${city}, ${state} ${zip}, ${country}`,
+        payment_method:   payment,
+        order_summary:    lines.join("\n"),
+        items_table_html: itemsTableHtml,
+        subtotal:         subtotal.toFixed(2),
+        shipping:         shippingValue === 0 ? "0.00 (Free - code: " + appliedCode + ")" : SHIPPING_FEE.toFixed(2),
+        discount:         appliedDiscount > 0 ? appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "0.00",
+        bank_fee:         bankFee > 0 ? "+$" + bankFee.toFixed(2) + " (0.5% crypto processing fee)" : "None",
+        total:            total.toFixed(2),
+        notes:            notes || "None",
       };
 
-      try {
-        // Send to YOU (admin)
-        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
-        // Send to CUSTOMER
-        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
-        // Clear cart and redirect
-        localStorage.removeItem("peptidelab_cart");
-        window.location.href = "thankyou.html";
-      } catch (err) {
-        console.error("EmailJS error:", err);
-        btn.textContent = "Failed. Please try again.";
-        btn.disabled = false;
-        btn.style.background = "#ff5555";
+      if (payment === "Bitcoin (BTC)") {
+        btn.textContent = "Creating payment...";
+        try {
+          const orderId = "PL-" + Date.now();
+          const paymentData = await createNOWPayment(total, orderId);
+          if (paymentData && paymentData.payment_id) {
+            showPaymentOverlay(paymentData, templateParams);
+            btn.textContent = "Place Order →";
+            btn.disabled = false;
+          } else {
+            throw new Error(paymentData.message || "Payment creation failed");
+          }
+        } catch (err) {
+          console.error("NOWPayments error:", err);
+          btn.textContent = "Payment Error. Try Again.";
+          btn.style.background = "#ff5555";
+          btn.disabled = false;
+          setTimeout(() => { btn.textContent = "Place Order →"; btn.style.background = ""; }, 3000);
+        }
+      } else {
+        btn.textContent = "Sending...";
+        try {
+          await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
+          await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
+          localStorage.removeItem("peptidelab_cart");
+          window.location.href = "thankyou.html";
+        } catch (err) {
+          console.error("EmailJS error:", err);
+          btn.textContent = "Failed. Please try again.";
+          btn.disabled = false;
+          btn.style.background = "#ff5555";
+        }
       }
     });
 
