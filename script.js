@@ -79,7 +79,7 @@ const products = [
     description: "Human Growth Hormone. Directly stimulates IGF-1 production, driving muscle hypertrophy, bone density, lipolysis, and systemic cellular regeneration.",
     popular: true,
     variants: [
-      { size: "TEST - $1",        price: 1 },
+      { size: "TEST - $10",       price: 10 },
       { size: "6iu × 10 vials",  price: 65 },
       { size: "8iu × 10 vials",  price: 70 },
       { size: "10iu × 10 vials", price: 80 },
