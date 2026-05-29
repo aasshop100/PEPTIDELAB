@@ -188,7 +188,7 @@
   <!-- BITCOIN PAYMENT OVERLAY -->
   <div id="payment-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
     <div style="background:#fff;border-radius:12px;padding:2rem;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);max-height:90vh;overflow-y:auto;">
-      <h2 style="color:#111;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;margin:0 0 0.25rem;letter-spacing:1px;">Pay with Bitcoin</h2>
+      <h2 id="pay-title" style="color:#111;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;margin:0 0 0.25rem;letter-spacing:1px;">Pay with Crypto</h2>
       <p style="color:#777;font-size:0.85rem;margin:0 0 1.5rem;">Send the exact amount to complete your order</p>
 
       <div style="background:#f7f7f7;border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;">
@@ -198,7 +198,7 @@
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span style="color:#777;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Send Exactly</span>
-          <span id="pay-btc-amount" style="color:#111;font-size:1.2rem;font-weight:700;font-family:monospace;">0.00000000 BTC</span>
+          <span id="pay-crypto-amount" style="color:#111;font-size:1.2rem;font-weight:700;font-family:monospace;">0.00000000</span>
         </div>
       </div>
 
@@ -268,8 +268,9 @@
       const method = document.getElementById("payment_method").value;
       const cart = getCart();
       const subtotal = cart.reduce((s,i) => s+i.price, 0);
-      // 0.5% NOWPayments fee passed to customer when paying with BTC
-      bankFee = method === "Bitcoin (BTC)" ? parseFloat((subtotal * 0.005).toFixed(2)) : 0;
+      // 0.5% NOWPayments fee passed to customer for crypto payments
+      bankFee = (method === "Bitcoin (BTC)" || method === "Crypto (USDT - TRON TRC20)")
+        ? parseFloat((subtotal * 0.005).toFixed(2)) : 0;
       updateTotals(subtotal);
     }
 
@@ -412,7 +413,7 @@
 
     // ========== NOWPAYMENTS FUNCTIONS ==========
 
-    async function createNOWPayment(amountUSD, orderId) {
+    async function createNOWPayment(amountUSD, orderId, currency) {
       const res = await fetch("https://api.nowpayments.io/v1/payment", {
         method: "POST",
         headers: {
@@ -420,7 +421,7 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          pay_currency: "btc",
+          pay_currency: currency,
           price_amount: amountUSD,
           price_currency: "usd",
           order_id: orderId,
@@ -430,14 +431,18 @@
       return res.json();
     }
 
-    function showPaymentOverlay(paymentData, templateParams) {
+    function showPaymentOverlay(paymentData, templateParams, currency) {
       const { payment_id, pay_address, pay_amount, expiration_estimate_date } = paymentData;
+      const isUSDT = currency === "usdttrc20";
 
+      document.getElementById("pay-title").textContent = isUSDT ? "Pay with USDT TRC20" : "Pay with Bitcoin";
       document.getElementById("pay-usd-amount").textContent = "$" + parseFloat(templateParams.total).toFixed(2) + " USD";
-      document.getElementById("pay-btc-amount").textContent = parseFloat(pay_amount).toFixed(8) + " BTC";
+      document.getElementById("pay-crypto-amount").textContent = isUSDT
+        ? parseFloat(pay_amount).toFixed(2) + " USDT"
+        : parseFloat(pay_amount).toFixed(8) + " BTC";
       document.getElementById("pay-address").textContent = pay_address;
 
-      const qrData = "bitcoin:" + pay_address + "?amount=" + pay_amount;
+      const qrData = isUSDT ? pay_address : "bitcoin:" + pay_address + "?amount=" + pay_amount;
       document.getElementById("pay-qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(qrData);
 
       document.getElementById("pay-status").textContent = "Waiting for payment...";
@@ -451,7 +456,7 @@
         ? new Date(expiration_estimate_date)
         : new Date(Date.now() + 20 * 60 * 1000);
       startPaymentTimer(expiry);
-      startPaymentPolling(payment_id, templateParams);
+      startPaymentPolling(payment_id, templateParams, currency);
     }
 
     function startPaymentTimer(expiryDate) {
@@ -473,7 +478,7 @@
       }, 1000);
     }
 
-    function startPaymentPolling(paymentId, templateParams) {
+    function startPaymentPolling(paymentId, templateParams, currency) {
       paymentPollInterval = setInterval(async () => {
         try {
           const res = await fetch("https://api.nowpayments.io/v1/payment/" + paymentId, {
@@ -591,13 +596,16 @@
         notes:            notes || "None",
       };
 
-      if (payment === "Bitcoin (BTC)") {
+      const isCrypto = payment === "Bitcoin (BTC)" || payment === "Crypto (USDT - TRON TRC20)";
+      const nowCurrency = payment === "Bitcoin (BTC)" ? "btc" : "usdttrc20";
+
+      if (isCrypto) {
         btn.textContent = "Creating payment...";
         try {
           const orderId = "PL-" + Date.now();
-          const paymentData = await createNOWPayment(total, orderId);
+          const paymentData = await createNOWPayment(total, orderId, nowCurrency);
           if (paymentData && paymentData.payment_id) {
-            showPaymentOverlay(paymentData, templateParams);
+            showPaymentOverlay(paymentData, templateParams, nowCurrency);
             btn.textContent = "Place Order →";
             btn.disabled = false;
           } else {
