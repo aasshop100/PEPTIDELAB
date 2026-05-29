@@ -73,6 +73,7 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 - Added USDT TRC20 payout wallet: `TYTKUPjWeBTVwkdkBWcHV6MWaj1A5XLHnS`
 - Updated admin EmailJS template (`template_gdh1w1b`) — new white/black/gray theme
 - Updated customer EmailJS template (`template_moknerc`) — "Payment Confirmed", tracking 2–3 days, delivery 15–20 days
+- Added Make.com filter — only sends Gmail alert when payment_status = "finished" OR "confirmed" (no more spam on pending payments)
 
 #### NOWPayments Account Status
 - Live API key: `AMR6DQS-1W3dandG-Q05A056-KQHZAQH`
