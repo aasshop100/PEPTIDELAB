@@ -60,6 +60,29 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 
 ## Session Log
 
+### 2026-05-29 — Full payment system + EmailJS templates
+
+#### Completed
+- Added USDT TRC20 live checkout via NOWPayments (same flow as BTC)
+- Updated Shipping & Payment section on index.html — Bitcoin instant, bank transfer via Telegram +10%
+- Updated FAQ payment answer to match
+- Set up Make.com webhook backup — Gmail alert to lstrmrcd@gmail.com on every confirmed payment
+- Connected NOWPayments IPN to Make.com webhook URL: `https://hook.eu1.make.com/th4pc042xqiriq66oi53p4ld1luhbhyk`
+- IPN secret key generated: `kRbxQzyw7ITqh+Vme+W0stdGpoOAZ9VW` (saved in NOWPayments dashboard)
+- Disabled custody — payments now auto-forward directly to BTC wallet
+- Added USDT TRC20 payout wallet: `TYTKUPjWeBTVwkdkBWcHV6MWaj1A5XLHnS`
+- Updated admin EmailJS template (`template_gdh1w1b`) — new white/black/gray theme
+- Updated customer EmailJS template (`template_moknerc`) — "Payment Confirmed", tracking 2–3 days, delivery 15–20 days
+
+#### NOWPayments Account Status
+- Live API key: `AMR6DQS-1W3dandG-Q05A056-KQHZAQH`
+- BTC payout wallet: `15TaeVPBDpQcxpW9Ndc1fAK4AuBei28yTL`
+- USDT TRC20 payout wallet: `TYTKUPjWeBTVwkdkBWcHV6MWaj1A5XLHnS`
+- Custody: Disabled ✅
+- Account verification: **Pending** (KYC not completed yet)
+
+---
+
 ### 2026-05-29 — NOWPayments Bitcoin integration
 
 #### Completed
@@ -128,9 +151,8 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 ## Pending / Future Plans
 
 ### 🔴 Next Session (Priority)
-- [ ] Update **Shipping & Payment section** on index.html — add bank transfer note: "For bank transfer, contact us on Telegram. Note: 10% additional fee applies."
-- [ ] Update **admin EmailJS template** (`template_gdh1w1b`) to match new theme — user to paste current HTML code
-- [ ] Update **customer EmailJS template** (`template_moknerc`) — add BTC vs USDT split messaging (BTC = "payment confirmed", USDT = "instructions within 24h")
+- [ ] Add real product photos to replace `samplepic.jpg` placeholders
+- [ ] Verify account on NOWPayments (KYC) — needed for payouts
 
 ### 🟡 Soon
 - [ ] Real test of Bitcoin payment end-to-end (confirmed NOWPayments minimum is ~$10+ USD worth of BTC)
