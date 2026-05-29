@@ -60,6 +60,26 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 
 ## Session Log
 
+### 2026-05-29 — NOWPayments Bitcoin integration
+
+#### Completed
+- Created NOWPayments account, connected BTC payout wallet (`15TaeVPBDpQcxpW9Ndc1fAK4AuBei28yTL`)
+- Integrated NOWPayments into cart.html — live Bitcoin checkout with QR code, address, 20min timer, auto-polling
+- Removed Bank Transfer from payment dropdown (BTC + USDT TRC20 only)
+- Added 0.5% crypto processing fee row to order summary when BTC selected
+- Added "keep tab open" warning banner on payment overlay
+- USDT TRC20 keeps existing EmailJS manual flow unchanged
+- Confirmed NOWPayments minimum BTC payment is ~$10+ USD
+
+#### Commits
+| Hash | Description |
+|---|---|
+| `f99c4ed` | Add NOWPayments Bitcoin checkout to cart.html |
+| `53fd3b0` | Add keep-tab-open warning to Bitcoin payment overlay |
+| `2fc130d` | Revert test changes (HGH $15 variant + FREESHIP code) |
+
+---
+
 ### 2026-05-29 — Full redesign + bug fixes
 
 #### Theme Overhaul
@@ -108,70 +128,43 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 ## Pending / Future Plans
 
 ### 🔴 Next Session (Priority)
-- [ ] **NOWPayments integration** — full crypto payment flow on cart.html (see Crypto Payment Plan below)
 - [ ] Update **Shipping & Payment section** on index.html — add bank transfer note: "For bank transfer, contact us on Telegram. Note: 10% additional fee applies."
-- [ ] Update **admin EmailJS template** (`template_gdh1w1b`) to match new theme (user to send current code)
+- [ ] Update **admin EmailJS template** (`template_gdh1w1b`) to match new theme — user to paste current HTML code
+- [ ] Update **customer EmailJS template** (`template_moknerc`) — add BTC vs USDT split messaging (BTC = "payment confirmed", USDT = "instructions within 24h")
 
 ### 🟡 Soon
-- [ ] Add real product photos to replace `samplepic.jpg` placeholders across all products
-- [ ] Consider adding discount code section visibility improvements
+- [ ] Real test of Bitcoin payment end-to-end (confirmed NOWPayments minimum is ~$10+ USD worth of BTC)
+- [ ] Consider Make.com webhook as backup if customers report missed confirmation emails (tab closed before confirmation)
+- [ ] Add real product photos to replace `samplepic.jpg` placeholders
 - [ ] Cookie banner on mobile is large — may want to slim it down
 
 ### 🟢 Cleanup
-- [ ] Deleted image files (`bpc10mgghkcu50mgtb50010mg.png`, `ll37.png`, `survodutide.png`, `thymalinthymulin.png`) are still showing as deleted in git — can be cleaned up with `git rm`
+- [ ] Deleted image files (`bpc10mgghkcu50mgtb50010mg.png`, `ll37.png`, `survodutide.png`, `thymalinthymulin.png`) still showing as deleted in git — clean up with `git rm`
 
 ---
 
-## Crypto Payment Plan (NOWPayments)
+## NOWPayments Integration (LIVE as of 2026-05-29)
 
-### Decisions Made (2026-05-29)
-- **Provider:** NOWPayments (nowpayments.io)
-- **Mode:** Custodial (NOWPayments receives payment, auto-forwards to merchant wallet)
-- **Accepted coins:** Bitcoin (BTC) only for now — USDT TRC20 to be added later
-- **Fee:** 1% per BTC transaction (conversion to USDT) — added on top of order total, customer pays it
-- **Sign up:** Free, no monthly fees, no setup fees
-- **Bank transfer:** Removed from checkout flow. Instead, add a note on the site:
-  > *"For bank transfer, contact us on our Telegram group. Note: 10% additional fee applies."*
-  > Link to: https://t.me/peptidelabworld
+### Setup
+- **Provider:** NOWPayments (nowpayments.io) — account created by Lester
+- **API Key:** `AMR6DQS-1W3487G-Q05A056-KQHZAQH` (live, in cart.html)
+- **Payout wallet:** BTC — `15TaeVPBDpQcxpW9Ndc1fAK4AuBei28yTL`
+- **Fee:** 0.5% (BTC → BTC, no conversion) — passed to customer
+- **Minimum payment:** ~$10+ USD worth of BTC (NOWPayments enforces this)
+- **Bank transfer:** Removed from checkout. Note to be added on index.html pointing to Telegram
 
-### How It Works (Customer Flow)
-1. Customer fills cart + order form as normal
-2. Clicks "Place Order"
-3. Page shows NOWPayments hosted checkout — Bitcoin amount + QR code + wallet address + 20min timer
-4. Customer pays from their Bitcoin wallet
-5. NOWPayments detects payment on blockchain in real-time
-6. Screen auto-updates: "Payment confirmed!"
-7. Customer redirected to thank you page
-8. NOWPayments auto-forwards funds (converted to USDT) to merchant wallet
-9. Webhook triggers order confirmation email (needs Make.com or Netlify Function)
+### How It Works (Built & Live)
+1. Customer selects Bitcoin (BTC) at checkout
+2. Clicks "Place Order" → browser calls NOWPayments API → creates invoice
+3. Payment overlay shows: BTC amount, QR code, wallet address, 20min countdown
+4. Warning shown: *"Keep this tab open until confirmed"*
+5. Browser polls NOWPayments every 15 seconds
+6. On confirmation: EmailJS fires (admin + customer emails) → cart cleared → redirect to thankyou.html
+7. NOWPayments forwards BTC to merchant wallet
 
-### Integration Steps (To Do Next Session)
-1. Lester signs up at nowpayments.io
-2. Connects USDT TRC20 payout wallet
-3. Enables Bitcoin as accepted coin
-4. Gets API key from dashboard
-5. Shares API key — Claude integrates into cart.html
-6. Set up webhook handler (Make.com free tier recommended)
-7. Test with small real transaction
-8. Go live
-
-### Key NOWPayments Facts (Verified)
-- Signup: Free ✅
-- Monthly fees: None ✅
-- USDT TRC20 supported: Yes ✅
-- BTC supported: Yes ✅
-- Fee: 0.5% same-currency, 1% with conversion ✅
-
----
-
-### 2026-05-29 — Crypto Payment Brainstorm Session
-- Discussed live crypto payment options for static GitHub Pages site
-- Evaluated: NOWPayments (Option A), Coinbase Commerce (Option B), Netlify migration (Option C)
-- Explained custodial vs non-custodial modes — user chose **custodial** (simpler)
-- Decided on **Bitcoin only** to start, USDT TRC20 later
-- Bank transfer removed from checkout — replaced with Telegram contact note + 10% fee warning
-- Customer template rebuilt with new theme + Telegram button (pending paste into EmailJS)
-- Admin template still pending (user to send code next session)
+### Known Limitation
+- Emails only fire if customer keeps the browser tab open during confirmation (10–30 min)
+- Make.com webhook can be added later as a backup if needed
 
 ---
 
