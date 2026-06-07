@@ -60,6 +60,18 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 
 ## Session Log
 
+### 2026-06-07 — Telegram popup redesign + proof gallery update
+
+#### Completed
+- Updated Telegram popup on `index.html` — new title "DOMESTIC WAREHOUSES", eyebrow "Now Available"
+- Added warehouse pill list (🇦🇺 Australia / 🇺🇸 USA / 🇪🇺 Europe) with gray card styling
+- Updated popup body copy to: "Join our Telegram community for the latest product releases, updates, and announcements, or send us an email to check product availability, pricing, and shipping options."
+- Added `.tg-popup-warehouses` styles to `style.css` (pill list, gap, border, border-radius)
+- Added 3 new images to `proofs.html`: `proof31.jpg` (top of delivery section), `ship11.jpg` + `ship12.jpg` (bottom of pre-shipment section)
+- Committed and pushed all changes — commit `da02192`
+
+---
+
 ### 2026-05-29 — Full payment system + EmailJS templates
 
 #### Completed
@@ -157,12 +169,7 @@ Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #fffff
 
 ### 🟡 Soon
 - [ ] Real test of Bitcoin payment end-to-end (confirmed NOWPayments minimum is ~$10+ USD worth of BTC)
-- [ ] Consider Make.com webhook as backup if customers report missed confirmation emails (tab closed before confirmation)
-- [ ] Add real product photos to replace `samplepic.jpg` placeholders
 - [ ] Cookie banner on mobile is large — may want to slim it down
-
-### 🟢 Cleanup
-- [ ] Deleted image files (`bpc10mgghkcu50mgtb50010mg.png`, `ll37.png`, `survodutide.png`, `thymalinthymulin.png`) still showing as deleted in git — clean up with `git rm`
 
 ---
 
