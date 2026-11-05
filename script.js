@@ -11,6 +11,7 @@
 const WAREHOUSES = [
   {
     id: "us1",
+    group: "us",
     name: "US Warehouse 1",
     scope: "USA Domestic Only",
     freight: 30,
@@ -19,6 +20,7 @@ const WAREHOUSES = [
   },
   {
     id: "us2",
+    group: "us",
     name: "US Warehouse 2",
     scope: "USA Domestic Only",
     freight: 30,
@@ -27,6 +29,7 @@ const WAREHOUSES = [
   },
   {
     id: "us3",
+    group: "us",
     name: "US Warehouse 3",
     scope: "USA Domestic Only",
     freight: 30,
@@ -35,6 +38,7 @@ const WAREHOUSES = [
   },
   {
     id: "us4",
+    group: "us",
     name: "US Warehouse 4",
     scope: "USA Domestic Only",
     freight: 30,
@@ -43,6 +47,7 @@ const WAREHOUSES = [
   },
   {
     id: "ca",
+    group: "ca",
     name: "Canada Warehouse",
     scope: "Canada Domestic Only",
     freight: 30,
@@ -51,6 +56,7 @@ const WAREHOUSES = [
   },
   {
     id: "au",
+    group: "au",
     name: "Australia Warehouse",
     scope: "Australia Domestic Only",
     freight: 30,
@@ -59,6 +65,7 @@ const WAREHOUSES = [
   },
   {
     id: "pl",
+    group: "pl",
     name: "Poland Warehouse",
     scope: "Selected European Countries Only",
     freight: 30,
@@ -228,12 +235,15 @@ function renderWarehouses() {
   const wrap = document.getElementById("warehouse-grid");
   if (!wrap) return;
 
+  const inCart = new Set(getCart().map(i => i.warehouseId));
+
   wrap.innerHTML = WAREHOUSES.map(w => {
     const count = CATALOG[w.id].length;
     const active = w.id === selectedWarehouseId;
+    const has = inCart.has(w.id);
     return `
-      <button class="wh-card${active ? " active" : ""}" data-wh="${w.id}" onclick="selectWarehouse('${w.id}')">
-        <span class="wh-name">${w.name}</span>
+      <button class="wh-card${active ? " active" : ""}${has ? " in-cart" : ""}" data-wh="${w.id}" onclick="selectWarehouse('${w.id}')">
+        <span class="wh-name">${w.name}${has ? ' <span class="wh-tick">● in your order</span>' : ""}</span>
         <span class="wh-scope">${w.scope}</span>
         <span class="wh-meta">${count} products · $${w.freight} freight · ${w.delivery}</span>
       </button>
@@ -241,16 +251,35 @@ function renderWarehouses() {
   }).join("");
 }
 
+// The shipping group a cart currently belongs to (null when empty).
+// Items may be mixed freely WITHIN a group — that is how the four US
+// warehouses can appear on one order — but never across groups, because
+// a US parcel and a Poland parcel are different shipments entirely.
+function cartGroup() {
+  const cart = getCart();
+  if (!cart.length) return null;
+  const w = getWarehouse(cart[0].warehouseId);
+  return w ? w.group : null;
+}
+
+// Distinct warehouses represented in the cart, in catalog order.
+function cartWarehouses() {
+  const ids = [...new Set(getCart().map(i => i.warehouseId))];
+  return WAREHOUSES.filter(w => ids.includes(w.id));
+}
+
 function selectWarehouse(id) {
   const cart = getCart();
+  const to = getWarehouse(id);
+  const group = cartGroup();
 
-  // Cart is locked to one warehouse. Switching means starting over.
-  if (cart.length > 0 && selectedWarehouseId && id !== selectedWarehouseId) {
-    const from = getWarehouse(selectedWarehouseId);
-    const to = getWarehouse(id);
+  // Only a cross-GROUP switch empties the cart. Moving between US warehouses
+  // keeps everything, so a customer can take items from several of them.
+  if (cart.length > 0 && group && to && to.group !== group) {
+    const from = cartWarehouses().map(w => w.name).join(" + ");
     const ok = confirm(
-      `Your cart has ${cart.length} item${cart.length > 1 ? "s" : ""} from ${from ? from.name : "another warehouse"}.\n\n` +
-      `Each warehouse ships separately, so an order can only come from one of them.\n\n` +
+      `Your cart has ${cart.length} item${cart.length > 1 ? "s" : ""} from ${from}.\n\n` +
+      `${to.name} ships from a different country, so it cannot be combined with that order.\n\n` +
       `Switch to ${to.name} and empty your cart?`
     );
     if (!ok) return;
@@ -374,6 +403,7 @@ function addToCart(code, e) {
 
   saveCart(cart);
   updateCartCount();
+  renderWarehouses(); // refresh the "in your order" marker on the cards
   showToast(`${product.name} added to cart`);
 }
 

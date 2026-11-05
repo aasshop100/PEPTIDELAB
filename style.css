@@ -2214,3 +2214,66 @@ img { max-width: 100%; }
 .warehouses .section-sub { max-width: 560px; }
 .catalog-panel .section-header { margin-bottom: 1.75rem; }
 .catalog-panel .section-header h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); }
+
+/* --- Warehouses already in the cart (US warehouses can be combined) --- */
+.wh-card.in-cart { border-color: #111111; }
+.wh-tick {
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #25D366;
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+.wh-card.active .wh-tick { color: #6ee7a0; }
+.item-wh { color: var(--accent); font-weight: 500; }
+
+/* ==================================================================
+   v2 mobile corrections (2026-11-05)
+   ================================================================== */
+
+/* The v1 mobile block pulls .hero-stats up by -4rem. That suited the old
+   hero (banner image + two buttons); with the v2 stacked hero it dragged
+   the stats row UP THROUGH the "Choose Your Warehouse" button, so the
+   button sat on top of the numbers. */
+@media (max-width: 900px) {
+  .hero-below .hero-stats { margin-top: 0; }
+  .hero-below { gap: 0; padding: 2.5rem 5% 2rem; }
+  .hero-below .hero-actions { gap: 1rem; margin-bottom: 2rem; }
+}
+
+/* Both floating buttons now live on the RIGHT, stacked. Card and table text
+   is left-aligned, so a bottom-left button sat directly on top of it; the
+   right edge is whitespace. */
+.wa-float { left: auto; right: 2rem; bottom: 5.5rem; }
+
+@media (max-width: 640px) {
+  .wa-float { left: auto; right: 1rem; bottom: 4.75rem; padding: 0.6rem; }
+  .floating-cart { right: 1rem; bottom: 1rem; }
+  /* let the last rows clear the stacked buttons */
+  .catalog-footnote { padding-bottom: 3.5rem; }
+}
+
+@media (max-width: 640px) {
+  /* Keep both floats tight in the corner, and stop centred copy running
+     under them — a narrower measure reads better on a phone anyway. */
+  .wa-float { right: 0.9rem; bottom: 4.25rem; padding: 0.55rem; }
+  .wa-float svg { width: 18px; height: 18px; }
+  .floating-cart { right: 0.9rem; bottom: 0.9rem; }
+  .hero-below .hero-sub,
+  .section-sub { max-width: 290px; margin-left: auto; margin-right: auto; }
+}
+
+@media (max-width: 640px) {
+  .wa-float { right: 0.6rem; }
+  .hero-below .hero-sub,
+  .section-sub { max-width: 272px; }
+}
+
+@media (max-width: 640px) {
+  /* .warehouses .section-sub (0,2,0) outranks a bare .section-sub, so the
+     mobile cap has to match that specificity or it never applies. */
+  .warehouses .section-sub,
+  .catalog-panel .section-sub,
+  .hero-below .hero-sub { max-width: 272px; margin-left: auto; margin-right: auto; }
+}

@@ -255,7 +255,7 @@
             <span id="summary-subtotal">$0.00</span>
           </div>
           <div class="summary-row">
-            <span>Freight</span>
+            <span id="freight-label">Freight</span>
             <span id="summary-shipping">$30.00</span>
           </div>
           <div class="summary-row" id="discount-row" style="display:none;">
@@ -338,17 +338,31 @@
     let appliedDiscount = 0;
     let appliedCode = "";
 
-    // Warehouse for this cart. Every line carries its own warehouseId; they are
-    // all the same because the storefront locks a cart to one warehouse.
+    // A cart may hold items from several warehouses in the SAME shipping group
+    // (the four US ones). Each warehouse is a separate parcel, so each charges
+    // its own freight: US1 + US2 = $60.
     function cartWarehouse() {
       const cart = getCart();
       if (!cart.length) return null;
       return getWarehouse(cart[0].warehouseId);
     }
 
+    function cartWarehouseList() {
+      const ids = [...new Set(getCart().map(i => i.warehouseId))];
+      return WAREHOUSES.filter(w => ids.includes(w.id));
+    }
+
     function shippingFee() {
-      const w = cartWarehouse();
-      return w ? w.freight : 30;
+      return cartWarehouseList().reduce((sum, w) => sum + w.freight, 0);
+    }
+
+    // Countries every warehouse in the cart can reach. Within a group these are
+    // identical, but an intersection is the correct rule and stays correct if a
+    // group ever mixes destinations.
+    function allowedCountries() {
+      const list = cartWarehouseList();
+      if (!list.length) return [];
+      return list.reduce((acc, w) => acc.filter(c => w.ships.includes(c)), [...list[0].ships]);
     }
 
     function lineTotal(item) { return item.price * (item.qty || 1); }
@@ -359,34 +373,48 @@
     // ========== RENDER ==========
     function renderWarehouseBanner() {
       const el = document.getElementById("wh-banner");
-      const w = cartWarehouse();
-      if (!el || !w) return;
-      el.innerHTML =
-        `<span>Shipping from <strong>${w.name}</strong> <span class="wh-banner-scope">· ${w.scope}</span></span>` +
-        `<span class="wh-banner-scope">$${w.freight} freight · delivery within ${w.delivery}</span>`;
+      const list = cartWarehouseList();
+      if (!el || !list.length) return;
+
+      if (list.length === 1) {
+        const w = list[0];
+        el.innerHTML =
+          `<span>Shipping from <strong>${w.name}</strong> <span class="wh-banner-scope">· ${w.scope}</span></span>` +
+          `<span class="wh-banner-scope">$${w.freight} freight · delivery within ${w.delivery}</span>`;
+      } else {
+        el.innerHTML =
+          `<span><strong>${list.length} separate parcels</strong> <span class="wh-banner-scope">· ${list.map(w => w.name).join(" + ")}</span></span>` +
+          `<span class="wh-banner-scope">$${shippingFee()} freight total — $30 per warehouse</span>`;
+      }
 
       const info = document.getElementById("shipping-info-text");
-      if (info) info.innerHTML = `<strong>${w.name}</strong> · ${w.scope}<br>$${w.freight} flat freight · delivery within ${w.delivery}`;
+      if (info) {
+        info.innerHTML = list.map(w =>
+          `<strong>${w.name}</strong> · $${w.freight} · ${w.delivery}`).join("<br>") +
+          (list.length > 1 ? `<br><span style="color:var(--text-muted);">Each warehouse ships its own parcel, so they may arrive separately.</span>` : "");
+      }
     }
 
     function renderCountryOptions() {
       const sel = document.getElementById("country");
       const note = document.getElementById("country-note");
-      const w = cartWarehouse();
-      if (!sel || !w) return;
+      const list = cartWarehouseList();
+      if (!sel || !list.length) return;
 
+      const countries = allowedCountries();
+      const label = list.length === 1 ? list[0].name : "These warehouses";
       const previous = sel.value;
       sel.innerHTML =
         `<option value="" disabled${previous ? "" : " selected"}>Select country</option>` +
-        w.ships.map(c => `<option value="${c}"${c === previous ? " selected" : ""}>${c}</option>`).join("");
+        countries.map(c => `<option value="${c}"${c === previous ? " selected" : ""}>${c}</option>`).join("");
 
-      if (w.ships.length === 1) {
-        sel.value = w.ships[0];
+      if (countries.length === 1) {
+        sel.value = countries[0];
         sel.classList.add("country-locked");
-        note.textContent = `${w.name} ships domestically within ${w.ships[0]} only.`;
+        note.textContent = `${label} ship${list.length === 1 ? "s" : ""} domestically within ${countries[0]} only.`;
       } else {
         sel.classList.remove("country-locked");
-        note.textContent = `${w.name} ships to ${w.ships.length} countries. Not listed? Choose a different warehouse.`;
+        note.textContent = `${label} ship to ${countries.length} countries. Not listed? Choose a different warehouse.`;
       }
     }
 
@@ -407,11 +435,13 @@
       empty.style.display = "none";
       content.style.display = "grid";
 
+      const multi = cartWarehouseList().length > 1;
+
       document.getElementById("cart-items").innerHTML = cart.map((item, idx) => `
         <div class="cart-item">
           <div class="cart-item-info">
             <h4>${item.name}</h4>
-            <p>${item.code} · ${item.size}</p>
+            <p>${item.code} · ${item.size}${multi ? ` · <span class="item-wh">${item.warehouseName}</span>` : ""}</p>
           </div>
           <div class="cart-item-right">
             <div class="qty-controls">
@@ -442,6 +472,12 @@
       const subtotal = cartSubtotal();
       const ship = shippingFee();
       const total = Math.max(0, subtotal + ship - appliedDiscount);
+
+      const whCount = cartWarehouseList().length;
+      const freightLabel = document.getElementById("freight-label");
+      if (freightLabel) {
+        freightLabel.textContent = whCount > 1 ? `Freight (${whCount} × $30)` : "Freight";
+      }
 
       document.getElementById("summary-subtotal").textContent = "$" + subtotal.toFixed(2);
       document.getElementById("summary-shipping").textContent = "$" + ship.toFixed(2);
@@ -540,15 +576,28 @@
       // Column order MUST match the <thead> in both EmailJS templates:
       // Item | Qty | Unit | Total. The size is folded into the item description
       // so the row is 4 cells in both.
-      const itemsHtml = cart.map(i => `
+      const list = cartWarehouseList();
+      const row = i => `
         <tr>
           <td style="padding:10px 16px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;font-size:13px;">${i.code} — ${i.name} <span style="color:#777777;">(${i.size})</span></td>
           <td align="center" style="padding:10px 16px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;font-size:13px;">${i.qty || 1}</td>
           <td align="right" style="padding:10px 16px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;font-size:13px;">$${i.price.toFixed(2)}</td>
           <td align="right" style="padding:10px 16px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;font-size:13px;">$${lineTotal(i).toFixed(2)}</td>
-        </tr>`).join("");
+        </tr>`;
 
-      return { cart, w, subtotal, ship, total, itemsHtml };
+      // One warehouse: a plain list. Several: group under a header per warehouse,
+      // because each one is a separate parcel with its own $30 freight and the
+      // packer needs to see which items go together.
+      const itemsHtml = list.length === 1
+        ? cart.map(row).join("")
+        : list.map(wh => `
+        <tr>
+          <td colspan="4" style="padding:10px 16px;background-color:#f7f7f7;border-top:2px solid #111111;border-bottom:1px solid #e0e0e0;color:#111111;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;">
+            ${wh.name} — separate parcel, $${wh.freight} freight
+          </td>
+        </tr>` + cart.filter(i => i.warehouseId === wh.id).map(row).join("")).join("");
+
+      return { cart, w, list, subtotal, ship, total, itemsHtml };
     }
 
     document.getElementById("order-form").addEventListener("submit", async function (e) {
@@ -560,13 +609,14 @@
       const cart = getCart();
       if (!cart.length) { errEl.textContent = "Your cart is empty."; return; }
 
-      const w = cartWarehouse();
       const country = document.getElementById("country").value;
 
-      // Country gate — a warehouse can only ship where it is allowed to ship.
+      // Country gate — EVERY warehouse in the cart must be able to reach the
+      // destination, not just the first one.
       if (!country) { errEl.textContent = "Please select a country."; return; }
-      if (w && !w.ships.includes(country)) {
-        errEl.textContent = `${w.name} cannot ship to ${country}. Please choose a different warehouse.`;
+      const blocked = cartWarehouseList().filter(w => !w.ships.includes(country));
+      if (blocked.length) {
+        errEl.textContent = `${blocked.map(w => w.name).join(" and ")} cannot ship to ${country}. Please choose a different warehouse.`;
         return;
       }
 
@@ -574,7 +624,7 @@
       btn.disabled = true;
       btn.textContent = "Placing order...";
 
-      const { subtotal, ship, total, itemsHtml } = buildOrderData();
+      const { subtotal, ship, total, itemsHtml, list } = buildOrderData();
       const orderId = makeOrderId();
 
       const first = document.getElementById("first_name").value.trim();
@@ -587,9 +637,13 @@
       const templateParams = {
         // v2 additions — both EmailJS templates use these.
         order_id: orderId,
-        warehouse: w ? w.name : "",
-        warehouse_scope: w ? w.scope : "",
-        delivery_days: w ? w.delivery : "",
+        // With several warehouses this reads "US Warehouse 1 + US Warehouse 3",
+        // and the email's item table is grouped per warehouse.
+        warehouse: list.map(x => x.name).join(" + "),
+        warehouse_scope: list.length > 1
+          ? `${list.length} separate parcels · ${list[0].scope}`
+          : (list[0] ? list[0].scope : ""),
+        delivery_days: [...new Set(list.map(x => x.delivery))].join(" / "),
         order_date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
 
         customer_name: `${first} ${last}`,
