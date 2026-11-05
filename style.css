@@ -2200,3 +2200,17 @@ img { max-width: 100%; }
   .price-table thead th,
   .price-table tbody td { padding: 0.65rem 0.45rem; }
 }
+
+/* The warehouse section heading was invisible: .section-header h2 is
+   color:var(--white) and the light-theme override list never included
+   .warehouses, so "Choose Your Warehouse" rendered #ffffff on #ffffff.
+   It read as a block of empty space above the cards. */
+.warehouses .section-header h2 { color: #111111; }
+
+/* Tighter top of the warehouse section (the Step eyebrows are gone). */
+.warehouses { padding: 2rem 5% 3rem; }
+.warehouses .section-header { margin-bottom: 1.75rem; }
+.warehouses .section-header h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); }
+.warehouses .section-sub { max-width: 560px; }
+.catalog-panel .section-header { margin-bottom: 1.75rem; }
+.catalog-panel .section-header h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); }
