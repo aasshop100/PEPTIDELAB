@@ -332,6 +332,24 @@
     // For fixed amount:  { type: "fixed",   value: 50 }
     // For percentage:    { type: "percent", value: 10 }
     // ========================================
+    // ========== ORDER CAPTURE (Google Apps Script → Back Office sheet) ==========
+    // Writes the order to the Orders / Order Items tabs. Deliberately BEST EFFORT:
+    // it runs only AFTER both emails are away, and a failure here never blocks the
+    // customer's confirmation. The admin email remains the source of truth.
+    // Content-Type must stay text/plain: anything else triggers a CORS preflight,
+    // and Apps Script web apps do not answer OPTIONS.
+    const ORDER_CAPTURE_URL = "https://script.google.com/macros/s/AKfycbxz2fTG4brR4THXU7uhBVD3woM0e6_7wWIptCXN2w5FRu5K9JbZu2P6KqYOEiwWgWeA9A/exec";
+
+    async function captureOrder(payload) {
+      const res = await fetch(ORDER_CAPTURE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+        redirect: "follow"
+      });
+      return res.ok;
+    }
+
     const DISCOUNT_CODES = {
       // "FREESHIP": { type: "fixed",   value: 30 },
       // "LAUNCH10": { type: "percent", value: 10 },
@@ -671,8 +689,38 @@
         await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
         await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
 
+        // Emails are away, so the order cannot be lost from here on. Record it in
+        // the back-office sheet; if that fails, the order still stands and the
+        // admin email carries everything needed to add the row by hand.
+        let captured = false;
+        try {
+          captured = await captureOrder({
+            action: "order",
+            orderId: orderId,
+            orderDate: templateParams.order_date,
+            warehouse: templateParams.warehouse,
+            totalUsd: total,
+            notes: templateParams.notes,
+            customer: {
+              name: templateParams.customer_name,
+              email: templateParams.customer_email,
+              phone: templateParams.customer_phone,
+              address: templateParams.full_address,
+              country: country
+            },
+            items: cart.map(function (i) {
+              return {
+                code: i.code, name: i.name, size: i.size,
+                price: i.price, qty: i.qty || 1, warehouse: i.warehouseName
+              };
+            })
+          });
+        } catch (capErr) {
+          console.error("Order capture failed (order is still valid, email sent):", capErr);
+        }
+
         localStorage.removeItem("peptidelab_cart");
-        window.location.href = "thankyou.html";
+        window.location.href = captured ? "thankyou.html" : "thankyou.html?capture=failed";
       } catch (err) {
         console.error("EmailJS error:", err);
         errEl.innerHTML = 'Could not send your order. Please try again, or <a href="https://wa.me/85261940799" target="_blank" rel="noopener noreferrer">message us on WhatsApp</a>.';
