@@ -80,7 +80,7 @@ There is **no payment processor**. NOWPayments was removed in v2.0.
 ## EmailJS
 | Key | Value |
 |---|---|
-| Service | `service_ju3widv` |
+| Service | `service_hko2z7s` — recreated 2026-11-05 after the old `service_ju3widv` Gmail grant died |
 | Admin template | `template_gdh1w1b` — order notification to store |
 | Customer template | `template_moknerc` — confirmation to buyer |
 
