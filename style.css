@@ -2277,3 +2277,50 @@ img { max-width: 100%; }
   .catalog-panel .section-sub,
   .hero-below .hero-sub { max-width: 272px; margin-left: auto; margin-right: auto; }
 }
+
+/* ==================================================================
+   FLOATING BUTTON STACK — single source of truth (2026-11-05)
+   Supersedes every earlier .wa-float / .back-to-top / .floating-cart
+   position rule above. They had drifted into a collision: .back-to-top
+   sat at bottom 6rem/right 2rem and .wa-float at bottom 5.5rem/right 2rem,
+   so they overlapped, and the WhatsApp pill was a different shape and size
+   from the two circles.
+
+   All three are now identical circles in one right-aligned column with
+   even spacing. .back-to-top is the TOP of the stack on purpose: it is the
+   only one that appears and disappears on scroll, so putting it last means
+   the other two never move when it toggles.
+   ================================================================== */
+:root {
+  --fab-size: 44px;
+  --fab-gap: 0.6rem;
+  --fab-right: 2rem;
+  --fab-bottom: 2rem;
+}
+
+.floating-cart,
+.wa-float,
+.back-to-top {
+  right: var(--fab-right);
+  left: auto;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.floating-cart { bottom: var(--fab-bottom); }
+.wa-float      { bottom: calc(var(--fab-bottom) + (var(--fab-size) + var(--fab-gap))); }
+.back-to-top   { bottom: calc(var(--fab-bottom) + 2 * (var(--fab-size) + var(--fab-gap))); }
+
+.wa-float-label { display: none; }
+.wa-float svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+@media (max-width: 640px) {
+  :root { --fab-right: 1rem; --fab-bottom: 1rem; --fab-size: 42px; }
+  .wa-float svg { width: 19px; height: 19px; }
+}
