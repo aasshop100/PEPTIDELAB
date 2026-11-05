@@ -77,6 +77,34 @@ There is **no payment processor**. NOWPayments was removed in v2.0.
 - **Nothing automates the quote or confirms payment.** There is no watcher, no chain parsing, no
   confirmation email on payment. That is all manual, unlike God Muscle Gears.
 
+## Order capture → Back Office sheet (added 2026-11-05)
+Every order is written to the **PEPTIDELAB — Back Office** spreadsheet
+(`1p3BHO9wvxjCtzKlhs1v33B0Q3W6QQ8fCOKdggvl2GFE`) by a Google Apps Script web app,
+the same pattern Biopep and God Muscle Gears use.
+
+- **Script source:** `peptidelabfiles/backoffice/Code.gs` — **deliberately OUTSIDE this repo**,
+  which is public. It is pasted into the sheet by hand (Extensions → Apps Script) and deployed
+  as a Web App with **Execute as: Me** and **Who has access: Anyone**.
+- **Endpoint:** `ORDER_CAPTURE_URL` in `cart.html`.
+- Writes one row to `Orders` (status `NEW`) and one row per line to `Order Items`.
+
+**Rules that hold it together**
+- **Emails first, capture second.** The capture runs only after both EmailJS sends resolve, so a
+  sheet failure can never cost a customer their confirmation. **The admin email is the source of
+  truth; the sheet is a convenience.** A failed capture redirects to
+  `thankyou.html?capture=failed` and logs to the console — visible, never silent.
+- **`Content-Type` must stay `text/plain`.** Anything else triggers a CORS preflight and Apps
+  Script web apps do not answer `OPTIONS`.
+- **The script is idempotent** — an `orderId` already present in `Orders` is never written twice.
+- ⚠️ **The endpoint is PUBLIC.** The URL sits in `cart.html` on a public site, so anyone can post
+  to it. The script validates shape and size instead. This cannot be made private while the site
+  is static — Biopep and GMG carry the same exposure.
+- ⚠️ **Verify the deployment ANONYMOUSLY.** It first went out closed and returned `403` to the
+  world while looking perfectly fine in a signed-in browser. `curl` the `/exec` URL and expect
+  `{"ok":true,...}`; an incognito window works too. Never judge it from a signed-in tab.
+- ⚠️ **Editing an existing deployment keeps the URL. A NEW deployment changes it** — and
+  `cart.html` hardcodes it, exactly like the EmailJS service id that broke checkout twice.
+
 ## EmailJS
 | Key | Value |
 |---|---|
