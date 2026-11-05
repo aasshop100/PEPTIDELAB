@@ -1,206 +1,166 @@
 # PeptideLab — Project Documentation
 
+> ⚠️ **THIS REPO IS PUBLIC** (`aasshop100/PEPTIDELAB`) and GitHub Pages publishes every file in it.
+> **Never put an API key, secret, password or private note in this repo.** Anything committed here
+> stays in git history forever, even after the file is deleted. See "Security" below.
+
 ## Project Overview
-E-commerce peptide store at **peptidelab.world** (GitHub Pages). Static HTML/CSS/JS site — no framework, no build step. Orders go through EmailJS. Cart persists in `localStorage`.
+E-commerce peptide store at **peptidelab.world** (GitHub Pages). Static HTML/CSS/JS — no framework, no build step.
+**v2.0 (2026-11-05)** rebuilt the site around **warehouse-first ordering**: the customer picks one of 7 domestic
+warehouses, sees only that warehouse's price list, and the cart is locked to it. Orders are emailed via EmailJS.
+Payment is **crypto only, handled manually** — no payment processor. Cart persists in `localStorage`.
 
 ## File Structure
 | File | Purpose |
 |---|---|
-| `index.html` | Main storefront — hero, products, about, reviews, shipping, FAQ, contact |
-| `cart.html` | Cart + order form → sends via EmailJS |
-| `proofs.html` | Proof of delivery gallery with lightbox |
-| `calculator.html` | Peptide reconstitution & dosage calculator |
+| `index.html` | Storefront — hero, warehouse picker, price table |
+| `cart.html` | Cart + order form → EmailJS. Country gating, manual crypto details |
+| `calculator.html` | Peptide reconstitution calculator (cellgenic-style) |
 | `privacy.html` / `terms.html` | Legal pages |
-| `thankyou.html` | Post-order confirmation page |
-| `script.js` | All product data + rendering logic |
-| `style.css` | All styles — uses CSS variables in `:root` |
+| `thankyou.html` | Post-order page — payment instructions, TRON-only warning |
+| `script.js` | `WAREHOUSES` + `CATALOG` data, warehouse picker, price table, cart helpers |
+| `style.css` | All styles. **v2 rules are appended at the very bottom** and override v1 |
+| `catalog-archive.js` | v1 product catalog, kept for reference. **Not loaded by any page** |
 
-## Current Theme (as of 2026-05-29)
-White/black/gray — clean minimal, inspired by baojuchem.com layout.
+## Theme
+White/black/gray, unchanged from v1.
 
 ```css
---bg: #ffffff
---surface: #ffffff       /* cards, sections */
---surface2: #f7f7f7      /* inner card elements, dropdowns */
---border: #e0e0e0
---accent: #111111        /* black — replaces old cyan */
---accent2: #888888       /* gray — replaces old green */
---text: #1a1a1a
---text-muted: #777777
+--bg: #ffffff        --surface: #ffffff     --surface2: #f7f7f7
+--border: #e0e0e0    --accent: #111111      --accent2: #888888
+--text: #1a1a1a      --text-muted: #777777
 ```
-
 **Logo:** PEPTIDE = black `#111111`, LAB = gray `#888888`
 
-## EmailJS Setup
+---
+
+## Warehouse model (the core of v2)
+Seven warehouses, each with **its own catalog and its own price for the same product code**.
+`TR10` is $113 in US Warehouse 1 and $118 in Canada — that is intended, not a bug.
+
+| ID | Name | Scope | Freight | Delivery | SKUs |
+|---|---|---|---|---|---|
+| `us1` | US Warehouse 1 | USA Domestic Only | $30 | 3–7 days | 20 |
+| `us2` | US Warehouse 2 | USA Domestic Only | $30 | 3–7 days | 15 |
+| `us3` | US Warehouse 3 | USA Domestic Only | $30 | 3–7 days | 29 |
+| `us4` | US Warehouse 4 | USA Domestic Only | $30 | 3–7 days | 11 |
+| `ca` | Canada Warehouse | Canada Domestic Only | $30 | 5–9 days | 10 |
+| `au` | Australia Warehouse | Australia Domestic Only | $30 | 3–7 days | 14 |
+| `pl` | Poland Warehouse | 24 selected EU countries | $30 | 6–9 days | 8 |
+
+**Rules that hold the model together:**
+- **One warehouse per order.** Switching warehouse with a non-empty cart prompts, then empties the cart
+  (`selectWarehouse()` in `script.js`). Mixing is impossible by design — each warehouse ships separately.
+- **Freight is charged once** because an order only ever comes from one warehouse.
+- **Country gating is enforced at checkout**, not just displayed. The country dropdown is built from the
+  warehouse's `ships` array, and submit is blocked if the country is not in it.
+- Prices are **per 10-vial kit**, in USD. Quantity 2 = 20 vials. There is no single-vial option.
+- Selection is stored in `localStorage` under `peptidelab_warehouse`; the cart under `peptidelab_cart`.
+  Every cart line carries `warehouseId` + `warehouseName`.
+
+**To change stock or pricing:** edit `CATALOG` in `script.js`, commit, push. No build, no database.
+Adding a warehouse means a new `WAREHOUSES` entry **and** a matching `CATALOG` key.
+
+---
+
+## Payment — crypto only, MANUAL
+There is **no payment processor**. NOWPayments was removed in v2.0.
+
+- Customer picks **USDT (TRON / TRC-20)** or **Bitcoin (BTC)** at checkout and places the order.
+- EmailJS sends the admin + customer emails. **You then quote the exact amount by email within 24 hours**,
+  or the customer messages WhatsApp for it.
+- Receiving addresses are displayed on `cart.html` and are **public by design** (they are receive-only).
+- ⚠️ **The copy must always say USDT is TRON-only.** A wrong amount is recoverable; a wrong *chain* is not.
+  The warning naming ERC-20 / BEP-20 / Polygon / Solana / Arbitrum appears on `cart.html` and `thankyou.html`.
+  Do not make it JS-conditional — the one instruction whose absence costs a customer their money must not
+  depend on a script running.
+- **Nothing automates the quote or confirms payment.** There is no watcher, no chain parsing, no
+  confirmation email on payment. That is all manual, unlike God Muscle Gears.
+
+## EmailJS
 | Key | Value |
 |---|---|
-| Service ID | (in cart.html) |
+| Service | `service_ju3widv` |
 | Admin template | `template_gdh1w1b` — order notification to store |
 | Customer template | `template_moknerc` — confirmation to buyer |
 
-**Template variables used:**
-`{{customer_name}}`, `{{customer_email}}`, `{{customer_phone}}`, `{{customer_address}}`, `{{customer_city}}`, `{{customer_state}}`, `{{customer_zip}}`, `{{customer_country}}`, `{{payment_method}}`, `{{{items_table_html}}}` (unescaped HTML), `{{subtotal}}`, `{{shipping}}`, `{{discount}}`, `{{bank_fee}}`, `{{total}}`, `{{full_address}}`, `{{notes}}`
+Template variables (**unchanged in v2 so the existing templates keep working**):
+`{{customer_name}}`, `{{customer_email}}`, `{{customer_phone}}`, `{{customer_address}}`, `{{customer_city}}`,
+`{{customer_state}}`, `{{customer_zip}}`, `{{customer_country}}`, `{{payment_method}}`,
+`{{{items_table_html}}}` (unescaped HTML), `{{subtotal}}`, `{{shipping}}`, `{{discount}}`, `{{bank_fee}}`,
+`{{total}}`, `{{full_address}}`, `{{notes}}`
 
-## Telegram
-Group: **https://t.me/peptidelabworld**
-Popup appears after 3s (once per session via `sessionStorage`). Floating button bottom-right.
+- `bank_fee` is now **always `$0.00`** — kept only so the existing templates do not break. Remove the row
+  from the templates when convenient.
+- **The warehouse name rides inside `items_table_html`** as a header row, because adding a new template
+  variable would need the EmailJS templates edited by hand. If you ever edit the templates, consider a
+  proper `{{warehouse}}` variable instead.
 
-## Product Image Rules
-| Image file | Used for |
-|---|---|
-| `samplepic.jpg` | Default — all products without a specific photo |
-| `ghk1.jpg` | GHK-Cu |
-| `lemon1.jpg` | Lemon Bottle |
-| `glow1.jpg` | GLOW, KLOW, AHK-Cu |
-| `lipo.jpg` | LC120, LC526 (Lipo C Plus), Lipo C with B12 Plus |
+## Contact
+- **WhatsApp: +852 619 407 99** → `https://wa.me/85261940799`. Floating button on every page.
+- Email: `peptidelabusa@proton.me` (browser only — no IMAP/SMTP on the free Proton plan).
+- **Telegram was removed entirely in v2.0** — the pop-up, the floating button and all `t.me` links.
 
-Image container: `aspect-ratio: 1/1`, `object-fit: contain`, `background: #ffffff`
+## Calculator
+Rebuilt in v2.0 to match `https://cellgenic.com/peptide-calculator/`. Three button rows (Dose / Strength /
+Water) and four results. The formulas were verified against the live reference page, not guessed:
+
+```
+concentration (mg/mL) = strength / water          → 2 decimals
+volume (mL)           = dose / concentration
+DRAW SYRINGE TO       = volume * 100              → 2 decimals, "units" (U-100)
+YOUR VIAL CONTAINS    = floor(strength / dose)    → "doses"
+```
+
+**One deliberate difference from the reference:** cellgenic silently returns nonsense for impossible
+combinations (a 15mg dose from a 1mg vial gives "750.00 units / 0 doses"). We show the identical numbers
+but add a warning when the vial cannot provide one full dose, or when the draw exceeds a 100-unit syringe.
+
+---
+
+## Security
+- **The repo is PUBLIC.** It previously contained, in plain text and still in git history:
+  the live NOWPayments API key, the Make.com IPN secret, and two payout wallet addresses.
+  Those were removed from the working tree on 2026-11-05.
+- ⚠️ **Git history still holds them and the repo is public — treat the NOWPayments key and the Make.com
+  IPN secret as permanently compromised.** The NOWPayments key must be rotated/deleted in the NOWPayments
+  dashboard; removing it from the files does not revoke it.
+- The EmailJS public key in `cart.html` is designed to be public and is fine to commit.
 
 ---
 
 ## Session Log
 
-### 2026-06-07 — Telegram popup redesign + proof gallery update
+### 2026-11-05 — v2.0 rebuild (warehouse-first storefront)
 
-#### Completed
-- Updated Telegram popup on `index.html` — new title "DOMESTIC WAREHOUSES", eyebrow "Now Available"
-- Added warehouse pill list (🇦🇺 Australia / 🇺🇸 USA / 🇪🇺 Europe) with gray card styling
-- Updated popup body copy to: "Join our Telegram community for the latest product releases, updates, and announcements, or send us an email to check product availability, pricing, and shipping options."
-- Added `.tg-popup-warehouses` styles to `style.css` (pill list, gap, border, border-radius)
-- Added 3 new images to `proofs.html`: `proof31.jpg` (top of delivery section), `ship11.jpg` + `ship12.jpg` (bottom of pre-shipment section)
-- Committed and pushed all changes — commit `da02192`
+#### Removed
+- Hero banner image, FAQ, Shipping, Science/About, Reviews, Contact form + newsletter EmailJS
+- Telegram pop-up, floating Telegram button, all `t.me` links
+- `proofs.html` (Proof of Delivery) — deleted, nav links removed from every page
+- Product images and product descriptions site-wide; category filters
+- **NOWPayments entirely** — API key, invoice creation, QR overlay, 20-min timer, 15s polling, 0.5% fee
+- The whole v1 96-product catalog → moved to `catalog-archive.js` (unreferenced)
 
----
-
-### 2026-05-29 — Full payment system + EmailJS templates
-
-#### Completed
-- Added USDT TRC20 live checkout via NOWPayments (same flow as BTC)
-- Updated Shipping & Payment section on index.html — Bitcoin instant, bank transfer via Telegram +10%
-- Updated FAQ payment answer to match
-- Set up Make.com webhook backup — Gmail alert to lstrmrcd@gmail.com on every confirmed payment
-- Connected NOWPayments IPN to Make.com webhook URL: `https://hook.eu1.make.com/th4pc042xqiriq66oi53p4ld1luhbhyk`
-- IPN secret key generated: `kRbxQzyw7ITqh+Vme+W0stdGpoOAZ9VW` (saved in NOWPayments dashboard)
-- Disabled custody — payments now auto-forward directly to BTC wallet
-- Added USDT TRC20 payout wallet: `TYTKUPjWeBTVwkdkBWcHV6MWaj1A5XLHnS`
-- Updated admin EmailJS template (`template_gdh1w1b`) — new white/black/gray theme
-- Updated customer EmailJS template (`template_moknerc`) — "Payment Confirmed", tracking 2–3 days, delivery 15–20 days
-- Added Make.com filter — only sends Gmail alert when payment_status = "finished" OR "confirmed" (no more spam on pending payments)
-
-#### NOWPayments Account Status
-- Live API key: `AMR6DQS-1W3dandG-Q05A056-KQHZAQH`
-- BTC payout wallet: `15TaeVPBDpQcxpW9Ndc1fAK4AuBei28yTL`
-- USDT TRC20 payout wallet: `TYTKUPjWeBTVwkdkBWcHV6MWaj1A5XLHnS`
-- Custody: Disabled ✅
-- Account verification: **Pending** (KYC not completed yet)
-
----
-
-### 2026-05-29 — NOWPayments Bitcoin integration
-
-#### Completed
-- Created NOWPayments account, connected BTC payout wallet (`15TaeVPBDpQcxpW9Ndc1fAK4AuBei28yTL`)
-- Integrated NOWPayments into cart.html — live Bitcoin checkout with QR code, address, 20min timer, auto-polling
-- Removed Bank Transfer from payment dropdown (BTC + USDT TRC20 only)
-- Added 0.5% crypto processing fee row to order summary when BTC selected
-- Added "keep tab open" warning banner on payment overlay
-- USDT TRC20 keeps existing EmailJS manual flow unchanged
-- Confirmed NOWPayments minimum BTC payment is ~$10+ USD
-
-#### Commits
-| Hash | Description |
-|---|---|
-| `f99c4ed` | Add NOWPayments Bitcoin checkout to cart.html |
-| `53fd3b0` | Add keep-tab-open warning to Bitcoin payment overlay |
-| `2fc130d` | Revert test changes (HGH $15 variant + FREESHIP code) |
-
----
-
-### 2026-05-29 — Full redesign + bug fixes
-
-#### Theme Overhaul
-- Replaced dark cyberpunk theme (dark navy bg, cyan `#00c8ff` accents) with clean white/black/gray
-- Changed all root CSS variables
-- Removed ALL hardcoded cyan/green values throughout `style.css`, `proofs.html`, `calculator.html`, `cart.html`
-- Logo updated: PEPTIDE black, LAB gray
-- Badge colors updated (recovery/growth → neutral dark gray; cognitive/longevity kept purple/yellow)
-
-#### Layout Changes
-- Removed marquee strip (peptide name ticker between hero and products)
-- Shipping & Payment section: changed from 4-column grid to 2 centered cards (flex, 380px each)
-- Product image container: changed from fixed `160px` height to `aspect-ratio: 1/1` square (matches reference site baojuchem.com)
-- Image container background: set to `#ffffff` (fixes gray bar artifact on live site)
-
-#### Product Images
-- Bulk-replaced all product images using Node.js script (preserved encoding)
-- Assigned: ghk1, lemon1, glow1, lipo to specific products; samplepic.jpg to all others
-- Pushed all 5 new image files to GitHub
-
-#### Bug Fixes
-- **proofs.html**: `h1` "Proof of Delivery" and `h2` "Ready to Order?" were white-on-white (invisible) → fixed to `#111111`
-- **calculator.html**: `h1`, two `h2` card headings, result values, guide `h2`, four guide `h4` headings all white-on-white → fixed to `#111111`. Also fixed cyan badge backgrounds.
-- **Search icon**: Replaced blue 🔍 emoji with neutral gray SVG
-- **Email table (cart.html)**: Order confirmation email rows had old dark-theme colors (`#e8f4f8` text + cyan borders) → updated to `#1a1a1a` text + `#e0e0e0` borders
-- **Reviewer avatars**: False positive in audit — initials are on dark gradient circle, not white bg
-
-#### EmailJS Customer Template
-- Rebuilt from scratch to match white/black/gray theme
-- Added **JOIN OUR TELEGRAM COMMUNITY** button (black pill → `https://t.me/peptidelabworld`)
-- Removed "RESEARCH GRADE PEPTIDES" subheading from header
-- Admin template pending update (user to send current code)
-
-#### Commits Pushed
-| Hash | Description |
-|---|---|
-| `52ef04d` | Fix invisible white text on proofs and calculator pages |
-| `4d2af5e` | Fix search icon and email template colors |
-| `4cef6ba` | Fix product image gray bars: set image container bg to white |
-| `8043d83` | Add new product images (samplepic, lipo, glow1, ghk1, lemon1) |
-| `8c73d18` | Update all product card images with new photo assignments |
-| `a73d4f5` | Redesign to clean white/black/gray theme, remove marquee, center shipping cards |
-
----
-
-## Pending / Future Plans
-
-### 🔴 Next Session (Priority)
-- [ ] Add real product photos to replace `samplepic.jpg` placeholders
-- [ ] Verify account on NOWPayments (KYC) — needed for payouts
-
-### 🟡 Soon
-- [ ] Real test of Bitcoin payment end-to-end (confirmed NOWPayments minimum is ~$10+ USD worth of BTC)
-- [ ] Cookie banner on mobile is large — may want to slim it down
-
----
-
-## NOWPayments Integration (LIVE as of 2026-05-29)
-
-### Setup
-- **Provider:** NOWPayments (nowpayments.io) — account created by Lester
-- **API Key:** `AMR6DQS-1W3487G-Q05A056-KQHZAQH` (live, in cart.html)
-- **Payout wallet:** BTC — `15TaeVPBDpQcxpW9Ndc1fAK4AuBei28yTL`
-- **Fee:** 0.5% (BTC → BTC, no conversion) — passed to customer
-- **Minimum payment:** ~$10+ USD worth of BTC (NOWPayments enforces this)
-- **Bank transfer:** Removed from checkout. Note to be added on index.html pointing to Telegram
-
-### How It Works (Built & Live)
-1. Customer selects Bitcoin (BTC) at checkout
-2. Clicks "Place Order" → browser calls NOWPayments API → creates invoice
-3. Payment overlay shows: BTC amount, QR code, wallet address, 20min countdown
-4. Warning shown: *"Keep this tab open until confirmed"*
-5. Browser polls NOWPayments every 15 seconds
-6. On confirmation: EmailJS fires (admin + customer emails) → cart cleared → redirect to thankyou.html
-7. NOWPayments forwards BTC to merchant wallet
-
-### Known Limitation
-- Emails only fire if customer keeps the browser tab open during confirmation (10–30 min)
-- Make.com webhook can be added later as a backup if needed
+#### Added / changed
+- `WAREHOUSES` + `CATALOG` in `script.js` — 7 warehouses, 107 SKUs, per-warehouse pricing
+- Warehouse picker on the homepage; cart locked to one warehouse with a confirm-and-clear switch
+- Price table (Code / Product / Size / Price / Add) replacing the card grid; search kept
+- Cart: quantity controls, `$30` freight (was flat `$50`), country `<select>` gated by warehouse
+- Manual crypto checkout with both receiving addresses + TRON-only chain warning
+- WhatsApp floating button replacing Telegram, on every page
+- Calculator rebuilt cellgenic-style, formulas verified against the live page
+- Addresses verified by **base58check** before being written into the site (version bytes 0x00 / 0x41)
 
 ---
 
 ## Notes & Conventions
 - **No build step** — edit files directly, commit, push to deploy via GitHub Pages
-- **Cache busting**: not implemented — hard refresh (`Ctrl+Shift+R`) needed on live site after pushes
-- **Encoding**: Always use Node.js (not PowerShell `Set-Content`) for bulk JS edits to preserve UTF-8 emoji characters
-- **CSS overrides**: Light theme overrides live at the bottom of `style.css` under `/* ========== LIGHT THEME OVERRIDES ========== */`
-- **Inline styles**: `proofs.html`, `calculator.html`, `cart.html` each have their own `<style>` block — changes to those pages must be made in the file, not in `style.css`
+- **Cache busting**: not implemented — hard refresh (`Ctrl+Shift+R`) after pushes. GitHub Pages also caches
+  HTML for ~10 minutes, so a plain reload can show the old markup
+- **Encoding**: use Node.js (not PowerShell `Set-Content`) for bulk edits to preserve UTF-8
+- **CSS**: v2 rules live in the block at the very bottom of `style.css` and win by cascade order.
+  A lot of v1 CSS is now dead (`.tg-float`, `.tg-popup*`, `.hero-banner*`, `.product-card`, `.filter-tabs`,
+  `.faq-*`, `.review-*`) — harmless, left in place deliberately
+- **Inline styles**: `calculator.html` and `cart.html` have their own `<style>` blocks — changes to those
+  pages go in the file, not in `style.css`
+- `AGENTS.md` is a byte-identical copy of this file

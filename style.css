@@ -1976,3 +1976,227 @@ img { max-width: 100%; }
 .step-num { color: #f2f2f2; }
 .floating-cart-badge { color: #f2f2f2; }
 .reviewer-avatar { color: #f2f2f2; }
+
+/* ==================================================================
+   v2.0 — WAREHOUSE PICKER + PRICE TABLE (2026-11-05)
+   Appended last so it wins over the v1 rules above.
+   Dead v1 rules (.tg-float, .tg-popup*, .hero-banner*, .product-card,
+   .filter-tabs, .faq-*, .review-*) are left in place but unused.
+   ================================================================== */
+
+/* --- Hero (banner image removed; stacked layout, not a flex row) --- */
+.hero-below {
+  display: block;
+  padding: 3.5rem 5% 2.5rem;
+  text-align: center;
+}
+.hero-below .hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin: 0 0 1rem;
+}
+.hero-below .hero-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 620px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+.hero-below .hero-actions {
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+.hero-below .hero-stats {
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+/* --- Warehouse picker --- */
+.warehouses { padding: 3.5rem 5%; }
+.warehouse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.wh-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+  padding: 1.25rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all var(--transition);
+}
+.wh-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+}
+.wh-card.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+.wh-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+.wh-scope {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.wh-meta { font-size: 0.82rem; color: var(--text-muted); }
+.wh-card.active .wh-name,
+.wh-card.active .wh-scope,
+.wh-card.active .wh-meta { color: #ffffff; }
+
+/* --- Catalog panel --- */
+.products { padding: 0 5% 4rem; }
+.catalog-panel { max-width: 1100px; margin: 0 auto; }
+.catalog-ships {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.catalog-footnote {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* --- Price table --- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.price-table thead th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  white-space: nowrap;
+}
+.price-table tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.price-table tbody tr:last-child td { border-bottom: none; }
+.price-table tbody tr:hover { background: var(--surface2); }
+.price-table .col-code {
+  font-family: var(--font-display);
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.price-table .col-name { color: var(--text); line-height: 1.45; min-width: 220px; }
+.price-table .col-size { color: var(--text-muted); white-space: nowrap; }
+.price-table .col-price {
+  font-weight: 500;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.price-table .col-add { text-align: right; width: 1%; white-space: nowrap; }
+.price-table .no-results {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Table Add button — overrides the v1 round "+" card button */
+.price-table .add-btn {
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Floating WhatsApp button (replaces the Telegram one) --- */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #25D366;
+  color: #ffffff;
+  padding: 0.7rem 1.1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 6px 20px rgba(37,211,102,0.35);
+  z-index: 900;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.wa-float:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(37,211,102,0.45);
+}
+.wa-float svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+@media (max-width: 640px) {
+  .wa-float { bottom: 1.25rem; left: 1.25rem; padding: 0.65rem 0.8rem; }
+  .wa-float-label { display: none; }
+  .hero-below .hero-stats { gap: 1.5rem; }
+  .price-table { font-size: 0.85rem; }
+  .price-table thead th,
+  .price-table tbody td { padding: 0.7rem 0.6rem; }
+  .price-table .col-name { min-width: 160px; }
+}
+
+/* Narrow screens: drop the Size column so Code / Product / Price / Add fit
+   without a sideways scroll. Every row is "10 vials" and the footnote under
+   the table says so, hence nothing is lost. */
+@media (max-width: 640px) {
+  .price-table .col-size { display: none; }
+  .price-table .add-btn { padding: 0.4rem 0.65rem; font-size: 0.72rem; }
+  .price-table .col-name { min-width: 0; }
+  .price-table thead th,
+  .price-table tbody td { padding: 0.65rem 0.45rem; }
+}

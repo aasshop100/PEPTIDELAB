@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Peptide Calculator — PEPTIDE LAB</title>
-    <!-- Google Analytics -->
+  <meta name="description" content="Peptide reconstitution calculator. Select your dose, vial strength and bacteriostatic water volume to get the units to draw on a U-100 insulin syringe, doses per vial and concentration." />
+  <link rel="canonical" href="https://peptidelab.world/calculator.html" />
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MFHSZN36QC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -16,6 +19,140 @@
   <link rel="icon" type="image/svg+xml" href="image/favicon.svg" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+
+  <style>
+    .calc-page { max-width: 880px; margin: 0 auto; padding: 7rem 5% 4rem; }
+    .calc-page h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: 2px;
+      color: #111111;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .calc-intro {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      line-height: 1.6;
+    }
+    .calc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .calc-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 1.5px;
+      color: #111111;
+      text-transform: uppercase;
+      margin: 0 0 0.3rem;
+    }
+    .calc-card .calc-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+    }
+    .opt-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .peptide-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 0.6rem 1.05rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .peptide-btn:hover { border-color: var(--accent); }
+    .peptide-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .results-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+    }
+    .results-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 1.5px;
+      color: #111111;
+      text-transform: uppercase;
+      margin: 0 0 1.25rem;
+    }
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .result-line:last-of-type { border-bottom: none; }
+    .result-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+    .result-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      color: #111111;
+    }
+    .result-value.placeholder {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      letter-spacing: 0;
+    }
+    .syringe-wrap { margin: 1.5rem 0 0.5rem; }
+    .syringe-caption {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+    .calc-warning {
+      border: 1px solid #e0b000;
+      background: #fff8e1;
+      color: #6b5200;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-size: 0.83rem;
+      line-height: 1.55;
+      margin-top: 1.25rem;
+      display: none;
+    }
+    .calc-disclaimer {
+      margin-top: 2rem;
+      padding: 1.1rem 1.3rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface2);
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+    .calc-disclaimer strong { color: #111111; }
+    @media (max-width: 640px) {
+      .calc-page { padding-top: 5.5rem; }
+      .result-value { font-size: 1.25rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -23,468 +160,220 @@
   <nav class="nav">
     <a href="index.html" class="nav-logo">PEPTIDE<span>LAB</span></a>
     <ul class="nav-links">
+      <li><a href="index.html#warehouses">Warehouses</a></li>
       <li><a href="index.html#products">Products</a></li>
-      <li><a href="index.html#about">Science</a></li>
-      <li><a href="index.html#shipping">Shipping</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="cart.html" style="color:var(--text-muted);font-size:0.9rem;transition:color 0.3s ease" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">🛒 Cart</a></li>
-      
+      <li><a href="calculator.html" style="color:var(--accent)">Calculator</a></li>
+      <li><a href="cart.html" style="position:relative;color:var(--text-muted);font-size:0.9rem;">🛒 Cart <span id="cart-badge" style="display:none;position:absolute;top:-8px;right:-10px;background:var(--accent);color:#ffffff;font-size:0.65rem;font-weight:600;width:18px;height:18px;border-radius:50%;align-items:center;justify-content:center;"></span></a></li>
     </ul>
     <button class="hamburger" id="hamburger">&#9776;</button>
   </nav>
 
   <main class="calc-page">
+    <h1>Peptide Calculator</h1>
+    <p class="calc-intro">Select your dose, your vial strength and how much bacteriostatic water you added. The calculator does the arithmetic only — it does not recommend an amount.</p>
 
-    <!-- PAGE HEADER -->
-    <div class="calc-header">
-      <p class="eyebrow">Research Tool</p>
-      <h1>Peptide <span>Calculator</span></h1>
-      <p class="calc-subtitle">Calculate your reconstitution and injection dosage quickly and accurately.</p>
-      <div class="calc-disclaimer">⚠️ For research purposes only. Always follow proper laboratory protocols.</div>
+    <div class="calc-card">
+      <h2>Dose of Peptide</h2>
+      <p class="calc-hint">The amount you want to draw.</p>
+      <div class="opt-row" id="dose-row"></div>
     </div>
 
-    <div class="calc-grid">
+    <div class="calc-card">
+      <h2>Strength of Peptide</h2>
+      <p class="calc-hint">The total amount in the vial.</p>
+      <div class="opt-row" id="strength-row"></div>
+    </div>
 
-      <!-- STEP 1: RECONSTITUTION -->
-      <div class="calc-card">
-        <div class="calc-step-label">Step 1</div>
-        <h2>Reconstitution</h2>
-        <p class="calc-desc">Calculate the concentration after adding BAC water to your peptide vial.</p>
+    <div class="calc-card">
+      <h2>Water of Peptide</h2>
+      <p class="calc-hint">The bacteriostatic water you added to the vial.</p>
+      <div class="opt-row" id="water-row"></div>
+    </div>
 
-        <div class="calc-form">
-          <div class="calc-group">
-            <label>Peptide Amount</label>
-            <div class="calc-input-wrap">
-              <input type="number" id="peptide-mg" placeholder="e.g. 5" min="0" step="0.1" oninput="calculate()" />
-              <span class="calc-unit">mg</span>
-            </div>
-          </div>
+    <div class="results-card">
+      <h2>Results</h2>
 
-          <div class="calc-group">
-            <label>BAC Water Added</label>
-            <div class="calc-input-wrap">
-              <input type="number" id="bac-water" placeholder="e.g. 2" min="0" step="0.1" oninput="calculate()" />
-              <span class="calc-unit">mL</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- QUICK PRESETS -->
-        <div class="presets">
-          <p class="preset-label">Quick presets</p>
-          <div class="preset-btns">
-            <button class="preset-btn" onclick="setPreset(5, 1)">5mg / 1mL</button>
-            <button class="preset-btn" onclick="setPreset(5, 2)">5mg / 2mL</button>
-            <button class="preset-btn" onclick="setPreset(10, 2)">10mg / 2mL</button>
-            <button class="preset-btn" onclick="setPreset(2, 1)">2mg / 1mL</button>
-          </div>
-        </div>
-
-        <!-- RESULT -->
-        <div class="calc-result" id="recon-result">
-          <div class="result-row">
-            <span>Concentration</span>
-            <span class="result-value" id="concentration-display">—</span>
-          </div>
-          <div class="result-row">
-            <span>Per 0.1mL (10 units)</span>
-            <span class="result-value" id="per-unit-display">—</span>
-          </div>
-        </div>
+      <div class="result-line">
+        <span class="result-label">Peptide dose:</span>
+        <span class="result-value placeholder" id="r-dose">Select dose</span>
+      </div>
+      <div class="result-line">
+        <span class="result-label">Draw syringe to:</span>
+        <span class="result-value placeholder" id="r-draw">Select values</span>
       </div>
 
-      <!-- STEP 2: DOSAGE -->
-      <div class="calc-card">
-        <div class="calc-step-label">Step 2</div>
-        <h2>Dosage</h2>
-        <p class="calc-desc">Find out exactly how many units to draw in your insulin syringe (U-100).</p>
+      <div class="syringe-wrap">
+        <svg viewBox="0 0 520 110" width="100%" height="110" role="img" aria-labelledby="syringe-title">
+          <title id="syringe-title">U-100 insulin syringe showing the draw point</title>
 
-        <div class="calc-form">
-          <div class="calc-group">
-            <label>Desired Dose</label>
-            <div class="calc-input-wrap">
-              <input type="number" id="desired-dose" placeholder="e.g. 250" min="0" step="1" oninput="calculate()" />
-              <span class="calc-unit">mcg</span>
-            </div>
-          </div>
+          <!-- plunger -->
+          <rect x="4" y="44" width="34" height="22" rx="3" fill="#e0e0e0" stroke="#bdbdbd"/>
+          <!-- barrel -->
+          <rect x="38" y="34" width="420" height="42" rx="4" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+          <!-- filled volume -->
+          <rect id="syr-fill" x="39" y="35.5" width="0" height="39" fill="#111111" opacity="0.14"/>
+          <!-- needle -->
+          <rect x="458" y="51" width="18" height="8" fill="#bdbdbd"/>
+          <rect x="476" y="53.5" width="40" height="3" fill="#9e9e9e"/>
 
-          <div class="calc-group">
-            <label>Concentration <span class="auto-tag">auto-filled from Step 1</span></label>
-            <div class="calc-input-wrap">
-              <input type="number" id="concentration" placeholder="e.g. 2500" min="0" step="1" oninput="calculate()" />
-              <span class="calc-unit">mcg/mL</span>
-            </div>
-          </div>
-        </div>
+          <!-- ticks every 10 units -->
+          <g id="syr-ticks" stroke="#111111" stroke-width="1"></g>
+          <g id="syr-labels" font-size="9" fill="#777777" font-family="DM Sans, sans-serif" text-anchor="middle"></g>
 
-        <!-- RESULT -->
-        <div class="calc-result" id="dose-result">
-          <div class="result-row">
-            <span>Volume to Inject</span>
-            <span class="result-value" id="volume-display">—</span>
-          </div>
-          <div class="result-row highlight-row">
-            <span>Syringe Units to Draw</span>
-            <span class="result-value accent-value" id="units-display">—</span>
-          </div>
-          <div class="result-row">
-            <span>Doses Per Vial</span>
-            <span class="result-value" id="doses-display">—</span>
-          </div>
-        </div>
+          <!-- draw marker -->
+          <g id="syr-marker" style="display:none">
+            <line id="syr-marker-line" x1="0" y1="26" x2="0" y2="84" stroke="#c62828" stroke-width="2.5"/>
+            <text id="syr-marker-text" x="0" y="20" font-size="11" font-family="DM Sans, sans-serif" fill="#c62828" text-anchor="middle" font-weight="600"></text>
+          </g>
+        </svg>
+        <p class="syringe-caption">U-100 insulin syringe · 100 units = 1 mL</p>
       </div>
 
-    </div>
-
-    <!-- HOW TO USE -->
-    <div class="calc-guide">
-      <p class="eyebrow">How To Use</p>
-      <h2>Quick Guide</h2>
-      <div class="guide-grid">
-        <div class="guide-card">
-          <div class="guide-num">1</div>
-          <h4>Enter peptide amount</h4>
-          <p>Check your vial — it should say the amount in mg (e.g. 5mg, 10mg).</p>
-        </div>
-        <div class="guide-card">
-          <div class="guide-num">2</div>
-          <h4>Enter BAC water</h4>
-          <p>This is how much bacteriostatic water you add to the vial. Common amounts are 1mL or 2mL.</p>
-        </div>
-        <div class="guide-card">
-          <div class="guide-num">3</div>
-          <h4>Enter your dose</h4>
-          <p>This is how many micrograms (mcg) you want per injection. Check your research protocol.</p>
-        </div>
-        <div class="guide-card">
-          <div class="guide-num">4</div>
-          <h4>Read the units</h4>
-          <p>The calculator tells you exactly how many units to draw on a standard U-100 insulin syringe.</p>
-        </div>
+      <div class="result-line">
+        <span class="result-label">Your vial contains:</span>
+        <span class="result-value placeholder" id="r-doses">Select values</span>
       </div>
+      <div class="result-line">
+        <span class="result-label">Concentration:</span>
+        <span class="result-value placeholder" id="r-conc">Select values</span>
+      </div>
+
+      <div class="calc-warning" id="calc-warning"></div>
     </div>
 
-    <!-- DISCLAIMER -->
-    <div class="calc-footer-note">
-      <p>⚠️ This calculator is for <strong>research purposes only</strong>. PeptideLab does not provide medical advice. All peptides sold are for in-vitro laboratory research only.</p>
+    <div class="calc-disclaimer">
+      <strong>This calculator performs arithmetic only.</strong> It does not recommend an amount and it is not a guide to use.
+      Follow the reconstitution instructions supplied with your vial. If your vial is measured in IU rather than milligrams,
+      the conversion is specific to that compound and is given in the documentation supplied with the vial, not by a general rule.
+      All products sold by PeptideLab are <strong>for research use only</strong> and are not intended to diagnose, treat, cure or prevent any disease.
     </div>
-
   </main>
 
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/85261940799" class="wa-float" target="_blank" rel="noopener noreferrer" title="Message us on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.99 2.896 9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.88 11.88 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413Z"/>
+    </svg>
+    <span class="wa-float-label">WhatsApp</span>
+  </a>
+
+  <script src="script.js"></script>
   <script>
-    function calculate() {
-      const peptideMg = parseFloat(document.getElementById("peptide-mg").value);
-      const bacWater  = parseFloat(document.getElementById("bac-water").value);
-      const dose      = parseFloat(document.getElementById("desired-dose").value);
+    // ========== OPTIONS ==========
+    const DOSE_OPTS     = [0.1, 0.25, 0.5, 1, 2, 2.5, 5, 7.5, 10, 12.5, 15];
+    const STRENGTH_OPTS = [1, 5, 10, 15, 20, 50];
+    const WATER_OPTS    = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0];
 
-      // ---- RECONSTITUTION ----
-      if (!isNaN(peptideMg) && !isNaN(bacWater) && bacWater > 0) {
-        const concMcgPerMl = (peptideMg * 1000) / bacWater; // mcg/mL
-        const per10units   = concMcgPerMl * 0.1;            // per 0.1mL
+    const state = { dose: null, strength: null, water: null };
 
-        document.getElementById("concentration-display").textContent = concMcgPerMl.toFixed(0) + " mcg/mL";
-        document.getElementById("per-unit-display").textContent      = per10units.toFixed(1) + " mcg";
-
-        // Auto-fill concentration into Step 2
-        document.getElementById("concentration").value = concMcgPerMl.toFixed(0);
-      } else {
-        document.getElementById("concentration-display").textContent = "—";
-        document.getElementById("per-unit-display").textContent      = "—";
-      }
-
-      // ---- DOSAGE ----
-      const concValue = parseFloat(document.getElementById("concentration").value);
-
-      if (!isNaN(dose) && !isNaN(concValue) && concValue > 0) {
-        const volumeMl   = dose / concValue;               // mL
-        const syringeUnits = volumeMl * 100;               // U-100 units
-
-        // Doses per vial (only if we know peptide amount)
-        let dosesText = "—";
-        if (!isNaN(peptideMg) && dose > 0) {
-          const totalMcg = peptideMg * 1000;
-          const dosesPerVial = Math.floor(totalMcg / dose);
-          dosesText = dosesPerVial + " doses";
-        }
-
-        document.getElementById("volume-display").textContent  = volumeMl.toFixed(3) + " mL";
-        document.getElementById("units-display").textContent   = syringeUnits.toFixed(1) + " units";
-        document.getElementById("doses-display").textContent   = dosesText;
-      } else {
-        document.getElementById("volume-display").textContent  = "—";
-        document.getElementById("units-display").textContent   = "—";
-        document.getElementById("doses-display").textContent   = "—";
-      }
+    function buildRow(rowId, opts, type, unit, decimals) {
+      const row = document.getElementById(rowId);
+      row.innerHTML = opts.map(v => {
+        const label = (decimals != null ? v.toFixed(decimals) : v) + unit;
+        return `<button type="button" class="peptide-btn" data-type="${type}" data-value="${v}">${label}</button>`;
+      }).join("");
     }
 
-    function setPreset(mg, ml) {
-      document.getElementById("peptide-mg").value = mg;
-      document.getElementById("bac-water").value  = ml;
-      calculate();
-      // Highlight active preset
-      document.querySelectorAll(".preset-btn").forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
-    }
+    buildRow("dose-row", DOSE_OPTS, "dose", "mg", null);
+    buildRow("strength-row", STRENGTH_OPTS, "strength", "mg", null);
+    buildRow("water-row", WATER_OPTS, "water", "mL", 1);
 
-    // Mobile nav
-    document.getElementById("hamburger").addEventListener("click", () => {
-      document.querySelector(".nav-links").classList.toggle("open");
+    document.querySelectorAll(".peptide-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const type = btn.dataset.type;
+        document.querySelectorAll(`.peptide-btn[data-type="${type}"]`)
+          .forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        state[type] = parseFloat(btn.dataset.value);
+        calculate();
+      });
     });
+
+    // ========== SYRINGE SCALE ==========
+    // Barrel runs x=38 (0 units) to x=458 (100 units).
+    const SYR_X0 = 38, SYR_X1 = 458, SYR_MAX_UNITS = 100;
+    function unitsToX(u) {
+      const clamped = Math.max(0, Math.min(SYR_MAX_UNITS, u));
+      return SYR_X0 + (clamped / SYR_MAX_UNITS) * (SYR_X1 - SYR_X0);
+    }
+
+    (function drawScale() {
+      const ticks = document.getElementById("syr-ticks");
+      const labels = document.getElementById("syr-labels");
+      let t = "", l = "";
+      for (let u = 0; u <= 100; u += 10) {
+        const x = unitsToX(u);
+        t += `<line x1="${x}" y1="34" x2="${x}" y2="44" />`;
+        l += `<text x="${x}" y="90">${u}</text>`;
+      }
+      ticks.innerHTML = t;
+      labels.innerHTML = l;
+    })();
+
+    // ========== CALCULATE ==========
+    function setValue(id, text, isPlaceholder) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.classList.toggle("placeholder", !!isPlaceholder);
+    }
+
+    function calculate() {
+      const { dose, strength, water } = state;
+      const warnEl = document.getElementById("calc-warning");
+
+      // PEPTIDE DOSE shows as soon as a dose is chosen.
+      setValue("r-dose", dose != null ? `${dose} mg` : "Select dose", dose == null);
+
+      if (dose == null || strength == null || water == null) {
+        setValue("r-draw", "Select values", true);
+        setValue("r-doses", "Select values", true);
+        setValue("r-conc", "Select values", true);
+        document.getElementById("syr-marker").style.display = "none";
+        document.getElementById("syr-fill").setAttribute("width", 0);
+        warnEl.style.display = "none";
+        return;
+      }
+
+      const concentration = strength / water;          // mg per mL
+      const volumeMl = dose / concentration;           // mL to draw
+      const units = volumeMl * 100;                    // U-100: 100 units = 1 mL
+      const dosesPerVial = Math.floor(strength / dose);
+
+      setValue("r-draw", `${units.toFixed(2)} units`, false);
+      setValue("r-doses", `${dosesPerVial} doses`, false);
+      setValue("r-conc", `${concentration.toFixed(2)} mg/mL`, false);
+
+      // Syringe graphic
+      const marker = document.getElementById("syr-marker");
+      const fill = document.getElementById("syr-fill");
+      const x = unitsToX(units);
+      fill.setAttribute("width", Math.max(0, x - 39));
+      marker.style.display = "";
+      document.getElementById("syr-marker-line").setAttribute("x1", x);
+      document.getElementById("syr-marker-line").setAttribute("x2", x);
+      const txt = document.getElementById("syr-marker-text");
+      txt.setAttribute("x", Math.min(Math.max(x, 24), 496));
+      txt.textContent = `${units.toFixed(2)}u`;
+
+      // Flag combinations the arithmetic still answers but a syringe cannot.
+      const warnings = [];
+      if (dose > strength) {
+        warnings.push(`A ${dose}mg dose is larger than the ${strength}mg in the vial — this vial cannot provide a single dose.`);
+      } else if (dosesPerVial === 0) {
+        warnings.push(`This vial does not contain a full ${dose}mg dose.`);
+      }
+      if (units > 100) {
+        warnings.push(`${units.toFixed(2)} units is more than a 100-unit (1 mL) insulin syringe holds — it would take ${Math.ceil(units / 100)} full syringes.`);
+      }
+      if (warnings.length) {
+        warnEl.innerHTML = "⚠️ " + warnings.join("<br>");
+        warnEl.style.display = "block";
+      } else {
+        warnEl.style.display = "none";
+      }
+    }
+
+    calculate();
   </script>
-
-  <style>
-    /* ===== CALCULATOR PAGE STYLES ===== */
-    .calc-page {
-      min-height: 100vh;
-      padding: 7rem 5% 5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .calc-header {
-      text-align: center;
-      margin-bottom: 3rem;
-      animation: fadeUp 0.6s ease both;
-    }
-    .calc-header h1 {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 6vw, 5rem);
-      color: #111111;
-      letter-spacing: 1px;
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
-    .calc-header h1 span { color: var(--accent); }
-    .calc-subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 1.2rem;
-    }
-    .calc-disclaimer {
-      display: inline-block;
-      background: rgba(255, 200, 80, 0.1);
-      border: 1px solid rgba(255, 200, 80, 0.3);
-      color: #ffc850;
-      font-size: 0.8rem;
-      padding: 0.5rem 1.2rem;
-      border-radius: 50px;
-    }
-
-    /* GRID */
-    .calc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-    /* CARD */
-    .calc-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      animation: fadeUp 0.6s ease both;
-    }
-    .calc-card:nth-child(2) { animation-delay: 0.1s; }
-
-    .calc-step-label {
-      display: inline-block;
-      background: rgba(0,0,0,0.06);
-      color: var(--accent);
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      margin-bottom: 0.75rem;
-    }
-    .calc-card h2 {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      color: #111111;
-      letter-spacing: 1px;
-      margin-bottom: 0.4rem;
-    }
-    .calc-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
-
-    /* FORM */
-    .calc-form { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.2rem; }
-    .calc-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .calc-group label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .auto-tag {
-      background: rgba(0,255,157,0.1);
-      color: var(--accent2);
-      font-size: 0.65rem;
-      padding: 0.1rem 0.5rem;
-      border-radius: 50px;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-    .calc-input-wrap {
-      display: flex;
-      align-items: center;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: border-color var(--transition);
-    }
-    .calc-input-wrap:focus-within { border-color: var(--accent); }
-    .calc-input-wrap input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      padding: 0.85rem 1rem;
-      outline: none;
-    }
-    .calc-input-wrap input::placeholder { color: var(--text-muted); }
-    .calc-unit {
-      padding: 0 1rem;
-      font-size: 0.8rem;
-      color: var(--accent);
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      border-left: 1px solid var(--border);
-      white-space: nowrap;
-    }
-
-    /* PRESETS */
-    .presets { margin-bottom: 1.2rem; }
-    .preset-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
-    .preset-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .preset-btn {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      padding: 0.35rem 0.8rem;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-    .preset-btn:hover, .preset-btn.active {
-      background: var(--accent);
-      color: var(--bg);
-      border-color: var(--accent);
-      font-weight: 500;
-    }
-
-    /* RESULT BOX */
-    .calc-result {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 1.2rem;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
-    .result-row:last-child { border-bottom: none; }
-    .result-row.highlight-row { background: rgba(0,0,0,0.03); }
-    .result-value {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      color: #111111;
-      letter-spacing: 0.5px;
-    }
-    .accent-value {
-      color: var(--accent);
-      font-size: 1.5rem;
-    }
-
-    /* GUIDE */
-    .calc-guide {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .calc-guide h2 {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      color: #111111;
-      letter-spacing: 1px;
-      margin-bottom: 2rem;
-    }
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-    .guide-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      text-align: left;
-      transition: border-color var(--transition);
-    }
-    .guide-card:hover { border-color: var(--accent); }
-    .guide-num {
-      width: 32px; height: 32px;
-      background: var(--accent);
-      color: var(--bg);
-      font-weight: 700;
-      font-size: 0.9rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.75rem;
-    }
-    .guide-card h4 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: #111111;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.4rem;
-    }
-    .guide-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
-
-    /* FOOTER NOTE */
-    .calc-footer-note {
-      text-align: center;
-      background: rgba(255,200,80,0.05);
-      border: 1px solid rgba(255,200,80,0.2);
-      border-radius: var(--radius);
-      padding: 1.2rem 2rem;
-      font-size: 0.82rem;
-      color: #ffc850;
-      line-height: 1.7;
-    }
-    .calc-footer-note strong { color: #ffc850; }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .calc-grid { grid-template-columns: 1fr; }
-      .guide-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 480px) {
-      .guide-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-
 </body>
 </html>

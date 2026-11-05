@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Cart — PEPTIDE LAB</title>
-    <!-- Google Analytics -->
+  <meta name="robots" content="noindex, follow" />
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MFHSZN36QC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -16,6 +18,117 @@
   <link rel="icon" type="image/svg+xml" href="image/favicon.svg" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* --- v2 cart additions --- */
+    .wh-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.9rem 1.2rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.88rem;
+    }
+    .wh-banner strong { color: var(--accent); }
+    .wh-banner .wh-banner-scope { color: var(--text-muted); font-size: 0.82rem; }
+    .cart-item-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+    /* v1 styled this as a short display-font title. v2 names are long blends
+       ("BPC 157 10mg + GHK-CU 50mg + TB500 10mg + KPV 10mg (80mg)"), so use the
+       body font and let them wrap as a sentence instead of one word per line. */
+    .cart-item-info h4 {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1.4;
+    }
+    .cart-item-info { min-width: 0; }
+    @media (max-width: 640px) {
+      .cart-item { flex-wrap: wrap; gap: 0.75rem; }
+      .cart-item-info { flex: 1 1 100%; }
+      .cart-item-right { width: 100%; justify-content: space-between; gap: 0.5rem; }
+    }
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.15rem 0.4rem;
+    }
+    .qty-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0.25rem 0.4rem;
+    }
+    .qty-btn:hover { color: var(--text-muted); }
+    .qty-val { font-size: 0.9rem; min-width: 1.2rem; text-align: center; }
+    .crypto-panel {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-top: 1rem;
+      background: var(--surface2);
+    }
+    .crypto-panel h4 {
+      margin: 0 0 0.6rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .crypto-addr {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.74rem;
+      word-break: break-all;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 0.7rem;
+      margin: 0.25rem 0 0.9rem;
+      color: var(--text);
+    }
+    .crypto-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .chain-warning {
+      border: 1px solid #e0b000;
+      background: #fff8e1;
+      color: #6b5200;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      margin-top: 1rem;
+    }
+    .quote-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-top: 0.75rem;
+    }
+    .country-locked {
+      background: var(--surface2);
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
 
@@ -23,14 +136,10 @@
   <nav class="nav">
     <a href="index.html" class="nav-logo">PEPTIDE<span>LAB</span></a>
     <ul class="nav-links">
+      <li><a href="index.html#warehouses">Warehouses</a></li>
       <li><a href="index.html#products">Products</a></li>
-      <li><a href="index.html#about">Science</a></li>
-      <li><a href="index.html#shipping">Shipping</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
       <li><a href="calculator.html">Calculator</a></li>
-      <li><a href="proofs.html">Proof of Delivery</a></li>
-      <li><a href="cart.html" style="color:var(--accent)">🛒 Cart <span id="cart-badge" style="display:none;background:var(--accent);color:var(--bg);font-size:0.65rem;font-weight:600;padding:0.1rem 0.4rem;border-radius:50px;"></span></a></li>
-      
+      <li><a href="cart.html" style="color:var(--accent)">🛒 Cart <span id="cart-badge" style="display:none;background:var(--accent);color:#ffffff;font-size:0.65rem;font-weight:600;padding:0.1rem 0.4rem;border-radius:50px;"></span></a></li>
     </ul>
     <button class="hamburger" id="hamburger">&#9776;</button>
   </nav>
@@ -41,8 +150,8 @@
     <div class="empty-cart" id="empty-cart">
       <div class="empty-icon">🧪</div>
       <h2>Your cart is empty</h2>
-      <p>Go back and add some peptides to your order.</p>
-      <a href="index.html#products" class="btn-primary">Browse Products</a>
+      <p>Choose a warehouse and add products to your order.</p>
+      <a href="index.html#warehouses" class="btn-primary">Browse Warehouses</a>
     </div>
 
     <!-- CART CONTENT -->
@@ -54,12 +163,14 @@
           <button class="clear-btn" id="clear-cart">Clear all</button>
         </div>
 
+        <div class="wh-banner" id="wh-banner"></div>
+
         <div class="cart-items" id="cart-items"></div>
 
         <!-- ORDER FORM -->
         <div class="order-form-wrap">
           <h2>Your Details</h2>
-          <p class="form-intro">Fill in your details and we'll email you payment instructions within 24 hours.</p>
+          <p class="form-intro">Fill in your details and we'll email you payment instructions — the wallet address and the exact amount — within 24 hours. Need them sooner? <a href="https://wa.me/85261940799" target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a>.</p>
 
           <form id="order-form">
             <input type="hidden" id="order-summary-field" />
@@ -92,26 +203,29 @@
                 <input type="text" id="city" name="city" placeholder="New York" required />
               </div>
               <div class="form-group">
-                <label>State *</label>
+                <label>State / Province *</label>
                 <input type="text" id="state" name="state" placeholder="NY" required />
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label>ZIP Code *</label>
+                <label>ZIP / Postal Code *</label>
                 <input type="text" id="zip" name="zip" placeholder="10001" required />
               </div>
               <div class="form-group">
                 <label>Country *</label>
-                <input type="text" id="country" name="country" value="United States" required />
+                <select id="country" name="country" required>
+                  <!-- Options injected from the selected warehouse -->
+                </select>
+                <p class="country-note" id="country-note" style="font-size:0.75rem;color:var(--text-muted);margin-top:0.35rem;"></p>
               </div>
             </div>
             <div class="form-group">
-              <label>Preferred Payment Method *</label>
+              <label>Payment Method *</label>
               <select id="payment_method" name="payment_method" required onchange="handlePaymentChange()">
                 <option value="" disabled selected>Select payment method</option>
-                <option value="Bitcoin (BTC)">Bitcoin (BTC) — Pay instantly via crypto</option>
-                <option value="Crypto (USDT - TRON TRC20)">Crypto — USDT (TRON TRC20)</option>
+                <option value="USDT (TRON / TRC-20)">USDT — TRON network (TRC-20)</option>
+                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
               </select>
             </div>
             <div class="form-group">
@@ -125,6 +239,7 @@
               </label>
             </div>
             <button type="submit" class="btn-primary submit-btn" id="submit-btn">Place Order →</button>
+            <p id="form-error" style="color:#c62828;font-size:0.85rem;margin-top:0.75rem;min-height:1rem;"></p>
           </form>
         </div>
       </div>
@@ -140,12 +255,8 @@
             <span id="summary-subtotal">$0.00</span>
           </div>
           <div class="summary-row">
-            <span>Shipping</span>
-            <span id="summary-shipping">$50.00</span>
-          </div>
-          <div class="summary-row" id="bank-fee-row" style="display:none;">
-            <span id="fee-label" style="color:#ffc850;">Crypto Processing Fee (0.5%)</span>
-            <span id="bank-fee-amount" style="color:#ffc850;">$0.00</span>
+            <span>Freight</span>
+            <span id="summary-shipping">$30.00</span>
           </div>
           <div class="summary-row" id="discount-row" style="display:none;">
             <span style="color:var(--accent2);">Discount</span>
@@ -167,17 +278,28 @@
             <p id="discount-msg" style="font-size:0.8rem;margin-top:0.4rem;min-height:1rem;"></p>
           </div>
 
-          <div class="payment-info-box">
-            <p class="info-box-title">💳 Payment</p>
-            <p>Both methods are processed instantly at checkout — scan the QR code and pay directly.</p>
-            <div class="pay-badges">
-              <span class="pay-badge">Bitcoin (BTC)</span>
-              <span class="pay-badge">USDT TRC20</span>
-            </div>
+          <!-- CRYPTO PAYMENT DETAILS -->
+          <div class="crypto-panel">
+            <h4>Crypto Only</h4>
+            <span class="crypto-label">USDT — TRON network (TRC-20)</span>
+            <div class="crypto-addr">TShY4UfetkyG3NXZFebspqwSsb5nvd4csm</div>
+            <span class="crypto-label">Bitcoin (BTC) — Bitcoin network</span>
+            <div class="crypto-addr">1GcpEa5EpphzQhqmQHrBrevbzavR3yRCZT</div>
+            <p class="quote-note">
+              <strong>Wait for our email before you send anything.</strong> We confirm the exact amount and
+              stock availability within 24 hours. Sending before the amount is confirmed can delay your order.
+            </p>
           </div>
-          <div class="payment-info-box">
+
+          <div class="chain-warning">
+            ⚠️ <strong>USDT must be sent on the TRON network (TRC-20) only.</strong>
+            Funds sent on ERC-20, BEP-20, Polygon, Solana or Arbitrum are permanently lost and cannot be recovered.
+            Bitcoin must be sent on the Bitcoin network.
+          </div>
+
+          <div class="payment-info-box" id="shipping-info-box">
             <p class="info-box-title">✈️ Shipping</p>
-            <p>Shipping Info · <strong>15–20 business days</strong></p>
+            <p id="shipping-info-text">Flat $30 freight.</p>
           </div>
         </div>
       </div>
@@ -185,52 +307,13 @@
     </div>
   </main>
 
-  <!-- BITCOIN PAYMENT OVERLAY -->
-  <div id="payment-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
-    <div style="background:#fff;border-radius:12px;padding:2rem;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);max-height:90vh;overflow-y:auto;">
-      <h2 id="pay-title" style="color:#111;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;margin:0 0 0.25rem;letter-spacing:1px;">Pay with Crypto</h2>
-      <p style="color:#777;font-size:0.85rem;margin:0 0 1.5rem;">Send the exact amount to complete your order</p>
-
-      <div style="background:#f7f7f7;border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <span style="color:#777;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Order Total</span>
-          <span id="pay-usd-amount" style="color:#111;font-size:1rem;font-weight:600;">$0.00 USD</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#777;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Send Exactly</span>
-          <span id="pay-crypto-amount" style="color:#111;font-size:1.2rem;font-weight:700;font-family:monospace;">0.00000000</span>
-        </div>
-      </div>
-
-      <img id="pay-qr" src="" alt="Bitcoin QR Code" style="width:180px;height:180px;border-radius:8px;border:1px solid #e0e0e0;margin:0 auto 1.25rem;display:block;" />
-
-      <div style="margin-bottom:1.25rem;">
-        <div id="pay-address-label" style="color:#777;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Wallet Address</div>
-        <div style="display:flex;align-items:center;gap:0.5rem;background:#f7f7f7;border-radius:8px;padding:0.65rem 0.875rem;">
-          <code id="pay-address" style="font-size:0.72rem;color:#111;word-break:break-all;flex:1;text-align:left;line-height:1.4;"></code>
-          <button id="copy-addr-btn" onclick="copyBTCAddress()" style="background:#111;color:#fff;border:none;border-radius:6px;padding:0.4rem 0.75rem;font-size:0.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0;">Copy</button>
-        </div>
-      </div>
-
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.75rem;">
-        <span style="color:#777;font-size:0.85rem;">Time remaining:</span>
-        <span id="pay-timer" style="font-family:monospace;font-size:1.1rem;font-weight:700;color:#111;">20:00</span>
-      </div>
-
-      <div id="pay-status" style="font-size:0.9rem;color:#777;margin-bottom:1.25rem;min-height:1.25rem;">Waiting for payment...</div>
-
-      <div id="pay-expired-msg" style="display:none;margin-bottom:1rem;">
-        <p style="color:#ff5555;font-size:0.85rem;margin:0;">Payment window expired. Please close and place your order again.</p>
-      </div>
-
-      <button onclick="cancelPayment()" style="background:transparent;border:1px solid #e0e0e0;color:#777;border-radius:8px;padding:0.6rem 1.5rem;cursor:pointer;font-size:0.85rem;">Cancel</button>
-
-      <div style="background:#fff8e1;border:1px solid #ffc850;border-radius:8px;padding:0.75rem 1rem;margin-top:1rem;text-align:left;">
-        <p id="pay-warning-text" style="margin:0;font-size:0.82rem;color:#7a5c00;line-height:1.5;">⚠️ <strong>Keep this tab open</strong> until you see "Payment confirmed!" — closing it before confirmation means your order won't be processed automatically.</p>
-      </div>
-      <p style="color:#bbb;font-size:0.72rem;margin:1rem 0 0;">Powered by NOWPayments &middot; Order confirmed automatically once payment is detected</p>
-    </div>
-  </div>
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/85261940799" class="wa-float" target="_blank" rel="noopener noreferrer" title="Message us on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.99 2.896 9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.88 11.88 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413Z"/>
+    </svg>
+    <span class="wa-float-label">WhatsApp</span>
+  </a>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -242,76 +325,127 @@
     const TEMPLATE_ADMIN    = "template_gdh1w1b";
     const TEMPLATE_CUSTOMER = "template_moknerc";
 
-    // ========== NOWPAYMENTS CONFIG ==========
-    const NOWPAYMENTS_API_KEY = "AMR6DQS-1W3487G-Q05A056-KQHZAQH";
-
     // ========================================
     // DISCOUNT CODES — ADD YOUR OWN CODES HERE
     // For fixed amount:  { type: "fixed",   value: 50 }
     // For percentage:    { type: "percent", value: 10 }
     // ========================================
     const DISCOUNT_CODES = {
-      // "FREESHIP": { type: "fixed",   value: 50 },
+      // "FREESHIP": { type: "fixed",   value: 30 },
       // "LAUNCH10": { type: "percent", value: 10 },
-      // "SAVE20":   { type: "fixed",   value: 20 },
     };
 
-    const SHIPPING_FEE = 50;
     let appliedDiscount = 0;
     let appliedCode = "";
-    let bankFee = 0;
 
-    let paymentPollInterval = null;
-    let paymentTimerInterval = null;
-
-    function handlePaymentChange() {
-      const method = document.getElementById("payment_method").value;
+    // Warehouse for this cart. Every line carries its own warehouseId; they are
+    // all the same because the storefront locks a cart to one warehouse.
+    function cartWarehouse() {
       const cart = getCart();
-      const subtotal = cart.reduce((s,i) => s+i.price, 0);
-      // 0.5% NOWPayments fee passed to customer for crypto payments
-      bankFee = (method === "Bitcoin (BTC)" || method === "Crypto (USDT - TRON TRC20)")
-        ? parseFloat((subtotal * 0.005).toFixed(2)) : 0;
-      updateTotals(subtotal);
+      if (!cart.length) return null;
+      return getWarehouse(cart[0].warehouseId);
     }
 
-    function getCart() { return JSON.parse(localStorage.getItem("peptidelab_cart") || "[]"); }
-    function saveCart(c) { localStorage.setItem("peptidelab_cart", JSON.stringify(c)); }
-
-    function groupCart(cart) {
-      const g = {};
-      cart.forEach(item => {
-        const key = item.id + '-' + item.size;
-        g[key] ? g[key].qty++ : g[key] = {...item, qty:1};
-      });
-      return Object.values(g);
+    function shippingFee() {
+      const w = cartWarehouse();
+      return w ? w.freight : 30;
     }
 
-    function updateBadge(n) {
-      const b = document.getElementById("cart-badge");
-      if (b) { b.textContent = n; b.style.display = n > 0 ? "inline" : "none"; }
+    function lineTotal(item) { return item.price * (item.qty || 1); }
+    function cartSubtotal() { return getCart().reduce((s, i) => s + lineTotal(i), 0); }
+
+    function handlePaymentChange() { renderTotals(); }
+
+    // ========== RENDER ==========
+    function renderWarehouseBanner() {
+      const el = document.getElementById("wh-banner");
+      const w = cartWarehouse();
+      if (!el || !w) return;
+      el.innerHTML =
+        `<span>Shipping from <strong>${w.name}</strong> <span class="wh-banner-scope">· ${w.scope}</span></span>` +
+        `<span class="wh-banner-scope">$${w.freight} freight · delivery within ${w.delivery}</span>`;
+
+      const info = document.getElementById("shipping-info-text");
+      if (info) info.innerHTML = `<strong>${w.name}</strong> · ${w.scope}<br>$${w.freight} flat freight · delivery within ${w.delivery}`;
     }
 
-    function calcDiscount(code, subtotal) {
-      const d = DISCOUNT_CODES[code];
-      if (!d) return 0;
-      if (d.type === "percent") return parseFloat((subtotal * d.value / 100).toFixed(2));
-      return d.value;
-    }
+    function renderCountryOptions() {
+      const sel = document.getElementById("country");
+      const note = document.getElementById("country-note");
+      const w = cartWarehouse();
+      if (!sel || !w) return;
 
-    function updateTotals(subtotal) {
-      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount + bankFee);
-      document.getElementById("summary-subtotal").textContent = "$" + subtotal.toFixed(2);
-      document.getElementById("summary-shipping").textContent = "$" + SHIPPING_FEE.toFixed(2);
-      document.getElementById("summary-total").textContent = "$" + total.toFixed(2);
+      const previous = sel.value;
+      sel.innerHTML =
+        `<option value="" disabled${previous ? "" : " selected"}>Select country</option>` +
+        w.ships.map(c => `<option value="${c}"${c === previous ? " selected" : ""}>${c}</option>`).join("");
 
-      const bankFeeRow = document.getElementById("bank-fee-row");
-      const bankFeeAmount = document.getElementById("bank-fee-amount");
-      if (bankFee > 0) {
-        bankFeeRow.style.display = "flex";
-        bankFeeAmount.textContent = "+$" + bankFee.toFixed(2);
+      if (w.ships.length === 1) {
+        sel.value = w.ships[0];
+        sel.classList.add("country-locked");
+        note.textContent = `${w.name} ships domestically within ${w.ships[0]} only.`;
       } else {
-        bankFeeRow.style.display = "none";
+        sel.classList.remove("country-locked");
+        note.textContent = `${w.name} ships to ${w.ships.length} countries. Not listed? Choose a different warehouse.`;
       }
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const empty = document.getElementById("empty-cart");
+      const content = document.getElementById("cart-content");
+
+      // NOTE: both .empty-cart and .cart-content are `display:none` in style.css
+      // and are revealed by JS. Setting display="" would fall back to that `none`,
+      // so each must be set to its real layout value explicitly.
+      if (!cart.length) {
+        empty.style.display = "flex";
+        content.style.display = "none";
+        updateCartCount();
+        return;
+      }
+      empty.style.display = "none";
+      content.style.display = "grid";
+
+      document.getElementById("cart-items").innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>${item.code} · ${item.size}</p>
+          </div>
+          <div class="cart-item-right">
+            <div class="qty-controls">
+              <button type="button" class="qty-btn" onclick="changeQty(${idx}, -1)" aria-label="Decrease quantity">−</button>
+              <span class="qty-val">${item.qty || 1}</span>
+              <button type="button" class="qty-btn" onclick="changeQty(${idx}, 1)" aria-label="Increase quantity">+</button>
+            </div>
+            <span class="cart-item-price">$${lineTotal(item).toFixed(2)}</span>
+            <button type="button" class="remove-btn" onclick="removeItem(${idx})" aria-label="Remove item">✕</button>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("summary-items").innerHTML = cart.map(item => `
+        <div class="summary-item">
+          <span>${item.name} ${(item.qty || 1) > 1 ? `× ${item.qty}` : ""}</span>
+          <span>$${lineTotal(item).toFixed(2)}</span>
+        </div>
+      `).join("");
+
+      renderWarehouseBanner();
+      renderCountryOptions();
+      renderTotals();
+      updateCartCount();
+    }
+
+    function renderTotals() {
+      const subtotal = cartSubtotal();
+      const ship = shippingFee();
+      const total = Math.max(0, subtotal + ship - appliedDiscount);
+
+      document.getElementById("summary-subtotal").textContent = "$" + subtotal.toFixed(2);
+      document.getElementById("summary-shipping").textContent = "$" + ship.toFixed(2);
+      document.getElementById("summary-total").textContent = "$" + total.toFixed(2);
 
       const discountRow = document.getElementById("discount-row");
       if (appliedDiscount > 0) {
@@ -320,324 +454,165 @@
       } else {
         discountRow.style.display = "none";
       }
-      return total;
     }
 
-    function buildOrderSummary(cart) {
-      const subtotal = cart.reduce((s,i) => s+i.price, 0);
-      const total = Math.max(0, subtotal + SHIPPING_FEE - appliedDiscount + bankFee);
-      const lines = groupCart(cart).map(i => `${i.name} x${i.qty} (${i.size}) — $${(i.price*i.qty).toFixed(2)}`);
-      return { lines, subtotal, total };
+    // ========== CART MUTATIONS ==========
+    function changeQty(idx, delta) {
+      const cart = getCart();
+      if (!cart[idx]) return;
+      cart[idx].qty = (cart[idx].qty || 1) + delta;
+      if (cart[idx].qty < 1) cart.splice(idx, 1);
+      saveCart(cart);
+      recalcDiscount();
+      renderCart();
+    }
+
+    function removeItem(idx) {
+      const cart = getCart();
+      cart.splice(idx, 1);
+      saveCart(cart);
+      recalcDiscount();
+      renderCart();
+    }
+
+    document.getElementById("clear-cart").addEventListener("click", () => {
+      if (!confirm("Remove everything from your cart?")) return;
+      saveCart([]);
+      appliedDiscount = 0;
+      appliedCode = "";
+      renderCart();
+    });
+
+    // ========== DISCOUNT ==========
+    function calcDiscount(code, subtotal) {
+      const d = DISCOUNT_CODES[code];
+      if (!d) return 0;
+      if (d.type === "percent") return parseFloat((subtotal * d.value / 100).toFixed(2));
+      return Math.min(d.value, subtotal);
+    }
+
+    function recalcDiscount() {
+      if (!appliedCode) return;
+      appliedDiscount = calcDiscount(appliedCode, cartSubtotal());
     }
 
     function applyDiscount() {
-      const code = document.getElementById("discount-input").value.trim().toUpperCase();
+      const input = document.getElementById("discount-input");
       const msg = document.getElementById("discount-msg");
-      const subtotal = getCart().reduce((s,i) => s+i.price, 0);
-      if (DISCOUNT_CODES[code] !== undefined) {
-        appliedDiscount = calcDiscount(code, subtotal);
+      const code = input.value.trim().toUpperCase();
+      if (!code) return;
+
+      const value = calcDiscount(code, cartSubtotal());
+      if (value > 0) {
         appliedCode = code;
-        const d = DISCOUNT_CODES[code];
-        const label = d.type === "percent"
-          ? `✓ Code applied! ${d.value}% off — saving $${appliedDiscount.toFixed(2)}`
-          : `✓ Code applied! -$${appliedDiscount.toFixed(2)} discount`;
+        appliedDiscount = value;
         msg.style.color = "var(--accent2)";
-        msg.textContent = label;
+        msg.textContent = `✓ Code ${code} applied.`;
       } else {
-        appliedDiscount = 0;
         appliedCode = "";
-        msg.style.color = "#ff5555";
-        msg.textContent = "✗ Invalid code. Please try again.";
+        appliedDiscount = 0;
+        msg.style.color = "#c62828";
+        msg.textContent = "Invalid or expired code.";
       }
-      updateTotals(subtotal);
+      renderTotals();
     }
 
-    document.getElementById("discount-input").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); applyDiscount(); }
-    });
-
-    function renderCartPage() {
+    // ========== ORDER SUBMIT ==========
+    function buildOrderData() {
       const cart = getCart();
-      const empty = document.getElementById("empty-cart");
-      const content = document.getElementById("cart-content");
-      if (cart.length === 0) { empty.style.display="flex"; content.style.display="none"; return; }
-      empty.style.display = "none";
-      content.style.display = "grid";
-      updateBadge(cart.length);
+      const w = cartWarehouse();
+      const subtotal = cartSubtotal();
+      const ship = shippingFee();
+      const total = Math.max(0, subtotal + ship - appliedDiscount);
 
-      document.getElementById("cart-items").innerHTML = groupCart(cart).map(item => `
-        <div class="cart-item">
-          <div class="cart-item-icon">
-            ${item.image
-              ? `<img src="${item.image}" alt="${item.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;" />`
-              : item.icon
-            }
-          </div>
-          <div class="cart-item-info">
-            <h4>${item.name}</h4>
-            <p>${item.size}</p>
-          </div>
-          <div class="cart-item-controls">
-            <button class="qty-btn" onclick="changeQty(${item.id},'${item.size}',-1)">−</button>
-            <span class="qty-num">${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty(${item.id},'${item.size}',1)">+</button>
-          </div>
-          <div class="cart-item-price">$${(item.price*item.qty).toFixed(2)}</div>
-          <button class="remove-btn" onclick="removeItem(${item.id},'${item.size}')">✕</button>
-        </div>
-      `).join("");
+      // The warehouse row rides inside items_table_html so the existing EmailJS
+      // templates show it without needing a new template variable.
+      const rows = cart.map(i => `
+        <tr>
+          <td style="padding:8px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;">${i.code} — ${i.name}</td>
+          <td style="padding:8px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;">${i.size}</td>
+          <td style="padding:8px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;">× ${i.qty || 1}</td>
+          <td style="padding:8px;border-bottom:1px solid #e0e0e0;color:#1a1a1a;text-align:right;">$${lineTotal(i).toFixed(2)}</td>
+        </tr>`).join("");
 
-      document.getElementById("summary-items").innerHTML = groupCart(cart).map(i =>
-        `<div class="summary-item"><span>${i.name} (${i.size}) × ${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`
-      ).join("");
+      const header = `
+        <tr>
+          <td colspan="4" style="padding:8px;border-bottom:2px solid #111111;color:#111111;font-weight:600;">
+            Shipping from: ${w ? w.name : "—"} (${w ? w.scope : "—"}) · delivery within ${w ? w.delivery : "—"}
+          </td>
+        </tr>`;
 
-      const subtotal = cart.reduce((s,i) => s+i.price, 0);
-      updateTotals(subtotal);
+      return { cart, w, subtotal, ship, total, itemsHtml: header + rows };
     }
 
-    function changeQty(id, size, delta) {
-      let cart = getCart();
-      if (delta === 1) {
-        const existing = cart.find(i => i.id===id && i.size===size);
-        if (existing) cart.push({...existing});
-      } else {
-        const i = cart.findIndex(i => i.id===id && i.size===size);
-        if (i > -1) cart.splice(i, 1);
-      }
-      saveCart(cart); renderCartPage();
-    }
-
-    function removeItem(id, size) { saveCart(getCart().filter(i => !(i.id===id && i.size===size))); renderCartPage(); }
-
-    document.getElementById("clear-cart").addEventListener("click", () => { saveCart([]); renderCartPage(); });
-
-    // ========== NOWPAYMENTS FUNCTIONS ==========
-
-    async function createNOWPayment(amountUSD, orderId, currency) {
-      const res = await fetch("https://api.nowpayments.io/v1/payment", {
-        method: "POST",
-        headers: {
-          "x-api-key": NOWPAYMENTS_API_KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          pay_currency: currency,
-          price_amount: amountUSD,
-          price_currency: "usd",
-          order_id: orderId,
-          order_description: "PeptideLab Order"
-        })
-      });
-      return res.json();
-    }
-
-    function showPaymentOverlay(paymentData, templateParams, currency) {
-      const { payment_id, pay_address, pay_amount, expiration_estimate_date } = paymentData;
-      const isUSDT = currency === "usdttrc20";
-
-      document.getElementById("pay-title").textContent = isUSDT ? "Pay with USDT TRC20" : "Pay with Bitcoin";
-      document.getElementById("pay-warning-text").innerHTML = isUSDT
-        ? "⚠️ <strong>Keep this tab open</strong> until you see \"Payment confirmed!\" — USDT TRC20 confirmations typically take <strong>1–3 minutes</strong>."
-        : "⚠️ <strong>Keep this tab open</strong> until you see \"Payment confirmed!\" — Bitcoin confirmations typically take <strong>10–30 minutes</strong>.";
-      document.getElementById("pay-usd-amount").textContent = "$" + parseFloat(templateParams.total).toFixed(2) + " USD";
-      document.getElementById("pay-crypto-amount").textContent = isUSDT
-        ? parseFloat(pay_amount).toFixed(2) + " USDT"
-        : parseFloat(pay_amount).toFixed(8) + " BTC";
-      document.getElementById("pay-address").textContent = pay_address;
-
-      const qrData = isUSDT ? pay_address : "bitcoin:" + pay_address + "?amount=" + pay_amount;
-      document.getElementById("pay-qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(qrData);
-
-      document.getElementById("pay-status").textContent = "Waiting for payment...";
-      document.getElementById("pay-status").style.color = "#777";
-      document.getElementById("pay-expired-msg").style.display = "none";
-      document.getElementById("copy-addr-btn").textContent = "Copy";
-      document.getElementById("pay-timer").textContent = "20:00";
-      document.getElementById("payment-overlay").style.display = "flex";
-
-      const expiry = expiration_estimate_date
-        ? new Date(expiration_estimate_date)
-        : new Date(Date.now() + 20 * 60 * 1000);
-      startPaymentTimer(expiry);
-      startPaymentPolling(payment_id, templateParams, currency);
-    }
-
-    function startPaymentTimer(expiryDate) {
-      paymentTimerInterval = setInterval(() => {
-        const remaining = expiryDate - Date.now();
-        if (remaining <= 0) {
-          clearInterval(paymentTimerInterval);
-          document.getElementById("pay-timer").textContent = "00:00";
-          document.getElementById("pay-status").textContent = "Payment window expired.";
-          document.getElementById("pay-status").style.color = "#ff5555";
-          stopPaymentPolling();
-          document.getElementById("pay-expired-msg").style.display = "block";
-        } else {
-          const mins = Math.floor(remaining / 60000);
-          const secs = Math.floor((remaining % 60000) / 1000);
-          document.getElementById("pay-timer").textContent =
-            String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
-        }
-      }, 1000);
-    }
-
-    function startPaymentPolling(paymentId, templateParams, currency) {
-      paymentPollInterval = setInterval(async () => {
-        try {
-          const res = await fetch("https://api.nowpayments.io/v1/payment/" + paymentId, {
-            headers: { "x-api-key": NOWPAYMENTS_API_KEY }
-          });
-          const data = await res.json();
-          const statusEl = document.getElementById("pay-status");
-
-          if (data.payment_status === "confirming" || data.payment_status === "sending") {
-            statusEl.textContent = "Payment detected! Confirming on blockchain...";
-            statusEl.style.color = "#f59e0b";
-          } else if (
-            data.payment_status === "confirmed" ||
-            data.payment_status === "finished" ||
-            data.payment_status === "partially_paid"
-          ) {
-            stopPaymentPolling();
-            clearInterval(paymentTimerInterval);
-            statusEl.textContent = "Payment confirmed! Redirecting...";
-            statusEl.style.color = "#22c55e";
-
-            try {
-              await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
-              await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
-            } catch (emailErr) {
-              console.error("EmailJS error:", emailErr);
-            }
-
-            localStorage.removeItem("peptidelab_cart");
-            setTimeout(() => { window.location.href = "thankyou.html"; }, 2000);
-          } else if (data.payment_status === "failed") {
-            stopPaymentPolling();
-            statusEl.textContent = "Payment failed. Please cancel and try again.";
-            statusEl.style.color = "#ff5555";
-          }
-        } catch (err) {
-          console.error("Polling error:", err);
-        }
-      }, 15000);
-    }
-
-    function stopPaymentPolling() {
-      if (paymentPollInterval) { clearInterval(paymentPollInterval); paymentPollInterval = null; }
-    }
-
-    function copyBTCAddress() {
-      const addr = document.getElementById("pay-address").textContent;
-      navigator.clipboard.writeText(addr).then(() => {
-        const btn = document.getElementById("copy-addr-btn");
-        btn.textContent = "Copied!";
-        setTimeout(() => { btn.textContent = "Copy"; }, 2000);
-      });
-    }
-
-    function cancelPayment() {
-      stopPaymentPolling();
-      if (paymentTimerInterval) { clearInterval(paymentTimerInterval); paymentTimerInterval = null; }
-      document.getElementById("payment-overlay").style.display = "none";
-      const btn = document.getElementById("submit-btn");
-      btn.textContent = "Place Order →";
-      btn.disabled = false;
-    }
-
-    // ========== FORM SUBMIT ==========
-    document.getElementById("order-form").addEventListener("submit", async (e) => {
+    document.getElementById("order-form").addEventListener("submit", async function (e) {
       e.preventDefault();
+
+      const errEl = document.getElementById("form-error");
+      errEl.textContent = "";
+
+      const cart = getCart();
+      if (!cart.length) { errEl.textContent = "Your cart is empty."; return; }
+
+      const w = cartWarehouse();
+      const country = document.getElementById("country").value;
+
+      // Country gate — a warehouse can only ship where it is allowed to ship.
+      if (!country) { errEl.textContent = "Please select a country."; return; }
+      if (w && !w.ships.includes(country)) {
+        errEl.textContent = `${w.name} cannot ship to ${country}. Please choose a different warehouse.`;
+        return;
+      }
+
       const btn = document.getElementById("submit-btn");
       btn.disabled = true;
+      btn.textContent = "Placing order...";
 
-      const cart = getCart();
-      const { lines, subtotal, total } = buildOrderSummary(cart);
+      const { subtotal, ship, total, itemsHtml } = buildOrderData();
 
-      const first_name  = document.getElementById("first_name").value;
-      const last_name   = document.getElementById("last_name").value;
-      const email       = document.getElementById("cust_email").value;
-      const phone       = document.getElementById("phone").value;
-      const address     = document.getElementById("address").value;
-      const city        = document.getElementById("city").value;
-      const state       = document.getElementById("state").value;
-      const zip         = document.getElementById("zip").value;
-      const country     = document.getElementById("country").value;
-      const payment     = document.getElementById("payment_method").value;
-      const notes       = document.getElementById("notes").value;
-
-      const shippingValue = appliedDiscount >= SHIPPING_FEE ? 0 : SHIPPING_FEE;
-
-      const grouped = groupCart(cart);
-      const itemsTableHtml = grouped.map(item => `
-        <tr>
-          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">${item.name} (${item.size})</td>
-          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;text-align:center;border-bottom:1px solid #e0e0e0;">${item.qty}</td>
-          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;text-align:right;border-bottom:1px solid #e0e0e0;">$${item.price.toFixed(2)}</td>
-          <td style="padding:10px 14px;font-size:13px;color:#1a1a1a;text-align:right;border-bottom:1px solid #e0e0e0;">$${(item.price * item.qty).toFixed(2)}</td>
-        </tr>
-      `).join("");
+      const first = document.getElementById("first_name").value.trim();
+      const last = document.getElementById("last_name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const zip = document.getElementById("zip").value.trim();
 
       const templateParams = {
-        customer_name:    `${first_name} ${last_name}`,
-        customer_email:   email,
-        customer_phone:   phone || "Not provided",
+        customer_name: `${first} ${last}`,
+        customer_email: document.getElementById("cust_email").value.trim(),
+        customer_phone: document.getElementById("phone").value.trim(),
         customer_address: address,
-        customer_city:    city,
-        customer_state:   state,
-        customer_zip:     zip,
+        customer_city: city,
+        customer_state: state,
+        customer_zip: zip,
         customer_country: country,
-        full_address:     `${address}, ${city}, ${state} ${zip}, ${country}`,
-        payment_method:   payment,
-        order_summary:    lines.join("\n"),
-        items_table_html: itemsTableHtml,
-        subtotal:         subtotal.toFixed(2),
-        shipping:         shippingValue === 0 ? "0.00 (Free - code: " + appliedCode + ")" : SHIPPING_FEE.toFixed(2),
-        discount:         appliedDiscount > 0 ? appliedDiscount.toFixed(2) + " (code: " + appliedCode + ")" : "0.00",
-        bank_fee:         bankFee > 0 ? "+$" + bankFee.toFixed(2) + " (0.5% crypto processing fee)" : "None",
-        total:            total.toFixed(2),
-        notes:            notes || "None",
+        payment_method: document.getElementById("payment_method").value,
+        items_table_html: itemsHtml,
+        subtotal: "$" + subtotal.toFixed(2),
+        shipping: "$" + ship.toFixed(2),
+        discount: appliedDiscount > 0 ? "-$" + appliedDiscount.toFixed(2) : "$0.00",
+        bank_fee: "$0.00",
+        total: "$" + total.toFixed(2),
+        full_address: `${address}, ${city}, ${state} ${zip}, ${country}`,
+        notes: document.getElementById("notes").value.trim()
       };
 
-      const isCrypto = payment === "Bitcoin (BTC)" || payment === "Crypto (USDT - TRON TRC20)";
-      const nowCurrency = payment === "Bitcoin (BTC)" ? "btc" : "usdttrc20";
+      try {
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
 
-      if (isCrypto) {
-        btn.textContent = "Creating payment...";
-        try {
-          const orderId = "PL-" + Date.now();
-          const paymentData = await createNOWPayment(total, orderId, nowCurrency);
-          if (paymentData && paymentData.payment_id) {
-            showPaymentOverlay(paymentData, templateParams, nowCurrency);
-            btn.textContent = "Place Order →";
-            btn.disabled = false;
-          } else {
-            throw new Error(paymentData.message || "Payment creation failed");
-          }
-        } catch (err) {
-          console.error("NOWPayments error:", err);
-          btn.textContent = "Payment Error. Try Again.";
-          btn.style.background = "#ff5555";
-          btn.disabled = false;
-          setTimeout(() => { btn.textContent = "Place Order →"; btn.style.background = ""; }, 3000);
-        }
-      } else {
-        btn.textContent = "Sending...";
-        try {
-          await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, templateParams);
-          await emailjs.send(EMAILJS_SERVICE, TEMPLATE_CUSTOMER, templateParams);
-          localStorage.removeItem("peptidelab_cart");
-          window.location.href = "thankyou.html";
-        } catch (err) {
-          console.error("EmailJS error:", err);
-          btn.textContent = "Failed. Please try again.";
-          btn.disabled = false;
-          btn.style.background = "#ff5555";
-        }
+        localStorage.removeItem("peptidelab_cart");
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        errEl.innerHTML = 'Could not send your order. Please try again, or <a href="https://wa.me/85261940799" target="_blank" rel="noopener noreferrer">message us on WhatsApp</a>.';
+        btn.disabled = false;
+        btn.textContent = "Place Order →";
       }
     });
 
-    renderCartPage();
+    // ========== INIT ==========
+    renderCart();
   </script>
 </body>
 </html>
