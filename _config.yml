@@ -1,0 +1,4 @@
+# GitHub Pages: do not publish the email template sources.
+# They are reference copies for the EmailJS dashboard, not site pages.
+exclude:
+  - docs

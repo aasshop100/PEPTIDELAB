@@ -1,0 +1,190 @@
+<!--
+  PeptideLab v2.0 — ADMIN order email.  EmailJS template: template_gdh1w1b
+  Paste this whole file into the EmailJS template editor (Code view).
+
+  ⚠️ The previous version had `$\{{subtotal}}`, `\{{bank_fee}}`, `\{{notes}}` and
+  `mailto:\{{customer_email}}`. Those backslashes escape the placeholder, so the
+  values never rendered and the "Reply to Customer" button was a dead link.
+  There are no backslashes in this file. Keep it that way.
+
+  ⚠️ Money values already contain their "$" (cart.html sends "$508.00").
+  Do NOT write ${{subtotal}} — that renders "$$508.00".
+
+  ⚠️ Item rows come from cart.html as 4 cells: Item | Qty | Unit | Total.
+-->
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"/></head>
+<body style="margin:0;padding:0;background-color:#f7f7f7;font-family:'Helvetica Neue',Arial,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7f7f7;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- HEADER -->
+          <tr>
+            <td style="background-color:#111111;border-radius:16px 16px 0 0;padding:28px 40px;text-align:center;">
+              <h1 style="margin:0;font-size:22px;font-weight:900;letter-spacing:3px;color:#ffffff;">PEPTIDE<span style="color:#888888;">LAB</span></h1>
+              <p style="margin:6px 0 0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#aaaaaa;">Admin Order Notification</p>
+            </td>
+          </tr>
+
+          <!-- ALERT BANNER -->
+          <tr>
+            <td style="background-color:#222222;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:20px;font-weight:800;color:#ffffff;">🛒 New Order — {{order_id}}</p>
+              <p style="margin:4px 0 0;font-size:13px;color:#aaaaaa;">Unpaid. Send the wallet address and exact amount within 24 hours.</p>
+            </td>
+          </tr>
+
+          <!-- ACTION REQUIRED -->
+          <tr>
+            <td style="background-color:#ffffff;padding:24px 40px 0;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#fff8e1;border:1px solid #e0b000;border-radius:10px;padding:14px 18px;font-size:13px;color:#6b5200;line-height:1.7;">
+                    <strong>To do:</strong> quote <strong>{{total}}</strong> in <strong>{{payment_method}}</strong>, then log it.<br/>
+                    Add to the back-office sheet: <strong>Orders</strong> row with orderId <strong>{{order_id}}</strong> (status NEW), and a <strong>Payments</strong> row once quoted.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ORDER INFO -->
+          <tr>
+            <td style="background-color:#ffffff;padding:24px 40px 20px;">
+              <p style="margin:0 0 16px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#111111;font-weight:700;">📋 Order</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;">
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;width:40%;font-weight:600;border-bottom:1px solid #e0e0e0;">Order ID</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;font-weight:700;letter-spacing:1px;border-bottom:1px solid #e0e0e0;">{{order_id}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;border-bottom:1px solid #e0e0e0;">Date</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">{{order_date}}</td>
+                </tr>
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;border-bottom:1px solid #e0e0e0;">Warehouse</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;font-weight:700;border-bottom:1px solid #e0e0e0;">{{warehouse}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;">Delivery window</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;">{{delivery_days}} — {{warehouse_scope}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- CUSTOMER INFO -->
+          <tr>
+            <td style="background-color:#ffffff;padding:0 40px 20px;">
+              <p style="margin:0 0 16px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#111111;font-weight:700;">👤 Customer</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;">
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;width:40%;font-weight:600;border-bottom:1px solid #e0e0e0;">Full Name</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;font-weight:700;border-bottom:1px solid #e0e0e0;">{{customer_name}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;border-bottom:1px solid #e0e0e0;">Email</td>
+                  <td style="padding:10px 16px;border-bottom:1px solid #e0e0e0;"><a href="mailto:{{customer_email}}" style="font-size:13px;color:#111111;text-decoration:underline;">{{customer_email}}</a></td>
+                </tr>
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;border-bottom:1px solid #e0e0e0;">Phone</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">{{customer_phone}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;">Payment Method</td>
+                  <td style="padding:10px 16px;"><span style="background-color:#111111;color:#ffffff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:50px;">{{payment_method}}</span></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- SHIPPING ADDRESS -->
+          <tr>
+            <td style="background-color:#ffffff;padding:0 40px 20px;">
+              <p style="margin:0 0 16px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#111111;font-weight:700;">📦 Ship To</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;">
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;width:40%;font-weight:600;border-bottom:1px solid #e0e0e0;">Address</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">{{customer_address}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;border-bottom:1px solid #e0e0e0;">City / State / ZIP</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">{{customer_city}}, {{customer_state}} {{customer_zip}}</td>
+                </tr>
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:12px;color:#777777;font-weight:600;">Country</td>
+                  <td style="padding:10px 16px;font-size:13px;color:#1a1a1a;font-weight:700;">{{customer_country}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ORDER ITEMS -->
+          <tr>
+            <td style="background-color:#ffffff;padding:0 40px 20px;">
+              <p style="margin:0 0 16px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#111111;font-weight:700;">🧪 Order Items</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;">
+                <tr style="background-color:#f7f7f7;">
+                  <td style="padding:10px 16px;font-size:11px;color:#777777;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Item</td>
+                  <td align="center" style="padding:10px 16px;font-size:11px;color:#777777;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Qty</td>
+                  <td align="right" style="padding:10px 16px;font-size:11px;color:#777777;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Unit</td>
+                  <td align="right" style="padding:10px 16px;font-size:11px;color:#777777;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Total</td>
+                </tr>
+                {{{items_table_html}}}
+                <tr style="background-color:#f7f7f7;">
+                  <td colspan="3" style="padding:10px 16px;font-size:13px;color:#777777;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;">Subtotal</td>
+                  <td align="right" style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;">{{subtotal}}</td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="padding:10px 16px;font-size:13px;color:#777777;border-bottom:1px solid #e0e0e0;">Freight</td>
+                  <td align="right" style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">{{shipping}}</td>
+                </tr>
+                <tr style="background-color:#f7f7f7;">
+                  <td colspan="3" style="padding:10px 16px;font-size:13px;color:#777777;border-bottom:1px solid #e0e0e0;">Discount</td>
+                  <td align="right" style="padding:10px 16px;font-size:13px;color:#1a1a1a;border-bottom:1px solid #e0e0e0;">{{discount}}</td>
+                </tr>
+                <tr style="background-color:#111111;">
+                  <td colspan="3" style="padding:14px 16px;font-size:15px;font-weight:800;color:#ffffff;">TOTAL TO QUOTE</td>
+                  <td align="right" style="padding:14px 16px;font-size:20px;font-weight:900;color:#ffffff;">{{total}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- NOTES -->
+          <tr>
+            <td style="background-color:#ffffff;padding:0 40px 30px;">
+              <p style="margin:0 0 16px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#111111;font-weight:700;">📝 Customer Notes</p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#f7f7f7;border:1px solid #e0e0e0;border-radius:10px;padding:16px 20px;font-size:13px;color:#1a1a1a;line-height:1.7;">{{notes}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ACTION BUTTON -->
+          <tr>
+            <td align="center" style="background-color:#ffffff;padding:0 40px 40px;">
+              <a href="mailto:{{customer_email}}?subject=Payment%20instructions%20for%20order%20{{order_id}}" style="display:inline-block;background-color:#111111;color:#ffffff;font-size:14px;font-weight:800;padding:14px 36px;border-radius:50px;text-decoration:none;letter-spacing:1px;">Send Payment Instructions →</a>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td align="center" style="background-color:#111111;border-radius:0 0 16px 16px;padding:20px 40px;">
+              <p style="margin:0;font-size:11px;color:#777777;">PeptideLab Admin Notification · Do not share this email</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
