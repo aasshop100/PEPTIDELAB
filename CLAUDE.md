@@ -49,9 +49,19 @@ Seven warehouses, each with **its own catalog and its own price for the same pro
 | `pl` | Poland Warehouse | 24 selected EU countries | $30 | 6–9 days | 8 |
 
 **Rules that hold the model together:**
-- **One warehouse per order.** Switching warehouse with a non-empty cart prompts, then empties the cart
-  (`selectWarehouse()` in `script.js`). Mixing is impossible by design — each warehouse ships separately.
-- **Freight is charged once** because an order only ever comes from one warehouse.
+- **Warehouses have a `group`.** `us1`–`us4` share `"us"`; `ca`, `au` and `pl` are each their own.
+  **Items mix freely WITHIN a group, never across one.** Only a cross-group switch prompts and empties
+  the cart (`selectWarehouse()` in `script.js`).
+- **So US orders CAN combine all four US warehouses**, and Canada / Australia / Poland cannot be combined
+  with anything. Superseded the original "one warehouse per order" rule on 2026-11-05.
+- **Freight is $30 PER DISTINCT WAREHOUSE in the cart, never flat.** US1 + US2 = $60; three = $90. Each
+  warehouse is a separate parcel and may arrive separately — the cart banner, the shipping box and the
+  order emails all say so, and the emails group the items under a header per warehouse.
+- ⚠️ **Customer-facing copy must never say "flat" freight.** On 2026-11-10 five places still claimed
+  "Flat $30 freight" — hero subtitle, catalog footnote, `<meta name="description">`, `og:description`
+  and the cart's default shipping line — months after mixing shipped. A customer mixing two US warehouses
+  would have read "flat $30" and been charged $60. **After any pricing or shipping change, grep the whole
+  site for the old claim, meta tags included.** Nothing fails when only the words are wrong.
 - **Country gating is enforced at checkout**, not just displayed. The country dropdown is built from the
   warehouse's `ships` array, and submit is blocked if the country is not in it.
 - Prices are **per 10-vial kit**, in USD. Quantity 2 = 20 vials. There is no single-vial option.
@@ -76,6 +86,29 @@ There is **no payment processor**. NOWPayments was removed in v2.0.
   depend on a script running.
 - **Nothing automates the quote or confirms payment.** There is no watcher, no chain parsing, no
   confirmation email on payment. That is all manual, unlike God Muscle Gears.
+
+## Email deliverability — orders land in Gmail spam (open)
+A real order to a Gmail address landed in **spam** (2026-11-06). **Mitigated, not fixed.**
+
+- **The cause is the sending identity, not the content.** EmailJS sends through a personal Gmail while the
+  mail presents as "PEPTIDE LABS", with Reply-To on a third domain (`peptidelabusa@proton.me`), carrying
+  crypto wallet addresses. Nothing ties any of it to `peptidelab.world`, so the brand has **no sending
+  reputation and no SPF/DKIM of its own**.
+- **Shipped mitigation:** a spam notice under the email field on `cart.html`, a box plus step 1 on
+  `thankyou.html`, and a block in the customer email asking the reader to mark it "Not spam" and add the
+  address to contacts. That last one is the only place the ask reaches someone who already found the mail
+  in spam, and the engagement signal compounds for later sends.
+- **The real fix needs the From address moved to `peptidelab.world`.** Two free routes, both already
+  proven in Lester's own stack: a **Gmail verified send-as alias** (how `admin@godmusclegears.com` and
+  `support@singilinmo.com` work — SPF pass, no DKIM alignment), or **Resend**, where he already has an
+  account verified for `singilinmo.com` (free 3,000/month, gives real DKIM on the domain). **Zoho's free
+  plan is webmail-only — no SMTP — so it cannot send programmatically**, the same trap as the Proton address.
+- ⚠️ **Either route requires moving the order emails OFF EmailJS**, because **EmailJS cannot change the From
+  address on a Personal Service tier**. That is exactly why God Muscle Gears retired EmailJS for n8n.
+- ⚠️ **Do not publish DMARC on the alias route** — a policy on an unaligned setup tells receivers to bin
+  PeptideLab's own order confirmations. GMG deliberately has none.
+- `peptidelab.world` DNS today: NS Namecheap, MX `eforward1-5.registrar-servers.com` (forwarding already
+  live), SPF `v=spf1 include:spf.efwd.registrar-servers.com ~all`. No DKIM, no DMARC.
 
 ## Order capture → Back Office sheet (added 2026-11-05)
 Every order is written to the **PEPTIDELAB — Back Office** spreadsheet
@@ -111,6 +144,14 @@ the same pattern Biopep and God Muscle Gears use.
 | Service | `service_hko2z7s` — recreated 2026-11-05 after the old `service_ju3widv` Gmail grant died |
 | Admin template | `template_gdh1w1b` — order notification to store |
 | Customer template | `template_moknerc` — confirmation to buyer |
+
+**Template sources live in `docs/emails/`** — `customer-order-received.html` and
+`admin-order-notification.html`.
+- ⚠️ **Pasting them into the EmailJS dashboard is a MANUAL step. Nothing syncs them**, so the live
+  templates can drift from the repo silently. Change one, paste it, same session.
+- ⚠️ **`_config.yml` excludes `docs/` from the published SITE, which is NOT privacy.** The repo is
+  public, so the files and their whole history are readable on GitHub regardless. Never put anything
+  in `docs/` that would matter if a stranger read it — no customer data, no keys, no order ids.
 
 Template variables (**unchanged in v2 so the existing templates keep working**):
 `{{customer_name}}`, `{{customer_email}}`, `{{customer_phone}}`, `{{customer_address}}`, `{{customer_city}}`,
@@ -158,6 +199,24 @@ but add a warning when the vial cannot provide one full dose, or when the draw e
 ---
 
 ## Session Log
+
+### 2026-11-10 — freight copy
+- Rewrote the warehouse blurb, which Lester found confusing, to
+  "Each warehouse ships separately — its own stock, its own parcel, its own $30 freight."
+- Removed "Flat $30 freight" from five places where it had become false (see the warning above). Commits
+  `dd58210`, `2248fac`.
+
+### 2026-11-06 — spam mitigation
+- Spam-folder reminders on `cart.html`, `thankyou.html` and in the customer email template. Commit `ac841f4`.
+- Diagnosed the cause as the sending identity; see the deliverability section above. Not fixed.
+
+### 2026-11-05 (later) — order capture + US warehouse mixing
+- Orders write themselves to the Back Office sheet via Apps Script. Commits `0148c76`, `072a5cc`.
+- The four US warehouses can be combined in one order, $30 freight each. Commit `024a645`.
+- EmailJS Gmail grant was dead (`412 Invalid grant`); the service was rebuilt and came back with a NEW id,
+  which silently broke checkout a second time until `cart.html` was repointed. Commit `a6fafd9`.
+- Both email templates rewritten for v2 and pasted into the dashboard. Commit `5f2f486`.
+- Floating buttons aligned into one stack. Commit `eae4ce3`.
 
 ### 2026-11-05 — v2.0 rebuild (warehouse-first storefront)
 
