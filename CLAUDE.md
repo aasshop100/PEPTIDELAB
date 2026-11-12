@@ -6,7 +6,7 @@
 
 ## Project Overview
 E-commerce peptide store at **peptidelab.world** (GitHub Pages). Static HTML/CSS/JS — no framework, no build step.
-**v2.0 (2026-11-05)** rebuilt the site around **warehouse-first ordering**: the customer picks one of 7 domestic
+**v2.0 (2026-11-05)** rebuilt the site around **warehouse-first ordering**: the customer picks one of 9 domestic
 warehouses, sees only that warehouse's price list, and the cart is locked to it. Orders are emailed via EmailJS.
 Payment is **crypto only, handled manually** — no payment processor. Cart persists in `localStorage`.
 
@@ -35,25 +35,39 @@ White/black/gray, unchanged from v1.
 ---
 
 ## Warehouse model (the core of v2)
-Seven warehouses, each with **its own catalog and its own price for the same product code**.
+**Nine warehouses, 147 SKUs**, each with **its own catalog and its own price for the same product code**.
 `TR10` is $113 in US Warehouse 1 and $118 in Canada — that is intended, not a bug.
+
+⚠️ **The catalog is NOT hand-edited any more. The ZLZ supplier sheet is the source of truth** for every
+warehouse — see "Catalog sync" below. Edit the sheet, re-run the sync tool, push.
 
 | ID | Name | Scope | Freight | Delivery | SKUs |
 |---|---|---|---|---|---|
-| `us1` | US Warehouse 1 | USA Domestic Only | $30 | 3–7 days | 20 |
-| `us2` | US Warehouse 2 | USA Domestic Only | $30 | 3–7 days | 15 |
-| `us3` | US Warehouse 3 | USA Domestic Only | $30 | 3–7 days | 29 |
-| `us4` | US Warehouse 4 | USA Domestic Only | $30 | 3–7 days | 11 |
-| `ca` | Canada Warehouse | Canada Domestic Only | $30 | 5–9 days | 10 |
-| `au` | Australia Warehouse | Australia Domestic Only | $30 | 3–7 days | 14 |
-| `pl` | Poland Warehouse | 24 selected EU countries | $30 | 6–9 days | 8 |
+| `us1` | US Warehouse 1 | USA Domestic Only | $30 | 3–7 days | 22 |
+| `us2` | US Warehouse 2 | USA Domestic Only | $30 | 3–7 days | 19 |
+| `us3` | US Warehouse 3 | USA Domestic Only | $30 | 3–7 days | 30 |
+| `us4` | US Warehouse 4 | USA Domestic Only | $30 | 3–7 days | 17 |
+| `us5` | US Warehouse 5 | USA Domestic Only | $30 | 3–7 days | 16 |
+| `ca` | Canada Warehouse | Canada Domestic Only | $30 | 5–9 days | 6 |
+| `au` | Australia Warehouse | Australia Domestic Only | $30 | 3–7 days | 17 |
+| `eu1` | EU Warehouse 1 | 24 selected EU countries | $30 | 6–9 days | 12 |
+| `pl` | EU Warehouse 2 | 24 selected EU countries | $30 | 6–9 days | 8 |
+
+⚠️ **The id `pl` is historic.** It was "Poland Warehouse" while it was the only EU warehouse. When the
+sheet's "EU domestic warehouse - 1" was added on 2026-11-12 the two were relabelled **EU Warehouse 1 / 2**,
+because naming one by country implies the other is not in Poland — which nothing in the sheet says.
+**The id stayed `pl`**: it is written into past orders, the Back Office sheet and `localStorage`.
+Only the display name changed.
 
 **Rules that hold the model together:**
-- **Warehouses have a `group`.** `us1`–`us4` share `"us"`; `ca`, `au` and `pl` are each their own.
+- **Warehouses have a `group`.** `us1`–`us5` share `"us"`; `ca`, `au`, `eu1` and `pl` are each their own.
   **Items mix freely WITHIN a group, never across one.** Only a cross-group switch prompts and empties
   the cart (`selectWarehouse()` in `script.js`).
-- **So US orders CAN combine all four US warehouses**, and Canada / Australia / Poland cannot be combined
-  with anything. Superseded the original "one warehouse per order" rule on 2026-11-05.
+- **So US orders CAN combine all five US warehouses**, and Canada / Australia / either EU warehouse cannot
+  be combined with anything. Superseded the original "one warehouse per order" rule on 2026-11-05.
+- ⚠️ **The two EU warehouses do NOT mix**, although they are the same region, same freight and the same
+  ships-to list — exactly the shape that made US mixing worth building. That is a deliberate gap, not an
+  oversight: Lester scoped mixing to the USA, and nobody has asked for EU mixing. **Open question.**
 - **Freight is $30 PER DISTINCT WAREHOUSE in the cart, never flat.** US1 + US2 = $60; three = $90. Each
   warehouse is a separate parcel and may arrive separately — the cart banner, the shipping box and the
   order emails all say so, and the emails group the items under a header per warehouse.
@@ -68,10 +82,46 @@ Seven warehouses, each with **its own catalog and its own price for the same pro
 - Selection is stored in `localStorage` under `peptidelab_warehouse`; the cart under `peptidelab_cart`.
   Every cart line carries `warehouseId` + `warehouseName`.
 
-**To change stock or pricing:** edit `CATALOG` in `script.js`, commit, push. No build, no database.
-Adding a warehouse means a new `WAREHOUSES` entry **and** a matching `CATALOG` key.
+**To change stock or pricing:** edit the **ZLZ sheet**, run `backoffice/sync-catalog.js --apply`, commit, push.
+No build, no database. Hand-editing `CATALOG` works but the next sync overwrites it.
+Adding a warehouse means a new `WAREHOUSES` entry **and** a mapping in the sync tool.
 
 ---
+
+## Catalog sync — the ZLZ sheet is the source of truth
+Since 2026-11-12 `CATALOG` in `script.js` is **generated**, not written by hand.
+
+- **Source:** tab **`ZLZ INVENTORY`** of the supplier workbook (the same workbook as the Biopep order
+  calculator). Columns `Code | Product | Specification | cost | +50 markup | PRICE`, where
+  **price = `=SUM(cost+markup)`**.
+- **Tool:** `peptidelabfiles/backoffice/sync-catalog.js` — **deliberately OUTSIDE this repo**, because the
+  sheet id identifies a workbook of supplier COST prices. `node sync-catalog.js` prints every add /
+  remove / reprice and writes nothing; `--apply` rewrites `CATALOG`.
+- **Section → warehouse:** `US WAREHOUSE n – PRICE LIST` → `usN`; `Aus domestic warehouse` → `au`;
+  `CA domestic warehouse` → `ca`; `EU domestic warehouse - 1` → `eu1`; `EU domestic warehouse - 2` → `pl`.
+- A SKU the sheet lists is sold, a SKU it drops is removed, and the price always comes from the sheet.
+  **Lester's stock varies per warehouse over time, so this is meant to be re-run, not a one-off.**
+
+**Traps this tool exists because of**
+- ⚠️ **The sheet changes shape under you.** On 2026-11-12 it moved one column right and two rows down
+  between two reads minutes apart. A column-A assumption produced **"0 SKUs" for every warehouse** — a
+  failed read that looks exactly like an empty warehouse. The parser finds the heading wherever it sits,
+  and **refuses to write if any warehouse parses empty or a known section vanishes**.
+- ⚠️ **A section must end at the NEXT heading of ANY kind.** Matching only `US WAREHOUSE n` let the Aus /
+  EU / CA rows pile into `us5` and invent a phantom `KLOW` SKU there.
+- ⚠️ **The same product is spelled differently per section** — `KLOW`, `KLOW 80` and `KLOW80` are all the
+  80mg KPV combo, `PT1410` is `PT141`. See `ALIAS`. Confirm by the spec column, never by eye.
+- ⚠️ **`OVERRIDE` pins prices where the sheet is provably wrong.** Today: **`H10` (HGH) reads $219 but its
+  cost is 69 + markup 50 = 119**, and the two H10 cells have a **hardcoded value that overwrote the
+  `=SUM` formula**. Without the pin every sync would raise a live price by $100. **Read prices with
+  `valueRenderOption: "FORMULA"` before trusting a surprising one** — that is how a typed value is told
+  apart from a computed one. Delete the entry once the sheet is fixed.
+- ⚠️ **Size is NOT always 10 vials.** The oils (`TE250`/`TC250`/`TP100`) are `10ml*2vials`. The mobile
+  price table once hid the Size column on the assumption everything was a 10-vial kit; it is back as a
+  compact `10v`/`2v`. **Never re-hide it.**
+- **A brand-new warehouse id still needs a hand-written `WAREHOUSES` entry** (name, scope, delivery,
+  `ships`, `group`) and a bump to the "Domestic Warehouses" stat on `index.html`. The tool refuses to run
+  if the site has a warehouse the sheet does not cover, so it can never silently drop one.
 
 ## Payment — crypto only, MANUAL
 There is **no payment processor**. NOWPayments was removed in v2.0.
@@ -199,6 +249,16 @@ but add a warning when the vial cannot provide one full dose, or when the draw e
 ---
 
 ## Session Log
+
+### 2026-11-12 — whole catalog synced to the ZLZ sheet
+- `CATALOG` is now generated by `backoffice/sync-catalog.js`. **9 warehouses, 147 SKUs.**
+- **US:** `us5` added (group `"us"`, so it mixes with the rest). GLOW in US3 corrected to $252.
+  Testosterone (`TE250`/`TC250`/`TP100`, 2-vial kits) and HGH added; dropped SKUs removed.
+  Mobile Size column restored. Commit `a7b0fe9`.
+- **Non-US, after Lester said "sync all":** Australia +3 (`RT40`, `KLOW80`, `CP10`);
+  **Canada 10 → 6** — `ML10`, `CGL5`, `G5K`, `SMO10` were removed because the sheet no longer lists them;
+  `eu1` added with 12 SKUs; `pl` unchanged and relabelled "EU Warehouse 2".
+- `H10` left at **$119** against the sheet's $219 — see `OVERRIDE`. The sheet cell is still wrong.
 
 ### 2026-11-10 — freight copy
 - Rewrote the warehouse blurb, which Lester found confusing, to

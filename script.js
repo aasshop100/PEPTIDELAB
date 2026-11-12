@@ -73,9 +73,26 @@ const WAREHOUSES = [
     ships: ["Australia"]
   },
   {
+    // The sheet's "EU domestic warehouse - 1". Added 2026-11-12.
+    id: "eu1",
+    group: "eu1",
+    name: "EU Warehouse 1",
+    scope: "Selected European Countries Only",
+    freight: 30,
+    delivery: "6–9 days",
+    ships: [
+      "Poland", "France", "Italy", "Spain", "Austria", "Belgium", "Bulgaria",
+      "Croatia", "Czech Republic", "Denmark", "Estonia", "Finland", "Greece",
+      "Hungary", "Ireland", "Latvia", "Lithuania", "Luxembourg", "Netherlands",
+      "Portugal", "Romania", "Slovakia", "Slovenia", "Sweden"
+    ]
+  },
+  {
+    // The sheet's "EU domestic warehouse - 2". id stays "pl" — it was the only
+    // EU warehouse and is written into past orders; only the label changed.
     id: "pl",
     group: "pl",
-    name: "Poland Warehouse",
+    name: "EU Warehouse 2",
     scope: "Selected European Countries Only",
     freight: 30,
     delivery: "6–9 days",
@@ -207,32 +224,45 @@ const CATALOG = {
     { code: "BA10",   name: "Bacteriostatic Water 10ml",  size: "10 vials", price: 16 }
   ],
   ca: [
-    { code: "SM10",   name: "Semaglutide 10mg",                 size: "10 vials", price: 115 },
-    { code: "SM20",   name: "Semaglutide 20mg",                 size: "10 vials", price: 141 },
-    { code: "TR10",   name: "Tirz 10mg",                        size: "10 vials", price: 118 },
-    { code: "ML10",   name: "MT-2 (Melanotan 2 Acetate) 10mg",  size: "10 vials", price: 125 },
-    { code: "G65",    name: "GHRP-6 Acetate 5mg",               size: "10 vials", price: 111 },
-    { code: "DS10",   name: "DSIP 10mg",                        size: "10 vials", price: 123 },
-    { code: "CGL5",   name: "Cagrilintide 5mg",                 size: "10 vials", price: 142 },
-    { code: "G25",    name: "GHRP-2 Acetate 5mg",               size: "10 vials", price: 111 },
-    { code: "G5K",    name: "HCG 5000 IU",                      size: "10 vials", price: 144 },
-    { code: "SMO10",  name: "Sermorelin Acetate 10mg",          size: "10 vials", price: 204 }
+    { code: "SM10",  name: "Semaglutide 10mg",    size: "10 vials", price: 115 },
+    { code: "SM20",  name: "Semaglutide 20mg",    size: "10 vials", price: 141 },
+    { code: "TR10",  name: "Tirz 10mg",           size: "10 vials", price: 118 },
+    { code: "G65",   name: "GHRP-6 Acetate 5mg",  size: "10 vials", price: 111 },
+    { code: "DS10",  name: "DSIP 10mg",           size: "10 vials", price: 123 },
+    { code: "G25",   name: "GHRP-2 Acetate 5mg",  size: "10 vials", price: 111 }
   ],
   au: [
-    { code: "TR10",   name: "Tirz 10mg",                                       size: "10 vials", price: 118 },
-    { code: "TR30",   name: "Tirz 30mg",                                       size: "10 vials", price: 168 },
-    { code: "TR60",   name: "Tirz 60mg",                                       size: "10 vials", price: 254 },
-    { code: "RT10",   name: "Reta 10mg",                                       size: "10 vials", price: 147 },
-    { code: "RT30",   name: "Reta 30mg",                                       size: "10 vials", price: 246 },
-    { code: "TB5",    name: "TB500 5mg",                                       size: "10 vials", price: 133 },
-    { code: "5AD",    name: "AOD9604 5mg",                                     size: "10 vials", price: 142 },
-    { code: "GLOW",   name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg (70mg)",  size: "10 vials", price: 263 },
-    { code: "XA10",   name: "Semax 10mg",                                      size: "10 vials", price: 122 },
-    { code: "CU100",  name: "GHK-CU 100mg",                                    size: "10 vials", price: 105 },
-    { code: "TSM10",  name: "Tesamorelin 10mg",                                size: "10 vials", price: 214 },
-    { code: "TA5",    name: "Thymosin Alpha-1 5mg",                            size: "10 vials", price: 170 },
-    { code: "SMO10",  name: "Sermorelin Acetate 10mg",                         size: "10 vials", price: 204 },
-    { code: "IGF1",   name: "IGF-1LR3 1mg",                                    size: "10 vials", price: 251 }
+    { code: "TR10",    name: "Tirz 10mg",                                                  size: "10 vials", price: 118 },
+    { code: "TR30",    name: "Tirz 30mg",                                                  size: "10 vials", price: 168 },
+    { code: "TR60",    name: "Tirz 60mg",                                                  size: "10 vials", price: 254 },
+    { code: "RT10",    name: "Reta 10mg",                                                  size: "10 vials", price: 147 },
+    { code: "RT30",    name: "Reta 30mg",                                                  size: "10 vials", price: 246 },
+    { code: "RT40",    name: "Reta 40mg",                                                  size: "10 vials", price: 287 },
+    { code: "TB5",     name: "TB500 5mg",                                                  size: "10 vials", price: 133 },
+    { code: "5AD",     name: "AOD9604 5mg",                                                size: "10 vials", price: 142 },
+    { code: "GLOW",    name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg (70mg)",             size: "10 vials", price: 263 },
+    { code: "XA10",    name: "Semax 10mg",                                                 size: "10 vials", price: 122 },
+    { code: "CU100",   name: "GHK-CU 100mg",                                               size: "10 vials", price: 105 },
+    { code: "TSM10",   name: "Tesamorelin 10mg",                                           size: "10 vials", price: 214 },
+    { code: "KLOW80",  name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg + KPV 10mg (80mg)",  size: "10 vials", price: 299 },
+    { code: "TA5",     name: "Thymosin Alpha-1 5mg",                                       size: "10 vials", price: 170 },
+    { code: "SMO10",   name: "Sermorelin Acetate 10mg",                                    size: "10 vials", price: 204 },
+    { code: "CP10",    name: "CJC NO DAC 5mg + IPA 5mg (10mg)",                            size: "10 vials", price: 168 },
+    { code: "IGF1",    name: "IGF-1LR3 1mg",                                               size: "10 vials", price: 251 }
+  ],
+  eu1: [
+    { code: "TR10",    name: "Tirz 10mg",                                                  size: "10 vials", price: 113 },
+    { code: "RT10",    name: "Reta 10mg",                                                  size: "10 vials", price: 142 },
+    { code: "RT20",    name: "Reta 20mg",                                                  size: "10 vials", price: 190 },
+    { code: "RT40",    name: "Reta 40mg",                                                  size: "10 vials", price: 282 },
+    { code: "TB5",     name: "TB500 5mg",                                                  size: "10 vials", price: 128 },
+    { code: "GLOW",    name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg (70mg)",             size: "10 vials", price: 258 },
+    { code: "XA10",    name: "Semax 10mg",                                                 size: "10 vials", price: 117 },
+    { code: "SK10",    name: "Selank 10mg",                                                size: "10 vials", price: 117 },
+    { code: "IP5",     name: "Ipamorelin 5mg",                                             size: "10 vials", price: 101 },
+    { code: "G5K",     name: "HCG 5000 IU",                                                size: "10 vials", price: 140 },
+    { code: "KLOW80",  name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg + KPV 10mg (80mg)",  size: "10 vials", price: 294 },
+    { code: "GT500",   name: "Glutathione 500mg",                                          size: "10 vials", price: 99 }
   ],
   pl: [
     { code: "TR10",    name: "Tirz 10mg",                                                  size: "10 vials", price: 113 },
