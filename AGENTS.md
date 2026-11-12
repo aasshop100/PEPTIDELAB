@@ -264,7 +264,7 @@ but add a warning when the vial cannot provide one full dose, or when the draw e
   `eu1` added with 12 SKUs; `pl` unchanged and relabelled "EU Warehouse 2".
 - `H10` briefly pinned to $119 against the sheet's $219 on the theory that a hardcoded value over a
   formula meant a typo. **It was a deliberate demand-based price.** Pin removed, `OVERRIDE` now empty,
-  US3 and US4 back to **$219**.
+  US3, US4 and EU Warehouse 2 all at **$219** (the sheet’s EU-2 row carried 219 too).
 
 ### 2026-11-10 — freight copy
 - Rewrote the warehouse blurb, which Lester found confusing, to

@@ -268,7 +268,7 @@ const CATALOG = {
     { code: "TR10",    name: "Tirz 10mg",                                                  size: "10 vials", price: 113 },
     { code: "RT10",    name: "Reta 10mg",                                                  size: "10 vials", price: 142 },
     { code: "RT20",    name: "Reta 20mg",                                                  size: "10 vials", price: 190 },
-    { code: "H10",     name: "HGH 10iu",                                                   size: "10 vials", price: 119 },
+    { code: "H10",     name: "HGH 10iu",                                                   size: "10 vials", price: 219 },
     { code: "GLOW",    name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg (70mg)",             size: "10 vials", price: 258 },
     { code: "IP5",     name: "Ipamorelin 5mg",                                             size: "10 vials", price: 101 },
     { code: "G5K",     name: "HCG 5000 IU",                                                size: "10 vials", price: 140 },
