@@ -157,7 +157,7 @@ const CATALOG = {
   us3: [
     { code: "TR10",    name: "Tirz 10mg",                                       size: "10 vials", price: 113 },
     { code: "RT30",    name: "Reta 30mg",                                       size: "10 vials", price: 241 },
-    { code: "H10",     name: "HGH 10iu",                                        size: "10 vials", price: 119 },
+    { code: "H10",     name: "HGH 10iu",                                        size: "10 vials", price: 219 },
     { code: "TB10",    name: "TB500 10mg",                                      size: "10 vials", price: 165 },
     { code: "5AD",     name: "AOD9604 5mg",                                     size: "10 vials", price: 137 },
     { code: "GLOW",    name: "BPC 157 10mg + GHK-CU 50mg + TB500 10mg (70mg)",  size: "10 vials", price: 252 },
@@ -188,7 +188,7 @@ const CATALOG = {
   ],
   us4: [
     { code: "TR10",    name: "Tirz 10mg",                         size: "10 vials", price: 113 },
-    { code: "H10",     name: "HGH 10iu",                          size: "10 vials", price: 119 },
+    { code: "H10",     name: "HGH 10iu",                          size: "10 vials", price: 219 },
     { code: "MS10",    name: "MOTS-c 10mg",                       size: "10 vials", price: 128 },
     { code: "PT141",   name: "PT-141 10mg",                       size: "10 vials", price: 125 },
     { code: "ET10",    name: "Epithalon 10mg",                    size: "10 vials", price: 117 },

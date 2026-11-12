@@ -111,11 +111,15 @@ Since 2026-11-12 `CATALOG` in `script.js` is **generated**, not written by hand.
   EU / CA rows pile into `us5` and invent a phantom `KLOW` SKU there.
 - ⚠️ **The same product is spelled differently per section** — `KLOW`, `KLOW 80` and `KLOW80` are all the
   80mg KPV combo, `PT1410` is `PT141`. See `ALIAS`. Confirm by the spec column, never by eye.
-- ⚠️ **`OVERRIDE` pins prices where the sheet is provably wrong.** Today: **`H10` (HGH) reads $219 but its
-  cost is 69 + markup 50 = 119**, and the two H10 cells have a **hardcoded value that overwrote the
-  `=SUM` formula**. Without the pin every sync would raise a live price by $100. **Read prices with
-  `valueRenderOption: "FORMULA"` before trusting a surprising one** — that is how a typed value is told
-  apart from a computed one. Delete the entry once the sheet is fixed.
+- ⚠️ **A hardcoded price is NOT a typo — the sheet is the source of truth for MARGIN too.** `H10` (HGH)
+  sells for **$219** although cost 69 + markup 50 = 119, and its cells hold a typed value over the
+  `=SUM(cost+markup)` formula every other row uses. That broken formula **was the edit**: Lester prices
+  above cost+markup when demand justifies it ("it is larger than others because its in demand right now",
+  2026-11-12). It was pinned back to $119 for a few hours on that reasoning and corrected the same day.
+  **A row that does not compute means ASK, never assume.** `OVERRIDE` in the sync tool exists for a sheet
+  value Lester has confirmed is wrong, and is empty today.
+- **`valueRenderOption: "FORMULA"`** still tells a typed price from a computed one. Useful — it just does
+  not say which is correct.
 - ⚠️ **Size is NOT always 10 vials.** The oils (`TE250`/`TC250`/`TP100`) are `10ml*2vials`. The mobile
   price table once hid the Size column on the assumption everything was a 10-vial kit; it is back as a
   compact `10v`/`2v`. **Never re-hide it.**
@@ -258,7 +262,9 @@ but add a warning when the vial cannot provide one full dose, or when the draw e
 - **Non-US, after Lester said "sync all":** Australia +3 (`RT40`, `KLOW80`, `CP10`);
   **Canada 10 → 6** — `ML10`, `CGL5`, `G5K`, `SMO10` were removed because the sheet no longer lists them;
   `eu1` added with 12 SKUs; `pl` unchanged and relabelled "EU Warehouse 2".
-- `H10` left at **$119** against the sheet's $219 — see `OVERRIDE`. The sheet cell is still wrong.
+- `H10` briefly pinned to $119 against the sheet's $219 on the theory that a hardcoded value over a
+  formula meant a typo. **It was a deliberate demand-based price.** Pin removed, `OVERRIDE` now empty,
+  US3 and US4 back to **$219**.
 
 ### 2026-11-10 — freight copy
 - Rewrote the warehouse blurb, which Lester found confusing, to
