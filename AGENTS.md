@@ -127,6 +127,41 @@ Since 2026-11-12 `CATALOG` in `script.js` is **generated**, not written by hand.
   `ships`, `group`) and a bump to the "Domestic Warehouses" stat on `index.html`. The tool refuses to run
   if the site has a warehouse the sheet does not cover, so it can never silently drop one.
 
+**How it is triggered: Lester tells you.** There is **no schedule, no watcher and no automation**. The
+sheet can sit changed for days and the site will not know. When he says the sheet moved:
+
+1. `node sync-catalog.js` — read the diff out loud to him. Adds, removes and reprices are all listed.
+2. **Stop on anything structural.** A removal takes a product off a live store and an addition puts one
+   on it; neither is a data question. Confirm before applying.
+3. `node sync-catalog.js --apply`, then commit and push from `peptidelab-main`.
+4. **Verify against the live site, not the local one** — `curl` `script.js` with a cache-buster. GitHub
+   Pages takes a minute to build and caches HTML for ~10 minutes.
+
+### Parked: a daily automatic sync (2026-11-12)
+Lester asked whether this could run itself once a day and push changes straight to the site. **Feasible,
+and deliberately not built.** Parked, not rejected — these are the reasons, so it is not re-argued from
+scratch:
+
+- **A blind daily apply would have shipped every failure from the 2026-11-12 session**: the layout shift,
+  the phantom `KLOW`, Canada silently losing four products, and H10 held at the wrong price by an
+  override I should never have added. The parser catches the first two now. The other two are not data
+  problems at all — **four SKUs leaving Canada is a trading decision**, and no script can tell that apart
+  from a supplier edit.
+- ⚠️ **A new warehouse CANNOT auto-publish.** The sheet gives a code, a name and a price. It never says
+  which countries the warehouse ships to — and `ships` is what gates checkout, so guessing it means
+  accepting orders that cannot be fulfilled.
+- ⚠️ **An existing cart does not revalidate.** `cart.html` uses `item.price` from `localStorage` and
+  **never re-reads `CATALOG`** (verified 2026-11-12). A customer who added HGH at $119 yesterday still
+  checks out at $119, and a product removed from the catalog still orders fine. Harmless while the crypto
+  amount is quoted by hand; it stops being harmless if prices start moving unattended.
+- **The credential would have to change.** The tool runs on Lester's personal Google OAuth token, which
+  covers his whole Drive and expires. An unattended job needs a **service account with read access to the
+  one sheet**, held as an encrypted secret — never a file in this repo, which is public.
+- **The shape if it is ever built:** a daily GitHub Action (not a Windows task — a daily task on his PC
+  has silently skipped a day before). Price moves on existing SKUs within a sane band (~±15%) apply
+  themselves; adds, removes, out-of-band moves, new warehouses and parse anomalies hold and raise a
+  Telegram alert carrying the diff, using the same button-confirm pattern as the GMG parcel flow.
+
 ## Payment — crypto only, MANUAL
 There is **no payment processor**. NOWPayments was removed in v2.0.
 
