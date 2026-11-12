@@ -343,6 +343,10 @@ but add a warning when the vial cannot provide one full dose, or when the draw e
 
 ## Notes & Conventions
 - **No build step** — edit files directly, commit, push to deploy via GitHub Pages
+- ⚠️ **No page may link to the GitHub repo.** `privacy.html` and `terms.html` listed
+  `aasshop100.github.io/PEPTIDELAB` as the site address until 2026-11-12 — a leftover from before the
+  custom domain. It pointed customers at the **public repo whose history still holds the NOWPayments
+  key**. Always cite **peptidelab.world**. Check this after any domain or hosting change.
 - **Cache busting**: not implemented — hard refresh (`Ctrl+Shift+R`) after pushes. GitHub Pages also caches
   HTML for ~10 minutes, so a plain reload can show the old markup
 - **Encoding**: use Node.js (not PowerShell `Set-Content`) for bulk edits to preserve UTF-8
