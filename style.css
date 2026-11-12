@@ -2324,3 +2324,22 @@ img { max-width: 100%; }
   :root { --fab-right: 1rem; --fab-bottom: 1rem; --fab-size: 42px; }
   .wa-float svg { width: 19px; height: 19px; }
 }
+
+/* ==================================================================
+   Size column is back on mobile (2026-11-12)
+   It used to be hidden under 640px because every kit was "10 vials".
+   That stopped being true when the ZLZ sheet added oils sold as
+   2 x 10ml vials — hiding it would show $120 with no hint that the
+   kit is a fifth the size. It now shows a compact "10v" / "2v".
+   ================================================================== */
+.size-short { display: none; }
+
+@media (max-width: 640px) {
+  .price-table .col-size { display: table-cell; text-align: right; }
+  .size-long { display: none; }
+  .size-short { display: inline; }
+  .price-table thead th,
+  .price-table tbody td { padding: 0.6rem 0.35rem; }
+  .price-table .col-code { font-size: 0.78rem; }
+  .price-table .add-btn { padding: 0.35rem 0.5rem; font-size: 0.68rem; }
+}
