@@ -256,7 +256,7 @@ Template variables (**unchanged in v2 so the existing templates keep working**):
 
 ## Contact
 - **WhatsApp: +852 619 407 99** → `https://wa.me/85261940799`. Floating button on every page.
-- Email: `peptidelabusa@proton.me` (browser only — no IMAP/SMTP on the free Proton plan).
+- Email: `HK-Pep-Rouxi-85261940799@proton.me` (browser only — no IMAP/SMTP on the free Proton plan).
 - **Telegram was removed entirely in v2.0** — the pop-up, the floating button and all `t.me` links.
 
 ## Calculator
